@@ -1,0 +1,11 @@
+.declaimer {
+	font-size: 12px;
+    color: grey;
+    width: 100vw;
+    height: fit-content;
+    text-align: center;
+}
+
+.declaimer span {
+    display: block;
+}
