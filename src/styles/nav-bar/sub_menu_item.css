@@ -1,0 +1,16 @@
+.sub-menu-dropdown .sub-menu-item {
+	width: 100%;
+    text-align: center;
+    font-size: 17px;
+    border-top: 1px dashed lightgrey;
+    border-radius: inherit;
+    padding: 0px 2px;
+}
+.sub-menu-dropdown .sub-menu-item:first-child {
+    border-top: unset;
+}
+
+.sub-menu-dropdown .sub-menu-item:hover {
+    cursor: pointer;
+    background-color: lightgrey;
+}

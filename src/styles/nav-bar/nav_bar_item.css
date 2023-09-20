@@ -1,0 +1,32 @@
+.nav-bar-item {
+
+    height: 44px;
+    line-height: 44px;
+    width: fit-content;
+    padding: 0px 7px;
+    margin: 0px 5px;
+    color: black;
+    font-size: 20px;
+    float: left;
+    position: relative;
+
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+
+	background: linear-gradient(to left, rgba(0,0,0,0) 50%, black 50%);
+    background-size: 200% 5px;
+    background-position: bottom 0 right 1px;
+    background-repeat: no-repeat;
+    transition-duration: .5s;
+}
+
+.nav-bar-item:hover {
+    background-position: bottom 0 left 0;
+    cursor: pointer;
+}
+
+.nav-bar-item:hover+.sub-menu-block,
+.nav-bar-item:hover .sub-menu-dropdown {
+    transform: scaleY(100%);
+}
