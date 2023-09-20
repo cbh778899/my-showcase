@@ -1,5 +1,8 @@
 .sub-menu-item {
     font-size: 17px;
+    text-decoration: none;
+    color: black;
+    box-sizing: border-box;
 }
 
 .sub-menu-item:hover {
