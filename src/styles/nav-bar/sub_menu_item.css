@@ -15,7 +15,8 @@
     text-align: center;
     border-top: 1px dashed lightgrey;
     border-radius: inherit;
-    padding: 0px 2px;
+    padding: 0px 10px;
+    white-space: nowrap;
 }
 .sub-menu-dropdown .sub-menu-item:first-child {
     border-top: unset;
