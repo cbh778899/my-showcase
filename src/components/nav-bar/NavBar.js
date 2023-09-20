@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../styles/nav-bar/top_nav_bar.css';
+import '../../styles/nav-bar/nav_bar.css';
 import NavBarItem from './NavBarItem';
 import SubMenu from './SubMenu';
 import { LANGUAGE_CN, LANGUAGE_EN, SUB_MENU_BLOCK, SUB_MENU_DROPDOWN } from '../../settings/types';
@@ -7,10 +7,10 @@ import SubMenuItem from './SubMenuItem';
 import { Link } from 'react-router-dom';
 import useLanguage from '../../language';
 
-function TopNavBar() {
+function NavBar() {
     const { languagePack, setLanguage } = useLanguage();
     return (
-        <div className='top-nav-bar'>
+        <div className='nav-bar'>
             {/* <NavBarItem title='Home' /> */}
             <Link to='/' className='nav-bar-item'>{languagePack['Home']}</Link>
             <NavBarItem title={languagePack['Functional Pages']}>
@@ -35,4 +35,4 @@ function TopNavBar() {
     );
 }
 
-export default TopNavBar;
+export default NavBar;

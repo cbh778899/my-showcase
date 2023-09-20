@@ -1,4 +1,4 @@
-.top-nav-bar {
+.nav-bar {
     position: fixed;
     width: 100vw;
     height: 50px;
@@ -9,5 +9,5 @@
 }
 
 @media screen and (max-width: 1200px) {
-    .top-nav-bar {display: none;}
+    .nav-bar {display: none;}
 }
