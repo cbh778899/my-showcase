@@ -22,5 +22,8 @@ div {
 }
 
 @media screen and (max-width: 1200px) {
-    .main-viewport {height: 100vh;}
+    .main-viewport {
+        height: 100vh;
+        max-height: -webkit-fill-available;
+    }
 }

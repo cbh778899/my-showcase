@@ -6,12 +6,13 @@ import { LANGUAGE_CN, LANGUAGE_EN, SUB_MENU_BLOCK, SUB_MENU_DROPDOWN } from '../
 import SubMenuItem from './SubMenuItem';
 import { Link } from 'react-router-dom';
 import useLanguage from '../../language';
+import { XLg } from 'react-bootstrap-icons';
 
-function NavBar() {
+function NavBar({status, setStatus}) {
     const { languagePack, setLanguage } = useLanguage();
     return (
-        <div className='nav-bar'>
-            {/* <NavBarItem title='Home' /> */}
+        <div className={`nav-bar${status ? ' nav-bar-expanded' : ''}`}>
+            <XLg className='close-icon' onClick={()=>setStatus(false)} />
             <Link to='/' className='nav-bar-item'>{languagePack['Home']}</Link>
             <NavBarItem title={languagePack['Functional Pages']}>
                 <SubMenu style={SUB_MENU_BLOCK}>

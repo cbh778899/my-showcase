@@ -34,3 +34,21 @@
 .sub-menu:hover {
     cursor: default;
 }
+
+@media screen and (max-width: 1200px) {
+    
+    .sub-menu {
+        display: block;
+        width: 100%;
+        box-shadow: unset;
+        border: unset;
+        padding: unset;
+        min-width: unset;
+        max-width: unset;
+        min-height: unset;
+        max-height: unset;
+        position: relative;
+        transform: unset;
+        top: unset;
+    }
+}

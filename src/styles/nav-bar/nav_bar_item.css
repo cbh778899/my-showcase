@@ -33,3 +33,17 @@
 .nav-bar-item:hover .sub-menu {
     transform: scaleY(100%);
 }
+
+@media screen and (max-width: 1200px) {
+    .nav-bar-item {
+        width: 100%;
+        height: fit-content;
+        font-size: 20px;
+        border-bottom: 1px dashed grey;
+        line-height: unset;
+        margin: unset;
+        padding: 10px;
+        overflow: auto;
+        background: unset;
+    }
+}

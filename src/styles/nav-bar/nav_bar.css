@@ -6,8 +6,37 @@
     top: 0;
     z-index: 10;
     box-shadow: 0px 5px 7px lightgrey;
+    background-color: white;
+}
+
+.nav-bar .close-icon {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 13px;
+    right: 13px;
+    display: none;
 }
 
 @media screen and (max-width: 1200px) {
-    .nav-bar {display: none;}
+    .nav-bar {
+        width: 100vw;
+        height: 100vh;
+        max-height: -webkit-fill-available;
+        transition-duration: .5s;
+        box-shadow: unset;
+        overflow-y: auto;
+        transform: scaleX(0);
+        transform-origin: left center;
+        z-index: 12;
+        padding: 40px 10px 20px 10px;
+    }
+
+    .nav-bar .close-icon {
+        display: block;
+    }
+
+    .nav-bar-expanded {
+        transform: scaleX(100%);
+    }
 }

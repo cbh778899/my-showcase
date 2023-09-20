@@ -1,0 +1,25 @@
+.hamburger-menu {
+	width: 36px;
+    height: 36px;
+    border-radius: 5px;
+    position: fixed;
+    z-index: 11;
+    left: 10px;
+    top: 10px;
+    border: 1px solid black;
+    background-color: white;
+    display: none;
+}
+
+.hamburger-menu .icon {
+    width: 30px;
+    height: 30px;
+    display: block;
+    position: absolute;
+    left: 3px;
+    top: 3px;
+}
+
+@media screen and (max-width: 1200px) {
+    .hamburger-menu {display: block;}
+}
