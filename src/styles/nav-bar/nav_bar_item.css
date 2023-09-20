@@ -26,7 +26,6 @@
     cursor: pointer;
 }
 
-.nav-bar-item:hover+.sub-menu-block,
-.nav-bar-item:hover .sub-menu-dropdown {
+.nav-bar-item:hover .sub-menu {
     transform: scaleY(100%);
 }

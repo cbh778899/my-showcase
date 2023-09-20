@@ -1,7 +1,15 @@
+.sub-menu-item {
+    font-size: 17px;
+}
+
+.sub-menu-item:hover {
+    cursor: pointer;
+    background-color: lightgrey;
+}
+/* drop down type */
 .sub-menu-dropdown .sub-menu-item {
 	width: 100%;
     text-align: center;
-    font-size: 17px;
     border-top: 1px dashed lightgrey;
     border-radius: inherit;
     padding: 0px 2px;
@@ -10,7 +18,13 @@
     border-top: unset;
 }
 
-.sub-menu-dropdown .sub-menu-item:hover {
-    cursor: pointer;
-    background-color: lightgrey;
+/* block type */
+.sub-menu-block .sub-menu-item {
+    display: inline-block;
+    width: 20%;
+    padding: 0px 7px;
+    word-wrap: break-word;
+    line-height: unset;
+    border-radius: 5px;
+    vertical-align: top;
 }

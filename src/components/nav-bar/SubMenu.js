@@ -3,7 +3,7 @@ import '../../styles/nav-bar/sub_menu.css';
 
 function SubMenu({style, children}) {
     return (
-        <div className={style}>
+        <div className={`sub-menu ${style}`}>
             {children ? 
             children.map ?
             children.map(child=>{
