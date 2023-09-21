@@ -79,7 +79,7 @@ export async function selectOneByColumn(storeName, query, callback) {
                         break;
                     }
                 }
-                callback(isMatch);
+                callback(isMatch ? queryResult : false);
             } else callback(queryResult);
         }
 
