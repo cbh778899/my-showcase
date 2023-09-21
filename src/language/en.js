@@ -1,6 +1,12 @@
 import { IDB_NAME } from "../settings/types";
 
 const en = {
+    // account
+    'click-to-register': 'Haven\'t got an account yet? Click here to register!',
+    'click-to-login': 'Already got an account? Click here to login!',
+    'ask-input-account': 'Please input your Username or Email',
+    'ask-input-password': 'Please input your Password',
+    'login-failed': 'Login Failed! Please check your Username/Email or Password.',
     // notification: db
     'init-idb-success': 'Manually Initialize IDB Success!',
     'del-idb-success': `Delete DB ${IDB_NAME} success!`,
