@@ -17,7 +17,7 @@ function NavBar({status, setStatus}) {
             <Link to='/' className='nav-bar-item'>{languagePack['Home']}</Link>
             <NavBarItem title={languagePack['Functional Pages']}>
                 <SubMenu style={SUB_MENU_BLOCK}>
-                    <SubMenuItem title={languagePack['Function 1']} />
+                    <Link to='/account' className='sub-menu-item'>{languagePack['Account Page']}</Link>
                     <SubMenuItem title={languagePack['Function 2']} />
                     <Link to='/' className='sub-menu-item'>{languagePack['This is a link']}</Link>
                     <SubMenuItem title={languagePack['Function 3']} />
