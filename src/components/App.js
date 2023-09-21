@@ -8,6 +8,7 @@ import useLanguage from '../language';
 import { initDB, updateLanguagePack } from '../indexedDB';
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import Account from './account';
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
             <div className='main-viewport'>
             <Routes>
                 <Route path='/' element={<Home />} />
+                <Route path='/account' element={<Account />} />
             </Routes>
             <Declaimer />
             </div>
