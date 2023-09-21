@@ -35,14 +35,14 @@ function Login({setLoginID, switchDisplayPage, languagePack}) {
             <input type='text' name='account' onInput={e=>setAccount(e.target.value)}
                 placeholder={languagePack['ask-input-account']} 
             />
-            <input type={ showPassword ? 'text' : 'password' } onInput={e=>{setPassword(e.target.value)}} 
-                placeholder={languagePack['ask-input-password']} 
-            />
             {
                 showPassword ? 
                 <EyeSlash className='change-visibility-icon' onClick={()=>setPasswordVisibility(false)} /> :
                 <Eye className='change-visibility-icon' onClick={()=>setPasswordVisibility(true)} />
             }
+            <input type={ showPassword ? 'text' : 'password' } onInput={e=>{setPassword(e.target.value)}} 
+                placeholder={languagePack['ask-input-password']} 
+            />
             <button onClick={validateLogin}>
                 {languagePack['Login']}
             </button>
