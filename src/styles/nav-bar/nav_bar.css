@@ -18,7 +18,7 @@
     display: none;
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1023px) {
     .nav-bar {
         width: 100vw;
         height: 100vh;

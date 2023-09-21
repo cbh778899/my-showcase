@@ -34,7 +34,7 @@
     transform: scaleY(100%);
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1023px) {
     .nav-bar-item {
         width: 100%;
         height: fit-content;

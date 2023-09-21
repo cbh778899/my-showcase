@@ -22,14 +22,14 @@ div {
     overflow: hidden auto;
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1023px) {
     .main-viewport {
         height: 100vh;
         max-height: -webkit-fill-available;
     }
 }
 
-@media screen and (min-width: 1201px) {
+@media screen and (min-width: 1024px) {
     ::-webkit-scrollbar {width: 7px;}
     ::-webkit-scrollbar-track {background-color: rgb(240, 240, 240);}
     ::-webkit-scrollbar-thumb {background-color: rgb(160, 160, 160); border-radius: 3px;}

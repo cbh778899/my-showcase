@@ -20,6 +20,6 @@
     top: 3px;
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1023px) {
     .hamburger-menu {display: block;}
 }
