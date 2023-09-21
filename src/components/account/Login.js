@@ -15,9 +15,9 @@ function Login({setLoginID, switchDisplayPage, languagePack}) {
 
     function validateLogin() {
         if(!account) {
-            toast.info(languagePack['ask-input-account'], toastify_settings);
+            toast.warn(`${languagePack['ask-input-account']}!`, toastify_settings);
         } else if(!password) {
-            toast.info(languagePack['ask-input-password'], toastify_settings);
+            toast.warn(`${languagePack['ask-input-password']}!`, toastify_settings);
         } else {
             loginAction(account, password, id=> {
                 if(id === null) {
