@@ -28,7 +28,7 @@ function NavBar({status, setStatus}) {
             </NavBarItem>
             <NavBarItem title={languagePack['IndexedDB Settings']}>
                 <SubMenu style={SUB_MENU_DROPDOWN}>
-                    <SubMenuItem title={languagePack['Initialize IndexedDB Manually']} onClick={initDB} />
+                    <SubMenuItem title={languagePack['Initialize IndexedDB Manually']} onClick={()=>initDB(true)} />
                     <SubMenuItem title={languagePack['Delete Current IndexedDB']} onClick={deleteDB} />
                 </SubMenu>
             </NavBarItem>

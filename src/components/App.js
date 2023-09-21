@@ -4,16 +4,25 @@ import NavBar from './nav-bar/NavBar';
 import Home from './Home';
 import Declaimer from './Declaimer';
 import HamburgerMenu from './nav-bar/HamburgerMenu';
-import { initDB } from '../indexedDB';
+import useLanguage from '../language';
+import { initDB, updateLanguagePack } from '../indexedDB';
+import { ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
 
     const [navBarStatus, setNavBarStatus] = useState(false);
+    const { languagePack } = useLanguage();
 
     useEffect(()=>{
         // init the indexed db
         initDB();
     }, [])
+
+    useEffect(()=>{
+        // update language pack for db notification
+        updateLanguagePack(languagePack);
+    }, [languagePack])
 
     return (
         <BrowserRouter>
@@ -25,6 +34,7 @@ function App() {
             </Routes>
             <Declaimer />
             </div>
+            <ToastContainer />
         </BrowserRouter>
     );
 }
