@@ -7,6 +7,7 @@ import SubMenuItem from './SubMenuItem';
 import { Link } from 'react-router-dom';
 import useLanguage from '../../language';
 import { XLg } from 'react-bootstrap-icons';
+import { deleteDB, initDB } from '../../indexedDB';
 
 function NavBar({status, setStatus}) {
     const { languagePack, setLanguage } = useLanguage();
@@ -23,7 +24,12 @@ function NavBar({status, setStatus}) {
                     <SubMenuItem title={languagePack['Function 4']} />
                     <SubMenuItem title={languagePack['Function 5']} />
                     <SubMenuItem title={languagePack['Function 6']} />
-                    <SubMenuItem title={languagePack['Function 7']} />
+                </SubMenu>
+            </NavBarItem>
+            <NavBarItem title={languagePack['IndexedDB Settings']}>
+                <SubMenu style={SUB_MENU_DROPDOWN}>
+                    <SubMenuItem title={languagePack['Initialize IndexedDB Manually']} onClick={initDB} />
+                    <SubMenuItem title={languagePack['Delete Current IndexedDB']} onClick={deleteDB} />
                 </SubMenu>
             </NavBarItem>
             <NavBarItem title={languagePack['Language']}>
