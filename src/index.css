@@ -19,6 +19,7 @@ div {
     left: 0;
     bottom: 0;
     z-index: 9;
+    overflow: hidden auto;
 }
 
 @media screen and (max-width: 1200px) {
@@ -26,4 +27,11 @@ div {
         height: 100vh;
         max-height: -webkit-fill-available;
     }
+}
+
+@media screen and (min-width: 1201px) {
+    ::-webkit-scrollbar {width: 7px;}
+    ::-webkit-scrollbar-track {background-color: rgb(240, 240, 240);}
+    ::-webkit-scrollbar-thumb {background-color: rgb(160, 160, 160); border-radius: 3px;}
+    ::-webkit-scrollbar-thumb:hover {background-color: grey;}
 }
