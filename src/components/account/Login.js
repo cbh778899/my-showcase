@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import '../../styles/account/login.css';
-import { Eye, EyeSlash } from 'react-bootstrap-icons';
 import { loginAction } from '../../actions/account_actions';
 import { ACCOUNT_REGISTER_PAGE } from '../../settings/types';
 import { toast } from 'react-toastify';
 import toastify_settings from '../../settings/toastify_settings';
+import PasswordVisibilityBtn from './PasswordVisibilityBtn';
 
 function Login({setLoginID, switchDisplayPage, languagePack}) {
     
@@ -35,11 +35,7 @@ function Login({setLoginID, switchDisplayPage, languagePack}) {
             <input type='text' name='account' onInput={e=>setAccount(e.target.value)}
                 placeholder={languagePack['ask-input-account']} 
             />
-            {
-                showPassword ? 
-                <EyeSlash className='change-visibility-icon' onClick={()=>setPasswordVisibility(false)} /> :
-                <Eye className='change-visibility-icon' onClick={()=>setPasswordVisibility(true)} />
-            }
+            <PasswordVisibilityBtn visibility={showPassword} setVisibility={setPasswordVisibility} />
             <input type={ showPassword ? 'text' : 'password' } onInput={e=>{setPassword(e.target.value)}} 
                 placeholder={languagePack['ask-input-password']} 
             />
