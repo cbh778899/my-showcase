@@ -1,11 +1,11 @@
-.login {
+.login, .register {
 	width: 100%;
     height: 93%;
     padding-top: 15vh;
 }
 
-.login input,
-.login button {
+.login input, .register input,
+.login button, .register button {
     display: block;
     position: relative;
     margin: auto;
@@ -21,8 +21,9 @@
 }
 
 .login input:focus {outline: none;}
+.register input:focus {outline: none;}
 
-.login .change-visibility-icon {
+.login .change-visibility-icon, .register .change-visibility-icon {
     position: absolute;
     z-index: 2;
     width: 30px;
@@ -31,41 +32,41 @@
     margin-top: 10px;
 }
 
-.login button {
+.login button, .register button {
     color: white;
     background-color: dodgerblue;
     margin-bottom: 10px;
 }
 
-.login button:hover {
+.login button:hover, .register button:hover {
     background-color: rgb(26, 125, 224);
 }
 
-.login span {
+.login span, .register span {
     display: block;
     text-align: center;
     font-size: medium;
     color: blue;
 }
 
-.login button:hover,
-.login span:hover,
-.login .change-visibility-icon:hover {
+.login button:hover, .register button:hover,
+.login span:hover, .register span:hover,
+.login .change-visibility-icon:hover, .register .change-visibility-icon:hover {
     cursor: pointer;
 }
 
 @media screen and (max-width: 1023px) {
-    .login input,
-    .login button {
+    .login input, .register input,
+    .login button, .register button {
         width: 80%;
         font-size: 17px;
     }
 
-    .login .change-visibility-icon {
+    .login .change-visibility-icon, .register .change-visibility-icon {
         left: calc(90% - 40px);
     }
 
-    .login span {
+    .login span, .register span {
         width: 55%;
         margin: auto;
     }
