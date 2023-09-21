@@ -60,7 +60,7 @@ export async function insert(storeName, data, callback) {
         req.onsuccess = () => callback(true);
         req.onerror = () => callback(false);
     } catch (error) {
-        toast.error(error, toastify_settings);
+        toast.error(error.message, toastify_settings);
         callback(false);
     }
 }
@@ -69,23 +69,26 @@ export async function selectOneByColumn(storeName, query, callback) {
     try {
         const store = await getObjStore(storeName, IDB_MODE_READONLY);
         const req = store.index(query.indexName);
-        req.index(query.indexValue).onsuccess = function() {
+        req.get(query.indexValue).onsuccess = function() {
             const queryResult = this.result;
-            if(query.compareTo) {
-                let isMatch = true;
-                for(const key in query.compareTo) {
-                    if(queryResult[key] !== query.compareTo[key]) {
-                        isMatch = false;
-                        break;
+            if(!queryResult) callback(false)
+            else {
+                if(query.compareTo) {
+                    let isMatch = true;
+                    for(const key in query.compareTo) {
+                        if(queryResult[key] !== query.compareTo[key]) {
+                            isMatch = false;
+                            break;
+                        }
                     }
-                }
-                callback(isMatch ? queryResult : false);
-            } else callback(queryResult);
+                    callback(isMatch ? queryResult : false);
+                } else callback(queryResult);
+            }
         }
 
         req.onerror = () => callback(false);
     } catch (error) {
-        toast.error(error, toastify_settings);
+        toast.error(error.message, toastify_settings);
     }
 }
 
@@ -121,7 +124,7 @@ export async function selectAllByColumn(storeName, query, callback, store = null
     
         req.onerror = () => callback(false);
     } catch (error) {
-        toast.error(error, toastify_settings);
+        toast.error(error.message, toastify_settings);
         callback(false);
     }
 }
@@ -134,7 +137,7 @@ export async function getByKeyPath(storeName, key, callback, store = null) {
         req.onsuccess = evt => callback(evt.target.result);
         req.onerror = () => callback(false);
     } catch (error) {
-        toast.error(error, toastify_settings);
+        toast.error(error.message, toastify_settings);
         callback(false);
     }
 }
@@ -150,7 +153,7 @@ export async function deleteByKeyPath(storeName, key, callback) {
             } else callback(false);
         }, store);
     } catch (error) {
-        toast.error(error, toastify_settings);
+        toast.error(error.message, toastify_settings);
         callback(false);
     }
 }
@@ -167,7 +170,7 @@ export async function deleteAllByColumn(storeName, query, callback) {
             } else callback(false);
         }, store)
     } catch (error) {
-        toast.error(error, toastify_settings);
+        toast.error(error.message, toastify_settings);
         callback(false);
     }
 }
@@ -190,7 +193,7 @@ export async function clearAll(storeName, callback) {
             callback(false);
         }
     } catch (error) {
-        toast.error(error, toastify_settings);
+        toast.error(error.message, toastify_settings);
         callback(false);
     }
 }
