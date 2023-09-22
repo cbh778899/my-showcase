@@ -1,7 +1,6 @@
 import db_settings from "./settings";
 import { IDB_MODE_READONLY, IDB_MODE_READWRITE, IDB_NAME } from "../settings/types";
 import { toast } from "react-toastify";
-import toastify_settings from "../settings/toastify_settings";
 
 let db = null;
 let languagePack = {};
@@ -18,12 +17,12 @@ export function initDB(manual = false) {
     db_request.onsuccess = function() {
         db = this.result;
         if(manual)
-            toast.info(languagePack['init-idb-success'], toastify_settings);
+            toast.info(languagePack['init-idb-success']);
     }
 
     db_request.onerror = function() {
         db = null;
-        toast.error(this.error, toastify_settings);
+        toast.error(this.error);
     }
 
     db_request.onupgradeneeded = function (event) {
@@ -60,7 +59,7 @@ export async function insert(storeName, data, callback) {
         req.onsuccess = () => callback(true);
         req.onerror = () => callback(false);
     } catch (error) {
-        toast.error(error.message, toastify_settings);
+        toast.error(error.message);
         callback(false);
     }
 }
@@ -90,7 +89,7 @@ export async function selectOneByColumn(storeName, query, callback) {
 
         req.onerror = () => callback(false);
     } catch (error) {
-        toast.error(error.message, toastify_settings);
+        toast.error(error.message);
     }
 }
 
@@ -130,7 +129,7 @@ export async function selectAllByColumn(storeName, query, callback, store = null
     
         req.onerror = () => callback(false);
     } catch (error) {
-        toast.error(error.message, toastify_settings);
+        toast.error(error.message);
         callback(false);
     }
 }
@@ -147,7 +146,7 @@ export async function getByKeyPath(storeName, key, callback, store = null, exclu
         }
         req.onerror = () => callback(false);
     } catch (error) {
-        toast.error(error.message, toastify_settings);
+        toast.error(error.message);
         callback(false);
     }
 }
@@ -163,7 +162,7 @@ export async function deleteByKeyPath(storeName, key, callback) {
             } else callback(false);
         }, store);
     } catch (error) {
-        toast.error(error.message, toastify_settings);
+        toast.error(error.message);
         callback(false);
     }
 }
@@ -180,7 +179,7 @@ export async function deleteAllByColumn(storeName, query, callback) {
             } else callback(false);
         }, store)
     } catch (error) {
-        toast.error(error.message, toastify_settings);
+        toast.error(error.message);
         callback(false);
     }
 }
@@ -189,21 +188,15 @@ export async function clearAll(storeName, callback) {
     try {
         const req = (await getObjStore(storeName, IDB_MODE_READWRITE)).clear();
         req.onsuccess = () => {
-            toast.info(
-                languagePack['clear-table-success'](storeName),
-                toastify_settings
-            );
+            toast.info(languagePack['clear-table-success'](storeName));
             callback(true);
         }
         req.onerror = () => {
-            toast.info(
-                languagePack['clear-table-fail'](storeName),
-                toastify_settings
-            );
+            toast.info(languagePack['clear-table-fail'](storeName));
             callback(false);
         }
     } catch (error) {
-        toast.error(error.message, toastify_settings);
+        toast.error(error.message);
         callback(false);
     }
 }
@@ -211,6 +204,6 @@ export async function clearAll(storeName, callback) {
 export function deleteDB() {
     if(db) db.close()
     const req = window.indexedDB.deleteDatabase(IDB_NAME);
-    req.onsuccess = () => {toast.info(languagePack['del-idb-success'], toastify_settings)}
-    req.onerror = () => toast.error(languagePack['del-idb-fail'], toastify_settings)
+    req.onsuccess = () => {toast.info(languagePack['del-idb-success'])}
+    req.onerror = () => toast.error(languagePack['del-idb-fail'])
 }

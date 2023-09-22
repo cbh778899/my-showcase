@@ -9,6 +9,7 @@ import { initDB, updateLanguagePack } from '../indexedDB';
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import Account from './account';
+import toastify_settings from '../settings/toastify_settings';
 
 function App() {
 
@@ -36,7 +37,7 @@ function App() {
             </Routes>
             <Declaimer />
             </div>
-            <ToastContainer />
+            <ToastContainer {...toastify_settings} />
         </BrowserRouter>
     );
 }

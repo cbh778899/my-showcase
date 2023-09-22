@@ -3,7 +3,6 @@ import '../../styles/account/login.css';
 import { loginAction } from '../../actions/account_actions';
 import { ACCOUNT_REGISTER_PAGE } from '../../settings/types';
 import { toast } from 'react-toastify';
-import toastify_settings from '../../settings/toastify_settings';
 import PasswordVisibilityBtn from './PasswordVisibilityBtn';
 
 function Login({setLoginID, switchDisplayPage, languagePack}) {
@@ -15,15 +14,15 @@ function Login({setLoginID, switchDisplayPage, languagePack}) {
 
     function validateLogin() {
         if(!account) {
-            toast.warn(`${languagePack['ask-input-account']}!`, toastify_settings);
+            toast.warn(`${languagePack['ask-input-account']}!`);
         } else if(!password) {
-            toast.warn(`${languagePack['ask-input-password']}!`, toastify_settings);
+            toast.warn(`${languagePack['ask-input-password']}!`);
         } else {
             loginAction(account, password, id=> {
                 if(id === null) {
-                    toast.error(languagePack['login-failed'], toastify_settings);
+                    toast.error(languagePack['login-failed']);
                 } else {
-                    toast.success(languagePack['Login Success!'], toastify_settings);
+                    toast.success(languagePack['Login Success!']);
                     setLoginID(id);
                 }
             })

@@ -3,7 +3,6 @@ import '../../styles/account/login.css';
 import '../../styles/account/register.css';
 import { toast } from 'react-toastify';
 import { isEmail, passwordStrength } from '../../actions/validators';
-import toastify_settings from '../../settings/toastify_settings';
 import { ACCOUNT_LOGIN_PAGE } from '../../settings/types';
 import PasswordVisibilityBtn from './PasswordVisibilityBtn';
 import PasswordStrength from './PasswordStrength';
@@ -37,32 +36,32 @@ function Register({setLoginID, switchDisplayPage, languagePack}) {
         // check if all fields filled
         for(const key in fields) {
             if(!fields[key]) {
-                toast.warn(`${languagePack[`ask-input-${key}`]}!`, toastify_settings);
+                toast.warn(`${languagePack[`ask-input-${key}`]}!`);
                 return;
             }
         }
         // check if email pattern valid
         if(!fields.email || !isEmail(fields.email)) {
-            toast.warn(languagePack['email-pattern-invalid'], toastify_settings);
+            toast.warn(languagePack['email-pattern-invalid']);
             return;
         }
         // check if password is valid
         if(passStrength < 3 || fields.password.length < 8 || fields.password.length > 20) {
-            toast.warn(languagePack['password-invalid'], toastify_settings);
+            toast.warn(languagePack['password-invalid']);
             return;
         }
         // check if password and password-repeat the same
         if(fields.password !== fields['password-repeat']) {
-            toast.warn(languagePack['password-repeat-not-same'], toastify_settings);
+            toast.warn(languagePack['password-repeat-not-same']);
             return;
         }
 
         registerAction(fields, id=>{
             if(id !== null) {
-                toast.success(languagePack['Register Success!'], toastify_settings);
+                toast.success(languagePack['Register Success!']);
                 setLoginID(id);
             } else {
-                toast.error(languagePack['register-failed'], toastify_settings);
+                toast.error(languagePack['register-failed']);
             }
         })
     }

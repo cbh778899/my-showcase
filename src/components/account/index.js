@@ -5,7 +5,6 @@ import Register from './Register';
 import AccountDetails from './AccountDetails';
 import useLanguage from '../../language';
 import { toast } from 'react-toastify';
-import toastify_settings from '../../settings/toastify_settings';
 
 function Account() {
     const [loginID, setLoginID] = useState(null);
@@ -15,7 +14,7 @@ function Account() {
     function logout() {
         setLoginID(null);
         switchDisplayPage(ACCOUNT_LOGIN_PAGE);
-        toast.success(languagePack['Logout Success!'], toastify_settings);
+        toast.success(languagePack['Logout Success!']);
     }
 
     return (
