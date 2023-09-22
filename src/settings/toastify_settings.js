@@ -4,7 +4,7 @@ const toastify_settings = {
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,
-    draggable: true,
+    draggable: false,
     progress: undefined,
     theme: "colored",
 }
