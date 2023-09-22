@@ -47,6 +47,8 @@
     text-align: center;
     font-size: medium;
     color: blue;
+    width: fit-content;
+    margin: auto;
 }
 
 .login button:hover, .register button:hover,
