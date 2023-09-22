@@ -47,7 +47,7 @@ function Register({setLoginID, switchDisplayPage, languagePack}) {
             return;
         }
         // check if password is valid
-        if(passStrength < 3) {
+        if(passStrength < 3 || fields.password.length < 8 || fields.password.length > 20) {
             toast.warn(languagePack['password-invalid'], toastify_settings);
             return;
         }

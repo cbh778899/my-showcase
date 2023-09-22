@@ -11,8 +11,6 @@ const password_testers = [
 
 export function passwordStrength(password) {
     let strength = 0;
-    if(password.length < 8 || password.length > 20)
-        return 0;
     password_testers.forEach(ptn=>{
         if(password.match(ptn)) strength ++;
     })
