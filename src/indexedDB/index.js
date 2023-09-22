@@ -72,6 +72,8 @@ export async function selectOneByColumn(storeName, query, callback) {
         req.get(query.indexValue).onsuccess = function() {
             const queryResult = this.result;
             if(!queryResult) callback(false)
+            if(query.exclude)
+                query.exclude.forEach(e=>delete queryResult[e]);
             else {
                 if(query.compareTo) {
                     let isMatch = true;
@@ -113,7 +115,11 @@ export async function selectAllByColumn(storeName, query, callback, store = null
                                 break;
                             }
                         }
-                        if(isMatch) queryResults.push(result)
+                        if(isMatch){
+                            if(query.exclude)
+                                query.exclude.forEach(e=>delete result[e]);
+                            queryResults.push(result)
+                        }
                     }
                 }
                 cursor.continue();
@@ -129,12 +135,16 @@ export async function selectAllByColumn(storeName, query, callback, store = null
     }
 }
 
-export async function getByKeyPath(storeName, key, callback, store = null) {
+export async function getByKeyPath(storeName, key, callback, store = null, exclude = null) {
     try {
         store = store || await getObjStore(storeName, IDB_MODE_READONLY);
         const req = store.get(key);
     
-        req.onsuccess = evt => callback(evt.target.result);
+        req.onsuccess = function() {
+            const result = this.result;
+            if(exclude) exclude.forEach(e=>delete result[e]);
+            callback(result);
+        }
         req.onerror = () => callback(false);
     } catch (error) {
         toast.error(error.message, toastify_settings);
