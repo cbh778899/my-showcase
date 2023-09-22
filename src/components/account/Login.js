@@ -31,7 +31,7 @@ function Login({setLoginID, switchDisplayPage, languagePack}) {
     }
 
     return (
-        <div className='login'>
+        <form className='login' onSubmit={evt=>evt.preventDefault()}>
             <input type='text' name='account' onInput={e=>setAccount(e.target.value)}
                 placeholder={languagePack['ask-input-account']} 
             />
@@ -45,7 +45,7 @@ function Login({setLoginID, switchDisplayPage, languagePack}) {
             <span onClick={()=>switchDisplayPage(ACCOUNT_REGISTER_PAGE)}>
                 {languagePack['click-to-register']}
             </span>
-        </div>
+        </form>
     );
 }
 

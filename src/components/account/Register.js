@@ -68,7 +68,7 @@ function Register({setLoginID, switchDisplayPage, languagePack}) {
     }
 
     return (
-        <div className='register'>
+        <form className='register' onSubmit={evt=>evt.preventDefault()}>
             <input type='text' name='username' 
                 placeholder={languagePack['ask-input-username']} 
                 onInput={onInputEvt}
@@ -94,7 +94,7 @@ function Register({setLoginID, switchDisplayPage, languagePack}) {
             />
             <button onClick={validateRegister}>{ languagePack['Register Now'] }</button>
             <span onClick={()=>switchDisplayPage(ACCOUNT_LOGIN_PAGE)}>{languagePack['click-to-login']}</span>
-        </div>
+        </form>
     );
 }
 
