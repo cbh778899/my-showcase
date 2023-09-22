@@ -56,7 +56,7 @@ async function getObjStore(name, mode) {
 
 export async function insert(storeName, data, callback) {
     try {
-        const req = await getObjStore(storeName, IDB_MODE_READWRITE).add(data);
+        const req = (await getObjStore(storeName, IDB_MODE_READWRITE)).add(data);
         req.onsuccess = () => callback(true);
         req.onerror = () => callback(false);
     } catch (error) {
@@ -177,7 +177,7 @@ export async function deleteAllByColumn(storeName, query, callback) {
 
 export async function clearAll(storeName, callback) {
     try {
-        const req = await getObjStore(storeName, IDB_MODE_READWRITE).clear();
+        const req = (await getObjStore(storeName, IDB_MODE_READWRITE)).clear();
         req.onsuccess = () => {
             toast.info(
                 languagePack['clear-table-success'](storeName),
