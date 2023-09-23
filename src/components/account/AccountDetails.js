@@ -3,17 +3,21 @@ import '../../styles/account/account_details.css';
 import { getByKeyPath } from '../../indexedDB';
 import { IDB_ACCOUNT } from '../../settings/types';
 import { Person } from 'react-bootstrap-icons';
+import EditableField from './EditableField';
 
 function AccountDetails({id, logout, languagePack}) {
 
     const [userDetails, updateUserDetails] = useState();
+    const [editing, setEditing] = useState({username: null, email: null});
     
-    useEffect(()=>{
+    // eslint-disable-next-line
+    useEffect(requireUpdate, [])
+
+    function requireUpdate() {
         getByKeyPath(IDB_ACCOUNT, id, result=>{
             updateUserDetails(result);
-        }, null, ['password'])
-    // eslint-disable-next-line
-    }, [])
+        }, null, ['password']);
+    }
 
     return (
         <div className='account-details'>
@@ -24,13 +28,21 @@ function AccountDetails({id, logout, languagePack}) {
                 <div className='detail first no-edit'>
                     <div className='detail-title'>{languagePack['User ID']}</div>
                     {userDetails.id}
-                </div><div className='detail'>
-                    <div className='detail-title'>{languagePack['Username']}</div>
-                    {userDetails.username}
-                </div><div className='detail'>
-                    <div className='detail-title'>{languagePack['Email']}</div>
-                    {userDetails.email}
                 </div>
+                <EditableField {...{
+                    fieldName: 'username',
+                    fieldValue: editing.username, 
+                    setFieldValue: value=>{setEditing({...editing, username: value})},
+                    origValue: userDetails.username,
+                    title: 'Username', requireUpdate, id, languagePack
+                }}/>
+                <EditableField {...{
+                    fieldName: 'email',
+                    fieldValue: editing.email, 
+                    setFieldValue: value=>{setEditing({...editing, email: value})},
+                    origValue: userDetails.email,
+                    title: 'Email', requireUpdate, id, languagePack
+                }}/>
                 <div className='logout-container'>
                     <div className='logout' onClick={logout}>{languagePack['Logout']}</div>
                 </div>
