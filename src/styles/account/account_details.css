@@ -94,3 +94,30 @@
 .account-details .logout:hover {
     cursor: pointer;
 }
+
+.account-details .edit-icon {
+    position: absolute;
+    left: 90%;
+    margin-top: 30px;
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    transition-duration: .5s;
+}
+
+.account-details .finish-edit {
+    left: calc(86% + 10px);
+    color: limegreen;
+    border: 1px solid limegreen;
+}
+
+.account-details .cancel-edit {
+    left: calc(86% + 50px);
+    color: red;
+    border: 1px solid red;
+}
+
+.account-details .edit-icon:hover {
+    cursor: pointer;
+    box-shadow: 2px 3px 4px grey;
+}
