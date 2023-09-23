@@ -1,4 +1,4 @@
-import { insert, selectOneByColumn } from "../indexedDB";
+import { insert, selectOneByColumn, update } from "../indexedDB";
 import { IDB_ACCOUNT } from "../settings/types";
 import { isEmail } from "./validators";
 
@@ -28,4 +28,10 @@ export function registerAction(userDetails, callback) {
             })
         } else callback(null)
     })
+}
+
+export function updateDetailsAction(id, updateQuery, callback) {
+    update(IDB_ACCOUNT, {
+        id, updateQuery
+    }, result=>callback(result))
 }
