@@ -1,4 +1,4 @@
-import db_settings from "./settings";
+import { db_settings, db_upgrade } from "./settings";
 import { IDB_MODE_READONLY, IDB_MODE_READWRITE, IDB_NAME } from "../settings/types";
 import { toast } from "react-toastify";
 
@@ -12,7 +12,7 @@ export function updateLanguagePack(langpk) {
 export function initDB(manual = false) {
     
     const setting = db_settings;
-    const db_request = window.indexedDB.open(setting.name, setting.version);
+    const db_request = window.indexedDB.open(setting.name, setting.latestVersion || setting.version);
 
     db_request.onsuccess = function() {
         db = this.result;
@@ -25,14 +25,31 @@ export function initDB(manual = false) {
         toast.error(this.error);
     }
 
-    db_request.onupgradeneeded = function (event) {
-        const currDB = event.currentTarget.result;
-        setting.objectStores.forEach(objStoreAttr=>{
-            const objStore = currDB.createObjectStore(objStoreAttr.name, objStoreAttr.structureSettings);
-            objStoreAttr.schemas.forEach(schema=>{
-                objStore.createIndex(schema.name, schema.name, schema.settings);
+    db_request.onupgradeneeded = function (evt) {
+        const currDB = evt.currentTarget.result;
+        if(evt.oldVersion < 1) {
+            setting.objectStores.forEach(objStoreAttr=>{
+                const objStore = currDB.createObjectStore(objStoreAttr.name, objStoreAttr.structureSettings);
+                objStoreAttr.schemas.forEach(schema=>{
+                    objStore.createIndex(schema.name, schema.name, schema.settings);
+                })
             })
-        })
+        }
+        if(db_upgrade.length) {
+            db_upgrade.forEach(upgradeSettings=>{
+                if(evt.oldVersion < upgradeSettings.version && evt.oldVersion === upgradeSettings.fromVersion) {
+                    upgradeSettings.upgradeObjStores.forEach(objStore=>{
+                        const store = db_request.transaction.objectStore(objStore.name);
+                        objStore.newSchemas && objStore.newSchemas.forEach(schema=>{
+                            store.createIndex(schema.name, schema.name, schema.settings);
+                        })
+                        objStore.rmSchemas && objStore.rmSchemas.forEach(schema=>{
+                            store.deleteIndex(schema);
+                        })
+                    })
+                }
+            })
+        }
     }
 }
 

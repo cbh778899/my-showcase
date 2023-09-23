@@ -1,8 +1,9 @@
 import { IDB_NAME } from "../settings/types";
 
-const db_settings = {
+export const db_settings = {
     name: IDB_NAME,
     version: 1,
+    latestVersion: 2,
     objectStores: [
         // for account functions
         // login, register, profile
@@ -16,7 +17,14 @@ const db_settings = {
             ]
         }
     ]
-
 }
 
-export default db_settings;
+export const db_upgrade = [
+    {
+        version: 2,
+        fromVersion: 1,
+        upgradeObjStores: [
+            { name: 'account', newSchemas: [{name: 'avatar', settings: {unique: false}}] }
+        ]
+    }
+]
