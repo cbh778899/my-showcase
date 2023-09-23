@@ -1,6 +1,6 @@
 import { IDB_NAME } from "../settings/types";
 const account_field_name = {
-    'username': '用户名', 'email': '密码'
+    'username': '用户名', 'email': '邮箱'
 }
 const cn = {
     // nav bar
@@ -26,11 +26,14 @@ const cn = {
     'Logout Success!': '登出成功！',
     'login-failed': '登陆失败!请检查您的用户名/邮箱以及密码是否正确。',
     'register-failed': '注册失败！您的用户名/邮箱可能已被注册过。',
+    'update-success': fieldName=>{
+        return `更新您的${account_field_name[fieldName]}成功!`},
     'update-failed': fieldName=>{
         return `更新${account_field_name[fieldName]}失败! 您的${account_field_name[fieldName]}可能已被注册过。`},
+    'Click to edit': '点击以编辑',
     'User ID': '用户ID',
-    'Username': '用户名',
-    'Email': '邮箱',
+    'Username': account_field_name['username'],
+    'Email': account_field_name['email'],
     'Logout': '登出',
     'Loading...': '加载中...',
     // db
