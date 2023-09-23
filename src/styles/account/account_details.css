@@ -39,6 +39,15 @@
     position: relative;
     font-size: 20px;
     font-weight: 400;
+    box-sizing: border-box;
+    display: block;
+}
+
+.account-details .detail:is(input):hover {
+    cursor: default !important;
+}
+.account-details .detail:is(input):focus {
+    outline: none;
 }
 
 .account-details .detail:is(.first) {
