@@ -14,6 +14,7 @@ const en = {
     'password-repeat-not-same': 'The two passwords you entered is not same!',
     'login-failed': 'Login Failed! Please check your username/email or password.',
     'register-failed': 'Register Failed! Your username / email might already been registered.',
+    'update-failed': fieldName=>{return `Update ${fieldName} failed! Your new ${fieldName} might have already been taken.`},
     // notification: db
     'init-idb-success': 'Manually Initialize IDB Success!',
     'del-idb-success': `Delete DB ${IDB_NAME} success!`,
