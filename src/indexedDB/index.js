@@ -70,7 +70,10 @@ export async function selectOneByColumn(storeName, query, callback) {
         const req = store.index(query.indexName);
         req.get(query.indexValue).onsuccess = function() {
             const queryResult = this.result;
-            if(!queryResult) callback(false)
+            if(!queryResult) {
+                callback(false);
+                return;
+            }
             if(query.exclude)
                 query.exclude.forEach(e=>delete queryResult[e]);
             else {
@@ -141,11 +144,31 @@ export async function getByKeyPath(storeName, key, callback, store = null, exclu
     
         req.onsuccess = function() {
             const result = this.result;
-            if(exclude) exclude.forEach(e=>delete result[e]);
+            if(result && exclude) exclude.forEach(e=>delete result[e]);
             callback(result);
         }
         req.onerror = () => callback(false);
     } catch (error) {
+        toast.error(error.message);
+        callback(false);
+    }
+}
+
+export async function update(storeName, query, callback) {
+    try {
+        const store = await getObjStore(storeName, IDB_MODE_READWRITE);
+        getByKeyPath(storeName, query.id, result=>{
+            if(result) {
+                for(const key in query.updateQuery) {
+                    result[key] = query.updateQuery[key];
+                }
+                const req = store.put(result);
+
+                req.onsuccess = () => callback(true);
+                req.onerror = () => callback(false);
+            }
+        }, store)
+    } catch(error) {
         toast.error(error.message);
         callback(false);
     }
