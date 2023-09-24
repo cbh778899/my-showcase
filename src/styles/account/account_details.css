@@ -17,6 +17,14 @@
     background-size: 100%;
     background-position: center;
     margin: auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.account-details .avatar img {
+    width: 100%;
+    height: 100%;
+    display: block;
 }
 
 .account-details .avatar .icon {
@@ -90,6 +98,7 @@
     width: fit-content;
 }
 
+.account-details .avatar:hover,
 .account-details .detail:not(.no-edit):hover,
 .account-details .logout:hover {
     cursor: pointer;
@@ -120,4 +129,33 @@
 .account-details .edit-icon:hover {
     cursor: pointer;
     box-shadow: 2px 3px 4px grey;
+}
+
+.account-details .avatar .edit-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-image: linear-gradient(to top, grey 7%, transparent 55%);
+    color: white;
+    font-size: 17px;
+    font-weight: 500;
+    transition-duration: .5s;
+    transform: translateY(55%);
+    transform-origin: bottom center;
+}
+
+.account-details .avatar .edit-avatar span {
+    position: absolute;
+    bottom: 27px;
+    text-align: center;
+    display: block;
+    width: 100%;
+    user-select: none;
+}
+
+.account-details .avatar:hover .edit-avatar {
+    transform: translateY(0);
 }
