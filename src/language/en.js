@@ -16,6 +16,10 @@ const en = {
     'register-failed': 'Register Failed! Your username / email might already been registered.',
     'update-success': fieldName=>{return `Update your ${fieldName} Success!`},
     'update-failed': fieldName=>{return `Update ${fieldName} failed! Your new ${fieldName} might have already been taken.`},
+    'ask-select-avatar': 'Click or drag image here to upload your new avatar.',
+    'file-type-invalid': 'The file you selected is not an image file! Please try another one.',
+    'edit-avatar-success': 'Successfully updated your avatar!',
+    'upload-avatar-failed': 'Upload avatar failed, please try initialize IDB manually',
     // notification: db
     'init-idb-success': 'Manually Initialize IDB Success!',
     'del-idb-success': `Delete DB ${IDB_NAME} success!`,
