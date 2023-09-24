@@ -4,18 +4,27 @@ import { getByKeyPath } from '../../indexedDB';
 import { IDB_ACCOUNT } from '../../settings/types';
 import { Person } from 'react-bootstrap-icons';
 import EditableField from './EditableField';
+import EditAvatar from './EditAvatar';
 
 function AccountDetails({id, logout, languagePack}) {
 
-    const [userDetails, updateUserDetails] = useState();
-    const [editing, setEditing] = useState({username: null, email: null});
+    const [userDetails, updateUserDetails] = useState(null);
+    const [editing, setEditing] = useState({username: null, email: null, avatar: false});
     
     // eslint-disable-next-line
     useEffect(requireUpdate, [])
 
     function requireUpdate() {
         getByKeyPath(IDB_ACCOUNT, id, result=>{
-            updateUserDetails(result);
+            if(result && result.avatar) {
+                console.log(result.avatar)
+                const fileReader = new FileReader()
+                fileReader.onload = () => {
+                    result.avatar = fileReader.result;
+                    updateUserDetails(result);
+                }
+                fileReader.readAsDataURL(result.avatar);
+            } else updateUserDetails(result);
         }, null, ['password']);
     }
 
@@ -24,7 +33,18 @@ function AccountDetails({id, logout, languagePack}) {
             {
                 userDetails ? 
                 <>
-                <div className='avatar'>{ userDetails.avatar ? <></> : <Person className='icon' /> }</div>
+                <EditAvatar 
+                    display={editing.avatar} 
+                    close={()=>setEditing({...editing, avatar: false})}
+                    id={userDetails.id} requireUpdate={requireUpdate}
+                    languagePack={languagePack} />
+                <div className='avatar' onClick={()=>setEditing({...editing, avatar: true})}>
+                    <div className='edit-avatar'><span>{languagePack['Edit Avatar']}</span></div>
+                    { userDetails.avatar ? 
+                        <img alt={languagePack['avatar']} src={userDetails.avatar} /> : 
+                        <Person className='icon' /> 
+                    }
+                </div>
                 <div className='detail first no-edit'>
                     <div className='detail-title'>{languagePack['User ID']}</div>
                     {userDetails.id}
