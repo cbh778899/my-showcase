@@ -1,20 +1,3 @@
-export function calculateImageCenter(container, img) {
-    const availableDimensions = {
-        width: container.clientWidth,
-        height: container.clientHeight,
-    }
-
-    const imgDimensions = {
-        width: img.clientWidth,
-        height: img.clientHeight
-    }
-
-    const marginLeft = `${(availableDimensions.width - imgDimensions.width) / 2}px`
-    const marginTop = `${(availableDimensions.height - imgDimensions.height) / 2}px`
-
-    return { marginLeft, marginTop }
-}
-
 function calculateMinDimensions(width, height, maxWidth, maxHeight) {
     const dimensions = {}
     if(width >= height) {
