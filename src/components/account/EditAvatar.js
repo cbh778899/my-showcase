@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import '../../styles/account/edit_avatar.css';
 import { ArrowLeftCircleFill, ArrowRightCircleFill, CheckCircleFill, XCircleFill } from 'react-bootstrap-icons';
-import { calculateDefaultImageScale, calculateImageCenter, validateMovement, validateScale } from '../../actions/calculator';
+import { calculateDefaultImageScale, validateMovement, validateScale } from '../../actions/calculator';
 import { toast } from 'react-toastify';
 import { updateDetailsAction } from '../../actions/account_actions';
 
@@ -21,13 +21,10 @@ function EditAvatar({display, close, id, requireUpdate, languagePack}) {
     function uploadFile(evt) {
         if(evt.target.files.length) {
             const file = evt.target.files[0]
+            if(imgSrc) URL.revokeObjectURL(imgSrc)
             if(file.type.indexOf('image/') === 0) {
-                const fileReader = new FileReader()
-                fileReader.onload = () => {
-                    setImgSrc(fileReader.result);
-                    selectImg(file);
-                }
-                fileReader.readAsDataURL(file);
+                setImgSrc(URL.createObjectURL(file));
+                selectImg(file);
             } else {
                 toast.error(languagePack['file-type-invalid']);
                 setImgSrc('');
@@ -42,6 +39,7 @@ function EditAvatar({display, close, id, requireUpdate, languagePack}) {
     async function cleanUp() {
         close();
         await new Promise(s=>setTimeout(s, 700));
+        imgSrc && URL.revokeObjectURL(imgSrc);
         setImgSrc('');
         selectImg(null);
         setCurrPage(1);
@@ -50,14 +48,6 @@ function EditAvatar({display, close, id, requireUpdate, languagePack}) {
             x: 0, y: 0, width: 0, height: 0,
             mouse_down: false
         })
-    }
-
-    function adjustImgPos(evt) {
-        const img = evt.target;
-        const { marginLeft, marginTop } = 
-            calculateImageCenter(askAvatarBlock.current, img);
-        img.style.marginLeft = marginLeft;
-        img.style.marginTop = marginTop;
     }
 
     useEffect(()=>{
@@ -163,9 +153,7 @@ function EditAvatar({display, close, id, requireUpdate, languagePack}) {
                 <div className='ask-avatar' ref={askAvatarBlock}>
                 {
                     avatarImgFile ?
-                    <img src={imgSrc} alt={languagePack['Preview not available']} 
-                        onLoad={adjustImgPos} 
-                    /> :
+                    <img src={imgSrc} alt={languagePack['Preview not available']} /> :
                     <span>{languagePack['ask-select-avatar']}</span>
                 }
                 </div>
