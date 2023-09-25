@@ -3,7 +3,7 @@ import '../../styles/nav-bar/sub_menu_item.css';
 
 function SubMenuItem({title, onClick}) {
     return (
-        <div className='sub-menu-item' onClick={onClick}>
+        <div className='sub-menu-item clickable' onClick={onClick}>
             {title}
         </div>
     );

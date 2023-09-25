@@ -38,10 +38,11 @@ function Login({setLoginID, switchDisplayPage, languagePack}) {
             <input type={ showPassword ? 'text' : 'password' } onInput={e=>{setPassword(e.target.value)}} 
                 placeholder={languagePack['ask-input-password']} 
             />
-            <button onClick={validateLogin}>
+            <button className='clickable' onClick={validateLogin}>
                 {languagePack['Login']}
             </button>
-            <span onClick={()=>switchDisplayPage(ACCOUNT_REGISTER_PAGE)}>
+            <span className='switch-display-page-btn clickable'
+                onClick={()=>switchDisplayPage(ACCOUNT_REGISTER_PAGE)}>
                 {languagePack['click-to-register']}
             </span>
         </form>

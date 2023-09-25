@@ -6,7 +6,6 @@
 }
 
 .sub-menu-item:hover {
-    cursor: pointer;
     background-color: lightgrey;
 }
 /* drop down type */

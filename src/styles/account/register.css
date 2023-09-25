@@ -19,7 +19,6 @@
     height: 3px;
     transition-duration: .5s;
 }
-.register .password-strength span:hover {cursor: default;}
 
 .register .password-strength .empty {
     background-color: grey;

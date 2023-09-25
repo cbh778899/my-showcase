@@ -37,14 +37,14 @@ function AccountDetails({id, logout, languagePack}) {
                     close={()=>setEditing({...editing, avatar: false})}
                     id={userDetails.id} requireUpdate={requireUpdate}
                     languagePack={languagePack} />
-                <div className='avatar' onClick={()=>setEditing({...editing, avatar: true})}>
+                <div className='avatar clickable' onClick={()=>setEditing({...editing, avatar: true})}>
                     <div className='edit-avatar'><span>{languagePack['Edit Avatar']}</span></div>
                     { userDetails.avatar ? 
                         <img alt={languagePack['avatar']} src={userDetails.avatar} /> : 
                         <Person className='icon' /> 
                     }
                 </div>
-                <div className='detail first no-edit'>
+                <div className='detail first'>
                     <div className='detail-title'>{languagePack['User ID']}</div>
                     {userDetails.id}
                 </div>
@@ -63,7 +63,7 @@ function AccountDetails({id, logout, languagePack}) {
                     title: 'Email', requireUpdate, id, languagePack
                 }}/>
                 <div className='logout-container'>
-                    <div className='logout' onClick={logout}>{languagePack['Logout']}</div>
+                    <div className='logout clickable' onClick={logout}>{languagePack['Logout']}</div>
                 </div>
                 </> : 
                 <div className='show-loading'>{languagePack['Loading...']}</div>

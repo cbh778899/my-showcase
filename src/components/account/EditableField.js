@@ -30,14 +30,14 @@ function EditableField({fieldName, fieldValue, setFieldValue, origValue, require
 
     return (
         fieldValue === null ?
-        <div className='detail' onClick={()=>setFieldValue(origValue)} 
+        <div className='detail clickable' onClick={()=>setFieldValue(origValue)} 
             title={languagePack['Click to edit']}>
             <div className='detail-title'>{languagePack[title]}</div>
             {origValue}
         </div> :
         <>
-        <CheckCircleFill className='edit-icon finish-edit' onClick={submitEdit} />
-        <XCircleFill className='edit-icon cancel-edit' onClick={cancelEdit} />
+        <CheckCircleFill className='edit-icon clickable finish-edit' onClick={submitEdit} />
+        <XCircleFill className='edit-icon clickable cancel-edit' onClick={cancelEdit} />
         <input className='detail' placeholder={languagePack[`ask-input-${fieldName}`]} 
             name={fieldName} value={fieldValue} onInput={inputEvt}
             onKeyDown={evt=>evt.key === 'Enter' ? submitEdit() : undefined}

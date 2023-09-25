@@ -23,6 +23,8 @@ form {
     overflow: hidden auto;
 }
 
+.clickable:hover {cursor: pointer;}
+
 @media screen and (max-width: 1023px) {
     .main-viewport {
         height: 100vh;

@@ -148,7 +148,7 @@ function EditAvatar({display, close, id, requireUpdate, languagePack}) {
                 display ? '' : ' hidden-upload-edit-avatar'
             }${currPage === 1 ? '' : ' page-2'}`}>
             <div className='page'>
-                <input className='ask-avatar-input' type='file' accept='image/*' onChange={uploadFile}/>
+                <input className='ask-avatar-input clickable' type='file' accept='image/*' onChange={uploadFile}/>
                 <div className='ask-avatar' ref={askAvatarBlock}>
                 {
                     avatarImgFile ?
@@ -156,13 +156,13 @@ function EditAvatar({display, close, id, requireUpdate, languagePack}) {
                     <span>{languagePack['ask-select-avatar']}</span>
                 }
                 </div>
-                <div className={`btn next${avatarImgFile ? '' : ' disabled-btn'}`}
+                <div className={`btn next${avatarImgFile ? ' clickable' : ' disabled-btn'}`}
                     onClick={()=>{ if(avatarImgFile) setCurrPage(2)}}
                 >
                     <ArrowRightCircleFill className='icon' />
                     <span>{ languagePack['Next'] }</span>
                 </div>
-                <div className='btn cancel' onClick={cleanUp}>
+                <div className='btn clickable cancel' onClick={cleanUp}>
                     <XCircleFill className='icon' />
                     <span>{ languagePack['Cancel'] }</span>
                 </div>
@@ -173,15 +173,15 @@ function EditAvatar({display, close, id, requireUpdate, languagePack}) {
                     onMouseMove={mouseMove} onMouseLeave={mouseUp}
                     onWheel={wheelScroll}
                 ></canvas>
-                <div className='btn next' onClick={submitCroppedAvatar}>
+                <div className='btn clickable next' onClick={submitCroppedAvatar}>
                     <CheckCircleFill className='icon' />
                     <span>{ languagePack['Finished'] }</span>
                 </div>
-                <div className='btn go-back' onClick={()=>setCurrPage(1)}>
+                <div className='btn clickable go-back' onClick={()=>setCurrPage(1)}>
                     <ArrowLeftCircleFill className='icon' />
                     <span>{ languagePack['Go Back'] }</span>
                 </div>
-                <div className='btn cancel' onClick={cleanUp}>
+                <div className='btn clickable cancel' onClick={cleanUp}>
                     <XCircleFill className='icon' />
                     <span>{ languagePack['Cancel'] }</span>
                 </div>

@@ -51,9 +51,6 @@
     display: block;
 }
 
-.account-details .detail:is(input):hover {
-    cursor: default !important;
-}
 .account-details .detail:is(input):focus {
     outline: none;
 }
@@ -98,12 +95,6 @@
     width: fit-content;
 }
 
-.account-details .avatar:hover,
-.account-details .detail:not(.no-edit):hover,
-.account-details .logout:hover {
-    cursor: pointer;
-}
-
 .account-details .edit-icon {
     position: absolute;
     left: 90%;
@@ -127,7 +118,6 @@
 }
 
 .account-details .edit-icon:hover {
-    cursor: pointer;
     box-shadow: 2px 3px 4px grey;
 }
 

@@ -135,10 +135,6 @@
     color: rgb(240, 209, 32);
 }
 
-.upload-edit-avatar .page .ask-avatar-input:hover,
-.upload-edit-avatar .page .btn:not(.disabled-btn):hover {
-    cursor: pointer;
-}
 .upload-edit-avatar .page .btn:not(.disabled-btn):hover {
     opacity: .9;
     box-shadow: 3px 3px 5px grey;

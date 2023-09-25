@@ -42,19 +42,13 @@
     background-color: rgb(26, 125, 224);
 }
 
-.login span, .register span {
+.login .switch-display-page-btn, .register .switch-display-page-btn {
     display: block;
     text-align: center;
     font-size: medium;
     color: blue;
     width: fit-content;
     margin: auto;
-}
-
-.login button:hover, .register button:hover,
-.login span:hover, .register span:hover,
-.login .change-visibility-icon:hover, .register .change-visibility-icon:hover {
-    cursor: pointer;
 }
 
 @media screen and (max-width: 1023px) {

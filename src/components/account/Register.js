@@ -91,8 +91,11 @@ function Register({setLoginID, switchDisplayPage, languagePack}) {
                 placeholder={languagePack['ask-input-password-repeat']} 
                 onInput={onInputEvt}
             />
-            <button onClick={validateRegister}>{ languagePack['Register Now'] }</button>
-            <span onClick={()=>switchDisplayPage(ACCOUNT_LOGIN_PAGE)}>{languagePack['click-to-login']}</span>
+            <button  className='clickable' onClick={validateRegister}>{ languagePack['Register Now'] }</button>
+            <span  className='switch-display-page-btn clickable'
+                onClick={()=>switchDisplayPage(ACCOUNT_LOGIN_PAGE)}>
+                    {languagePack['click-to-login']}
+            </span>
         </form>
     );
 }

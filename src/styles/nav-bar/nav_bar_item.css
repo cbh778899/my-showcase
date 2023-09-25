@@ -27,7 +27,6 @@
 
 .nav-bar-item:hover {
     background-position: bottom 0 left 0;
-    cursor: pointer;
 }
 
 .nav-bar-item:hover .sub-menu {
