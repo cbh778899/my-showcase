@@ -130,7 +130,6 @@ function EditAvatar({display, close, id, requireUpdate, languagePack}) {
         ctx.drawImage(img, x, y, width, height);
         
         canvas.toBlob(blob=>{
-            console.log(blob);
             updateDetailsAction(id, { avatar: blob }, result=>{
                 if(result) {
                     toast.success(languagePack['edit-avatar-success'])

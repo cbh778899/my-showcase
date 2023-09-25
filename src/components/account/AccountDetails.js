@@ -17,7 +17,6 @@ function AccountDetails({id, logout, languagePack}) {
     function requireUpdate() {
         getByKeyPath(IDB_ACCOUNT, id, result=>{
             if(result && result.avatar) {
-                console.log(result.avatar)
                 const fileReader = new FileReader()
                 fileReader.onload = () => {
                     result.avatar = fileReader.result;
