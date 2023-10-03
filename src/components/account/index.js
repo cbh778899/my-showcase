@@ -11,10 +11,10 @@ function Account() {
     const [displayPage, switchDisplayPage] = useState(ACCOUNT_LOGIN_PAGE)
     const { languagePack } = useLanguage();
 
-    function logout() {
+    function logout(msg = null) {
         setLoginID(null);
         switchDisplayPage(ACCOUNT_LOGIN_PAGE);
-        toast.success(languagePack['Logout Success!']);
+        typeof msg === 'string' ? toast.warning(msg) : toast.success(languagePack['Logout Success!']);
     }
 
     return (
