@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import '../../styles/account/login.css';
+import { Link } from 'react-router-dom';
+import '../../styles/account/account_global.css';
 import { loginAction } from '../../actions/account_actions';
-import { ACCOUNT_REGISTER_PAGE } from '../../settings/types';
+import { ACCOUNT_REGISTER_PAGE, EDIT_PASSWORD_CHANNEL, EDIT_PASS_EMAIL, REQUEST_CREDENTIAL, SESSION_EXPIRED } from '../../settings/types';
 import { toast } from 'react-toastify';
 import PasswordVisibilityBtn from './PasswordVisibilityBtn';
+import { isEmail } from '../../actions/validators';
 
 function Login({setLoginID, switchDisplayPage, languagePack}) {
     
@@ -29,8 +31,33 @@ function Login({setLoginID, switchDisplayPage, languagePack}) {
         }
     }
 
+    function forgotPassword() {
+        // wait 500ms for edit password to load
+        let response_received = false;
+        const channel = new BroadcastChannel(EDIT_PASSWORD_CHANNEL);
+        channel.onmessage = function(evt) {
+            if(evt.data === REQUEST_CREDENTIAL) {
+                channel.postMessage({
+                    type: EDIT_PASS_EMAIL, 
+                    'user-email': isEmail(account) ? account : null
+                })
+            } else {
+                response_received = true;
+            }
+        }
+        channel.onmessageerror = function(err){ toast.error(err.data) }
+        
+        // wait for 5 minutes, if no response, send session expired message and close channel
+        setTimeout(() => {
+            if(!response_received && channel) {
+                channel.postMessage(SESSION_EXPIRED);
+                channel.close();
+            }
+        }, 300000);
+    }
+
     return (
-        <form className='login' onSubmit={evt=>evt.preventDefault()}>
+        <form className='login account-global' onSubmit={evt=>evt.preventDefault()}>
             <input type='text' name='account' onInput={e=>setAccount(e.target.value)}
                 placeholder={languagePack['ask-input-account']} 
             />
@@ -41,7 +68,13 @@ function Login({setLoginID, switchDisplayPage, languagePack}) {
             <button className='clickable' onClick={validateLogin}>
                 {languagePack['Login']}
             </button>
-            <span className='switch-display-page-btn clickable'
+            <Link to='edit-password' target='_blank'
+                className='function-text clickable'
+                onClick={forgotPassword}
+            >
+                {languagePack['forgot-password']}
+            </Link>
+            <span className='function-text clickable'
                 onClick={()=>switchDisplayPage(ACCOUNT_REGISTER_PAGE)}>
                 {languagePack['click-to-register']}
             </span>

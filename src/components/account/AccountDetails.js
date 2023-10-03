@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import '../../styles/account/account_details.css';
 import { getByKeyPath } from '../../indexedDB';
-import { IDB_ACCOUNT } from '../../settings/types';
+import { EDIT_PASSWORD_CHANNEL, EDIT_PASS_ID, IDB_ACCOUNT, REQUEST_CREDENTIAL, SESSION_EXPIRED } from '../../settings/types';
 import { Person } from 'react-bootstrap-icons';
 import EditableField from './EditableField';
 import EditAvatar from './EditAvatar';
+import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function AccountDetails({id, logout, languagePack}) {
 
@@ -27,8 +29,31 @@ function AccountDetails({id, logout, languagePack}) {
         }, null, ['password']);
     }
 
+    function establishEditPasswordChannel() {
+        // wait 500ms for edit password to load
+        let response_received = false;
+        const channel = new BroadcastChannel(EDIT_PASSWORD_CHANNEL);
+        channel.onmessage = function(evt) {
+            if(evt.data === REQUEST_CREDENTIAL) {
+                channel.postMessage({type: EDIT_PASS_ID, id})
+            } else {
+                response_received = true;
+                evt.data.status && logout(languagePack['password-changed-logout']);
+            }
+        }
+        channel.onmessageerror = function(err){ toast.error(err.data) }
+        
+        // wait for 5 minutes, if no response, send session expired message and close channel
+        setTimeout(() => {
+            if(!response_received && channel) {
+                channel.postMessage(SESSION_EXPIRED);
+                channel.close();
+            }
+        }, 300000);
+    }
+
     return (
-        <div className='account-details'>
+        <div className='account-details account-global'>
             {
                 userDetails ? 
                 <>
@@ -62,6 +87,12 @@ function AccountDetails({id, logout, languagePack}) {
                     origValue: userDetails.email,
                     title: 'Email', requireUpdate, id, languagePack
                 }}/>
+                <Link to='edit-password' target='_blank'
+                    className='function-text clickable'
+                    onClick={establishEditPasswordChannel}
+                >
+                    {languagePack['Edit Password']}
+                </Link>
                 <div className='logout-container'>
                     <div className='logout clickable' onClick={logout}>{languagePack['Logout']}</div>
                 </div>
