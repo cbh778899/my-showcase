@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import '../../styles/account/login.css';
-import '../../styles/account/register.css';
+import '../../styles/account/account_global.css';
 import { toast } from 'react-toastify';
 import { isEmail, passwordStrength } from '../../actions/validators';
 import { ACCOUNT_LOGIN_PAGE } from '../../settings/types';
@@ -14,7 +13,7 @@ function Register({setLoginID, switchDisplayPage, languagePack}) {
         'username': '',
         'email': '',
         'password': '',
-        'password-repeat': '',
+        'password-confirm': '',
     })
     const [showPassword, setPasswordVisibility] = useState([false, false]);
     const [passStrength, setPassStrength] = useState(0);
@@ -25,11 +24,10 @@ function Register({setLoginID, switchDisplayPage, languagePack}) {
 
     function onInputEvt(evt) {
         evt.preventDefault();
-        const update_fields = {...fields};
-        Object.defineProperty(
-            update_fields, evt.target.name, 
-            { value: evt.target.value });
-        setFields(update_fields);
+        setFields({
+            ...fields,
+            [evt.target.name]: evt.target.value
+        })
     }
 
     function validateRegister() {
@@ -50,9 +48,9 @@ function Register({setLoginID, switchDisplayPage, languagePack}) {
             toast.warn(languagePack['password-invalid']);
             return;
         }
-        // check if password and password-repeat the same
-        if(fields.password !== fields['password-repeat']) {
-            toast.warn(languagePack['password-repeat-not-same']);
+        // check if password and password-confirm the same
+        if(fields.password !== fields['password-confirm']) {
+            toast.warn(languagePack['password-confirm-not-same']);
             return;
         }
 
@@ -67,7 +65,7 @@ function Register({setLoginID, switchDisplayPage, languagePack}) {
     }
 
     return (
-        <form className='register' onSubmit={evt=>evt.preventDefault()}>
+        <form className='register account-global' onSubmit={evt=>evt.preventDefault()}>
             <input type='text' name='username' 
                 placeholder={languagePack['ask-input-username']} 
                 onInput={onInputEvt}
@@ -87,12 +85,12 @@ function Register({setLoginID, switchDisplayPage, languagePack}) {
             <PasswordVisibilityBtn visibility={showPassword[1]} 
                 setVisibility={v => setPasswordVisibility([showPassword[0], v])} 
             />
-            <input type={showPassword[1] ? 'input' : 'password'} name='password-repeat' 
-                placeholder={languagePack['ask-input-password-repeat']} 
+            <input type={showPassword[1] ? 'input' : 'password'} name='password-confirm' 
+                placeholder={languagePack['ask-input-password-confirm']} 
                 onInput={onInputEvt}
             />
             <button  className='clickable' onClick={validateRegister}>{ languagePack['Register Now'] }</button>
-            <span  className='switch-display-page-btn clickable'
+            <span  className='function-text clickable'
                 onClick={()=>switchDisplayPage(ACCOUNT_LOGIN_PAGE)}>
                     {languagePack['click-to-login']}
             </span>
