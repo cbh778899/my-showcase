@@ -1,5 +1,4 @@
 import React from 'react';
-import '../../styles/account/login.css';
 import { Eye, EyeSlash } from 'react-bootstrap-icons';
 
 function PasswordVisibilityBtn({visibility, setVisibility}) {

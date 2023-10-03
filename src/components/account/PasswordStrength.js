@@ -1,5 +1,4 @@
 import React from 'react';
-import '../../styles/account/register.css';
 
 function PasswordStrength({strength}) {
     return (
