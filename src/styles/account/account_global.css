@@ -1,0 +1,115 @@
+.login, .register {
+	width: 100%;
+    height: 93%;
+    padding-top: 15vh;
+}
+
+.account-global input,
+.account-global button {
+    display: block;
+    position: relative;
+    margin: auto;
+    margin-bottom: 30px;
+    width: 30%;
+    height: 50px;
+    padding: 0px 10px;
+    border-radius: 15px;
+    border: 2px solid grey;
+    font-size: 20px;
+    z-index: 1;
+    box-sizing: border-box;
+}
+
+.account-global input:focus {outline: none;}
+
+.account-global .change-visibility-icon {
+    position: absolute;
+    z-index: 2;
+    width: 30px;
+    height: 30px;
+    left: calc(65% - 40px);
+    margin-top: 10px;
+}
+
+.account-global button {
+    color: white;
+    background-color: dodgerblue;
+    margin-bottom: 10px;
+}
+
+.account-global button:hover {
+    background-color: rgb(26, 125, 224);
+}
+
+.account-global .function-text {
+    display: block;
+    text-align: center;
+    font-size: medium;
+    color: blue;
+    text-decoration: none;
+    width: fit-content;
+    margin: auto;
+    margin-bottom: 5px;
+}
+
+.account-global {
+	padding-top: 10vh;
+}
+
+.account-global .with-strength {
+    margin-bottom: 5px;
+}
+
+.account-global .password-strength {
+    width: calc(30% - 10px);
+    position: relative;
+    margin: auto;
+    margin-bottom: 30px;
+}
+
+.account-global .password-strength span {
+    display: inline-block;
+    width: 25%;
+    height: 3px;
+    transition-duration: .5s;
+}
+
+.account-global .password-strength .empty {
+    background-color: grey;
+}
+
+.account-global .password-strength .danger {
+    background-color: red;
+}
+
+.account-global .password-strength .weak {
+    background-color: gold;
+}
+
+.account-global .password-strength .normal {
+    background-color: dodgerblue;
+}
+
+.account-global .password-strength .strong {
+    background-color: limegreen;
+}
+
+@media screen and (max-width: 1023px) {
+    .account-global input,
+    .account-global button {
+        width: 80%;
+        font-size: 17px;
+    }
+    .account-global .password-strength {
+        width: 80%;
+    }
+
+    .account-global .change-visibility-icon {
+        left: calc(90% - 40px);
+    }
+
+    .account-global .function-text {
+        width: 55%;
+        margin: auto;
+    }
+}
