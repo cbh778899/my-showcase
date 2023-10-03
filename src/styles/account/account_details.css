@@ -149,3 +149,7 @@
 .account-details .avatar:hover .edit-avatar {
     transform: translateY(0);
 }
+
+.account-details .function-text {
+    margin-top: 20px;
+}
