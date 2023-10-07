@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import '../../styles/account/account_global.css';
-import { CHANNEL_STATUS_ACTIVE, CHANNEL_STATUS_CLOSED, CHANNEL_STATUS_UNLOAD, EDIT_PASSWORD_CHANNEL, EDIT_PASS_EMAIL, EDIT_PASS_ID, IDB_ACCOUNT, REQUEST_CREDENTIAL, SESSION_EXPIRED, USER_EMAIL_VALIDATING } from '../../settings/types';
+import { ANSWER_CREDENTIAL, ANSWER_PAIR, CHANNEL_STATUS_ACTIVE, CHANNEL_STATUS_CLOSED, CHANNEL_STATUS_UNLOAD, EDIT_PASSWORD_CHANNEL, EDIT_PASS_EMAIL, EDIT_PASS_ID, IDB_ACCOUNT, PASSWORD_CHANGED, REQUEST_CREDENTIAL, REQUEST_PAIR, SESSION_EXPIRED, USER_EMAIL_VALIDATED, USER_EMAIL_VALIDATING } from '../../settings/types';
 import { toast } from 'react-toastify';
 import useLanguage from  '../../language';
 import PasswordVisibilityBtn from './PasswordVisibilityBtn';
 import PasswordStrength from './PasswordStrength';
 import { isEmail, passwordStrength } from '../../actions/validators';
-import { selectOneByColumn } from '../../indexedDB';
+import { getByKeyPath, selectOneByColumn, update } from '../../indexedDB';
 import { generateVerificationCode } from '../../actions/generator';
 
 function EditPassword() {
@@ -19,7 +19,7 @@ function EditPassword() {
         'verification-code': ''
     })
     const [editPasswordChannel, setChannel] = useState({
-        status: CHANNEL_STATUS_UNLOAD, channel: null
+        status: CHANNEL_STATUS_UNLOAD, channel: null, channelID: null
     });
     const [userCredential, setUserCredential] =  useState(null);
 
@@ -33,18 +33,40 @@ function EditPassword() {
 
     useEffect(()=>{
         if(editPasswordChannel.channel) {
-            editPasswordChannel.channel.postMessage(REQUEST_CREDENTIAL);
+            let channelID = editPasswordChannel.channelID || null;
+
+            editPasswordChannel.channel.postMessage({type: REQUEST_PAIR});
             editPasswordChannel.channel.onmessage = function(evt) {
-                if(evt.data === SESSION_EXPIRED) {
-                    toast.error(languagePack['session-expired']);
-                    clear();
+                const msg = evt.data;
+
+                if(msg.channelID === channelID) {
+                    switch(msg.type) {
+                        case ANSWER_CREDENTIAL: (
+                            function() {
+                                const msgBody = msg.body
+                                if(msgBody.from === EDIT_PASS_EMAIL && msgBody['user-email']) {
+                                    setInputFields({
+                                        ...inputFields, 
+                                        'user-email': msgBody['user-email']
+                                    })
+                                }
+                                setUserCredential(msgBody)
+                            })()
+                            break;
+                        case SESSION_EXPIRED:
+                            toast.error(languagePack['session-expired']);
+                            clear();
+                            break;
+                        default: break;
+                    }
                 } else {
-                    evt.data['user-email'] && setInputFields(
-                        {...inputFields, 'user-email': evt.data['user-email']}
-                    )
-                    setUserCredential({
-                        ...evt.data, 
-                        validated: evt.data.type !== EDIT_PASS_EMAIL});
+                    if(!channelID && msg.type === ANSWER_PAIR) {
+                        channelID = msg.channelID
+                        setChannel({...editPasswordChannel, channelID})
+                        editPasswordChannel.channel.postMessage({
+                            channelID, type: REQUEST_CREDENTIAL
+                        })
+                    }
                 }
             }
             editPasswordChannel.channel.onmessageerror = function(err){ toast.error(err.data); }
@@ -53,7 +75,12 @@ function EditPassword() {
     }, [editPasswordChannel.channel])
 
     function sendPasswordResult() {
-        editPasswordChannel.channel && editPasswordChannel.channel.postMessage();
+        toast.success(languagePack['password-updated'])
+        editPasswordChannel.channel && editPasswordChannel.channel.postMessage({
+            channelID: editPasswordChannel.channelID,
+            type: PASSWORD_CHANGED
+        });
+        clear();
     }
 
     function clear() {
@@ -89,9 +116,11 @@ function EditPassword() {
                         exclude: ['password']
                     }, result => {
                         if(!result) toast.error(languagePack['email-not-exist'])
+                        // if this email existed
                         else setUserCredential({
-                            ...userCredential, 
-                            validated: USER_EMAIL_VALIDATING,
+                            ...userCredential,
+                            id: result.id,
+                            'email-validation': USER_EMAIL_VALIDATING,
                             'verification-code': generateVerificationCode()
                         })
                     }
@@ -102,11 +131,35 @@ function EditPassword() {
         } else {
             if(/^\d{4}$/g.test(inputFields['verification-code'])) {
                 if(inputFields['verification-code'] === userCredential['verification-code']) {
-                    setUserCredential({...userCredential, validated: true})
+                    setUserCredential({...userCredential, 'email-validation': USER_EMAIL_VALIDATED})
                 } else {
                     toast.error(languagePack['verification-code-wrong'])
                 }
             } else toast.error(languagePack['verification-code-invalid'])
+        }
+    }
+
+    function submitPasswordEdit(evt) {
+        evt.preventDefault()
+
+        if(!inputFields['old-password'] || !inputFields['new-password'] || !inputFields['confirm-new-password']){
+            toast.error(languagePack['ask-fill-all-fields']);
+        } else if(inputFields['new-password'] === inputFields['old-password']) {
+            toast.error(languagePack['ask-different-password'])
+        } else if(inputFields['new-password'] !== inputFields['confirm-new-password']) {
+            toast.error(languagePack['password-not-match'])
+        } else {
+            getByKeyPath(IDB_ACCOUNT, userCredential.id, result=>{
+                if(result) {
+                    update(IDB_ACCOUNT, {
+                        id: userCredential.id,
+                        updateQuery: {password: inputFields['new-password']}
+                    }, res=>{res && sendPasswordResult()})
+                } else toast.error(languagePack['old-password-not-match'])
+            }, {
+                exclude: ['password'],
+                compareTo: {password: inputFields['old-password']}
+            })
         }
     }
 
@@ -117,9 +170,9 @@ function EditPassword() {
                 return <span>{languagePack['channel-closed']}</span>
             case userCredential === null:
                 return <span>{languagePack['waiting-for-load']}</span>
-            case userCredential.validated:
-            case userCredential.type === EDIT_PASS_ID:
-                return (<form>
+            case userCredential['email-validation'] === USER_EMAIL_VALIDATED:
+            case userCredential.from === EDIT_PASS_ID:
+                return (<form onSubmit={submitPasswordEdit}>
                     <PasswordVisibilityBtn visibility={passwordVisibility[0]} 
                         setVisibility={v=>{setPasswordVisibility([v, passwordVisibility[1]])}} 
                     />
@@ -144,10 +197,10 @@ function EditPassword() {
                     />
                     <button className='clickable'>{languagePack['confirm-update-password']} </button>
                 </form>)
-            case userCredential.validated === USER_EMAIL_VALIDATING:
+            case userCredential['email-validation'] === USER_EMAIL_VALIDATING:
                 return (
                     <form onSubmit={submitExtraFields} name='verification-code'>
-                        <span>{languagePack['email-sent']}</span>
+                        <span>{languagePack['email-sent']}{userCredential['verification-code']}</span>
                         <input type='text' name='verification-code' onInput={fieldsOnInput} 
                             value={inputFields['verification-code']}
                             placeholder={languagePack['ask-verification-code']} 
@@ -155,7 +208,7 @@ function EditPassword() {
                         <button className='clickable'>{languagePack['confirm-verification-code']}</button>
                     </form>
                 )
-            case userCredential.type === EDIT_PASS_EMAIL:
+            case userCredential.from === EDIT_PASS_EMAIL:
                 return (
                     <form onSubmit={submitExtraFields} name='email'>
                         <input type='text' name='user-email' onInput={fieldsOnInput}

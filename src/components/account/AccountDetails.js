@@ -1,55 +1,86 @@
 import React, { useEffect, useState } from 'react';
 import '../../styles/account/account_details.css';
 import { getByKeyPath } from '../../indexedDB';
-import { EDIT_PASSWORD_CHANNEL, EDIT_PASS_ID, IDB_ACCOUNT, REQUEST_CREDENTIAL, SESSION_EXPIRED } from '../../settings/types';
+import { ANSWER_CREDENTIAL, ANSWER_PAIR, CHANNEL_ONLINE, EDIT_PASSWORD_CHANNEL, EDIT_PASS_ID, IDB_ACCOUNT, PASSWORD_CHANGED, REQUEST_CREDENTIAL, REQUEST_PAIR, SESSION_EXPIRED } from '../../settings/types';
 import { Person } from 'react-bootstrap-icons';
 import EditableField from './EditableField';
 import EditAvatar from './EditAvatar';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { generateID } from '../../actions/generator';
 
-function AccountDetails({id, logout, languagePack}) {
+function AccountDetails({id, logout, tabID, languagePack}) {
 
     const [userDetails, updateUserDetails] = useState(null);
     const [editing, setEditing] = useState({username: null, email: null, avatar: false});
     
+    useEffect(()=>{
+        requireUpdate();
+        return () => {
+            userDetails && userDetails.avatar && URL.revokeObjectURL(userDetails.avatar);
+        }
     // eslint-disable-next-line
-    useEffect(requireUpdate, [])
+    }, [])
 
     function requireUpdate() {
+        userDetails && userDetails.avatar && URL.revokeObjectURL(userDetails.avatar);
         getByKeyPath(IDB_ACCOUNT, id, result=>{
             if(result && result.avatar) {
-                const fileReader = new FileReader()
-                fileReader.onload = () => {
-                    result.avatar = fileReader.result;
-                    updateUserDetails(result);
-                }
-                fileReader.readAsDataURL(result.avatar);
+                result.avatar = URL.createObjectURL(result.avatar);
+                updateUserDetails(result);
             } else updateUserDetails(result);
-        }, null, ['password']);
+        }, {exclude: ['password']});
     }
 
     function establishEditPasswordChannel() {
         // wait 500ms for edit password to load
         let response_received = false;
+        let paired = false;
+        const channelID = generateID();
         const channel = new BroadcastChannel(EDIT_PASSWORD_CHANNEL);
+
         channel.onmessage = function(evt) {
-            if(evt.data === REQUEST_CREDENTIAL) {
-                channel.postMessage({type: EDIT_PASS_ID, id})
-            } else {
-                response_received = true;
-                evt.data.status && logout(languagePack['password-changed-logout']);
+            const msg = evt.data;
+            const sendMsg = { channelID, tabID }
+            
+            if(!paired && msg.type === REQUEST_PAIR) {
+                sendMsg.type = ANSWER_PAIR
+                paired = true;
+            } else if(msg.channelID === channelID) {
+                if(msg.type === REQUEST_CREDENTIAL) {
+                    sendMsg.type = ANSWER_CREDENTIAL
+                    sendMsg.body = {
+                        from: EDIT_PASS_ID, id
+                    }
+                } else if(msg.type === PASSWORD_CHANGED) {
+                    response_received = true;
+                    toast.success(languagePack['password-updated-id']);
+                    channel.close();
+                    logout(languagePack['password-changed-logout']);
+                    return;
+                }
+            } else if(msg.tabID === tabID && msg.type === CHANNEL_ONLINE) {
+                sendMsg.type = SESSION_EXPIRED;
             }
+
+            channel.postMessage(sendMsg)
+            sendMsg.type === SESSION_EXPIRED && channel.close();
         }
         channel.onmessageerror = function(err){ toast.error(err.data) }
         
         // wait for 5 minutes, if no response, send session expired message and close channel
         setTimeout(() => {
             if(!response_received && channel) {
-                channel.postMessage(SESSION_EXPIRED);
+                channel.postMessage({
+                    channelID,
+                    type: SESSION_EXPIRED
+                });
                 channel.close();
             }
         }, 300000);
+
+        // send online message
+        channel.postMessage({channelID, tabID, type: CHANNEL_ONLINE})
     }
 
     return (
