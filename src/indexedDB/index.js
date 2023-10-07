@@ -91,20 +91,23 @@ export async function selectOneByColumn(storeName, query, callback) {
                 callback(false);
                 return;
             }
+            if(query.compareTo) {
+                let isMatch = true;
+                for(const key in query.compareTo) {
+                    if(queryResult[key] !== query.compareTo[key]) {
+                        isMatch = false;
+                        break;
+                    }
+                }
+                if(!isMatch) {
+                    callback(false);
+                    return;
+                }
+            }
             if(query.exclude)
                 query.exclude.forEach(e=>delete queryResult[e]);
-            else {
-                if(query.compareTo) {
-                    let isMatch = true;
-                    for(const key in query.compareTo) {
-                        if(queryResult[key] !== query.compareTo[key]) {
-                            isMatch = false;
-                            break;
-                        }
-                    }
-                    callback(isMatch ? queryResult : false);
-                } else callback(queryResult);
-            }
+            
+            callback(queryResult);
         }
 
         req.onerror = () => callback(false);
