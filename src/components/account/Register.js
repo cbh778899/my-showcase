@@ -50,7 +50,7 @@ function Register({setLoginID, switchDisplayPage, languagePack}) {
         }
         // check if password and password-confirm the same
         if(fields.password !== fields['password-confirm']) {
-            toast.warn(languagePack['password-confirm-not-same']);
+            toast.warn(languagePack['password-not-match']);
             return;
         }
 
