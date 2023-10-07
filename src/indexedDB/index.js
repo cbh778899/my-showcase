@@ -92,21 +92,15 @@ export async function selectOneByColumn(storeName, query, callback) {
                 return;
             }
             if(query.compareTo) {
-                let isMatch = true;
                 for(const key in query.compareTo) {
                     if(queryResult[key] !== query.compareTo[key]) {
-                        isMatch = false;
-                        break;
+                        callback(false);
+                        return;
                     }
                 }
-                if(!isMatch) {
-                    callback(false);
-                    return;
-                }
             }
-            if(query.exclude)
-                query.exclude.forEach(e=>delete queryResult[e]);
-            
+            query.exclude && query.exclude.forEach(e=>delete queryResult[e]);
+
             callback(queryResult);
         }
 
@@ -157,14 +151,23 @@ export async function selectAllByColumn(storeName, query, callback, store = null
     }
 }
 
-export async function getByKeyPath(storeName, key, callback, store = null, exclude = null) {
+export async function getByKeyPath(storeName, key, callback, extra = {store: null, exclude: null, compareTo: null}) {
     try {
+        let { store, exclude, compareTo } = extra
         store = store || await getObjStore(storeName, IDB_MODE_READONLY);
         const req = store.get(key);
     
         req.onsuccess = function() {
             const result = this.result;
-            if(result && exclude) exclude.forEach(e=>delete result[e]);
+            if(result && compareTo) {
+                for(const index in compareTo) {
+                    if(result[index] !== compareTo[index]) {
+                        callback(false)
+                        return;
+                    }
+                }
+            }
+            result && exclude && exclude.forEach(e=>delete result[e]);
             callback(result);
         }
         req.onerror = () => callback(false);
@@ -187,7 +190,7 @@ export async function update(storeName, query, callback) {
                 req.onsuccess = () => callback(true);
                 req.onerror = () => callback(false);
             }
-        }, store)
+        }, {store})
     } catch(error) {
         toast.error(error.message);
         callback(false);
@@ -203,7 +206,7 @@ export async function deleteByKeyPath(storeName, key, callback) {
                 req.onsuccess = () => callback(true);
                 req.onerror = () => callback(false);
             } else callback(false);
-        }, store);
+        }, {store});
     } catch (error) {
         toast.error(error.message);
         callback(false);
