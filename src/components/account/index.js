@@ -21,10 +21,10 @@ function Account() {
 
     return (
         loginID !== null ?
-        <AccountDetails {...{id: loginID, logout, tabID, languagePack}} /> :
+        <AccountDetails {...{id: loginID, logout, tabID}} /> :
         (displayPage === ACCOUNT_LOGIN_PAGE ?
-        <Login {...{setLoginID, switchDisplayPage, tabID, languagePack}} /> :
-        <Register {...{setLoginID, switchDisplayPage, languagePack}} />)
+        <Login {...{setLoginID, switchDisplayPage, tabID}} /> :
+        <Register {...{setLoginID, switchDisplayPage}} />)
     );
 }
 

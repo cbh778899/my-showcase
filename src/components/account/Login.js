@@ -7,9 +7,11 @@ import { toast } from 'react-toastify';
 import PasswordVisibilityBtn from './PasswordVisibilityBtn';
 import { isEmail } from '../../actions/validators';
 import { generateID } from '../../actions/generator';
+import useLanguage from '../../language';
 
-function Login({setLoginID, tabID, switchDisplayPage, languagePack}) {
+function Login({setLoginID, tabID, switchDisplayPage}) {
     
+    const { languagePack, currLanguage } = useLanguage();
     const [account, setAccount] = useState('');
     const [password, setPassword] = useState('');
 
@@ -41,7 +43,7 @@ function Login({setLoginID, tabID, switchDisplayPage, languagePack}) {
 
         channel.onmessage = function(evt) {
             const msg = evt.data;
-            const sendMsg = { channelID, tabID }
+            const sendMsg = { channelID, tabID, currLanguage }
 
             if(!paired && msg.type === REQUEST_PAIR) {
                 sendMsg.type = ANSWER_PAIR

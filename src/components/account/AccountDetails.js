@@ -8,9 +8,11 @@ import EditAvatar from './EditAvatar';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { generateID } from '../../actions/generator';
+import useLanguage from '../../language';
 
-function AccountDetails({id, logout, tabID, languagePack}) {
+function AccountDetails({id, logout, tabID}) {
 
+    const { languagePack, currLanguage } = useLanguage();
     const [userDetails, updateUserDetails] = useState(null);
     const [editing, setEditing] = useState({username: null, email: null, avatar: false});
     
@@ -41,7 +43,7 @@ function AccountDetails({id, logout, tabID, languagePack}) {
 
         channel.onmessage = function(evt) {
             const msg = evt.data;
-            const sendMsg = { channelID, tabID }
+            const sendMsg = { channelID, tabID, currLanguage }
             
             if(!paired && msg.type === REQUEST_PAIR) {
                 sendMsg.type = ANSWER_PAIR

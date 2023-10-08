@@ -6,9 +6,11 @@ import { ACCOUNT_LOGIN_PAGE } from '../../settings/types';
 import PasswordVisibilityBtn from './PasswordVisibilityBtn';
 import PasswordStrength from './PasswordStrength';
 import { registerAction } from '../../actions/account_actions';
+import useLanguage from '../../language';
 
-function Register({setLoginID, switchDisplayPage, languagePack}) {
+function Register({setLoginID, switchDisplayPage}) {
 
+    const { languagePack } = useLanguage();
     const [fields, setFields] = useState({
         'username': '',
         'email': '',
