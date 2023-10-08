@@ -62,6 +62,7 @@ function Login({setLoginID, tabID, switchDisplayPage}) {
                     return;
                 }
             } else if(msg.tabID === tabID && msg.type === CHANNEL_ONLINE) {
+                response_received = true;
                 sendMsg.type = SESSION_EXPIRED;
             }
 
