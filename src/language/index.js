@@ -41,7 +41,7 @@ function useLanguage() {
         components.forEach(e=>e(currLanguage));
     }
 
-    return {languagePack, setLanguage};
+    return {languagePack, setLanguage, currLanguage};
 }
 
 export default useLanguage;
