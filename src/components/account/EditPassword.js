@@ -10,8 +10,10 @@ import { getByKeyPath, selectOneByColumn, update } from '../../indexedDB';
 import { generateVerificationCode } from '../../actions/generator';
 
 function EditPassword() {
-    const { languagePack } = useLanguage();
-    const [passwordVisibility, setPasswordVisibility] = useState([false, false])
+    const { languagePack, setLanguage } = useLanguage();
+    const [passwordVisibility, setPasswordVisibility] = useState({
+        'old-password': false, 'new-password': false, 'confirm-new-password': false
+    })
     const [passStrength, setPasswordStrength] = useState(0);
     const [inputFields, setInputFields] = useState({
         'old-password': '', 'new-password': '',
@@ -62,6 +64,7 @@ function EditPassword() {
                 } else {
                     if(!channelID && msg.type === ANSWER_PAIR) {
                         channelID = msg.channelID
+                        setLanguage(msg.currLanguage);
                         setChannel({...editPasswordChannel, channelID})
                         editPasswordChannel.channel.postMessage({
                             channelID, type: REQUEST_CREDENTIAL
@@ -131,6 +134,7 @@ function EditPassword() {
         } else {
             if(/^\d{4}$/g.test(inputFields['verification-code'])) {
                 if(inputFields['verification-code'] === userCredential['verification-code']) {
+                    toast.success(languagePack['verify-email-success'])
                     setUserCredential({...userCredential, 'email-validation': USER_EMAIL_VALIDATED})
                 } else {
                     toast.error(languagePack['verification-code-wrong'])
@@ -142,7 +146,10 @@ function EditPassword() {
     function submitPasswordEdit(evt) {
         evt.preventDefault()
 
-        if(!inputFields['old-password'] || !inputFields['new-password'] || !inputFields['confirm-new-password']){
+        if(
+            (!inputFields['old-password'] && userCredential['email-validation'] !== USER_EMAIL_VALIDATED) 
+            || !inputFields['new-password'] || !inputFields['confirm-new-password']
+        ){
             toast.error(languagePack['ask-fill-all-fields']);
         } else if(inputFields['new-password'] === inputFields['old-password']) {
             toast.error(languagePack['ask-different-password'])
@@ -158,7 +165,8 @@ function EditPassword() {
                 } else toast.error(languagePack['old-password-not-match'])
             }, {
                 exclude: ['password'],
-                compareTo: {password: inputFields['old-password']}
+                compareTo: userCredential['email-validation'] === USER_EMAIL_VALIDATED ?
+                    null : {password: inputFields['old-password']}
             })
         }
     }
@@ -173,25 +181,29 @@ function EditPassword() {
             case userCredential['email-validation'] === USER_EMAIL_VALIDATED:
             case userCredential.from === EDIT_PASS_ID:
                 return (<form onSubmit={submitPasswordEdit}>
-                    <PasswordVisibilityBtn visibility={passwordVisibility[0]} 
-                        setVisibility={v=>{setPasswordVisibility([v, passwordVisibility[1]])}} 
+                    {
+                        userCredential['email-validation'] === USER_EMAIL_VALIDATED ? 
+                        <></>:
+                        <><PasswordVisibilityBtn visibility={passwordVisibility['old-password']} 
+                            setVisibility={v=>{setPasswordVisibility({...passwordVisibility, 'old-password': v})}} 
+                        />
+                        <input type={passwordVisibility['old-password'] ? 'text' : 'password'}
+                            name='old-password' onInput={fieldsOnInput} value={inputFields['old-password']}
+                            placeholder={languagePack['ask-input-old-password']} 
+                        /></>
+                    }
+                    <PasswordVisibilityBtn visibility={passwordVisibility['new-password']} 
+                        setVisibility={v=>{setPasswordVisibility({...passwordVisibility, 'new-password': v})}} 
                     />
-                    <input type={passwordVisibility[0] ? 'text' : 'password'}
-                        name='old-password' onInput={fieldsOnInput} value={inputFields['old-password']}
-                        placeholder={languagePack['ask-input-old-password']} 
-                    />
-                    <PasswordVisibilityBtn visibility={passwordVisibility[1]} 
-                        setVisibility={v=>{setPasswordVisibility([passwordVisibility[0], v])}} 
-                    />
-                    <input type={passwordVisibility[1] ? 'text' : 'password'}
+                    <input type={passwordVisibility['new-password'] ? 'text' : 'password'}
                         name='new-password' onInput={fieldsOnInput} value={inputFields['new-password']}
                         placeholder={languagePack['ask-input-new-password']} 
                     />
                     <PasswordStrength strength={passStrength} />
-                    <PasswordVisibilityBtn visibility={passwordVisibility[1]} 
-                        setVisibility={v=>{setPasswordVisibility([passwordVisibility[0], v])}} 
+                    <PasswordVisibilityBtn visibility={passwordVisibility['confirm-new-password']} 
+                        setVisibility={v=>{setPasswordVisibility({...passwordVisibility, 'confirm-new-password': v})}} 
                     />
-                    <input type={passwordVisibility[1] ? 'text' : 'password'}
+                    <input type={passwordVisibility['confirm-new-password'] ? 'text' : 'password'}
                         name='confirm-new-password' onInput={fieldsOnInput} value={inputFields['confirm-new-password']}
                         placeholder={languagePack['ask-input-confirm-new-password']} 
                     />
