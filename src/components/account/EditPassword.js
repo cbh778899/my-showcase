@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../../styles/account/account_global.css';
+import '../../styles/account/edit_password.css';
 import { ANSWER_CREDENTIAL, ANSWER_PAIR, CHANNEL_STATUS_ACTIVE, CHANNEL_STATUS_CLOSED, CHANNEL_STATUS_UNLOAD, EDIT_PASSWORD_CHANNEL, EDIT_PASS_EMAIL, EDIT_PASS_ID, IDB_ACCOUNT, PASSWORD_CHANGED, REQUEST_CREDENTIAL, REQUEST_PAIR, SESSION_EXPIRED, USER_EMAIL_VALIDATED, USER_EMAIL_VALIDATING } from '../../settings/types';
 import { toast } from 'react-toastify';
 import useLanguage from  '../../language';
@@ -125,13 +126,11 @@ function EditPassword() {
                             const verification_code = generateVerificationCode()
                             setUserCredential({
                                 ...userCredential,
-                                id: result.id,
+                                id: result.id, 'user-email': result.email,
+                                username: result.username,
                                 'email-validation': USER_EMAIL_VALIDATING,
                                 'verification-code': verification_code
                             })
-                            sendVerificationCode(
-                                result.email, result.username, verification_code
-                            )
                         }
                     }
                 )
@@ -147,6 +146,24 @@ function EditPassword() {
                     toast.error(languagePack['verification-code-wrong'])
                 }
             } else toast.error(languagePack['verification-code-invalid'])
+        }
+    }
+
+    function autoFillVerificationCode() {
+        if(userCredential['verification-code']) {
+            setInputFields({...inputFields, 'verification-code': userCredential['verification-code']})
+        }
+    }
+
+    async function sendVerificationByEmail() {
+        if(userCredential['verification-code']) {
+            toast.info(languagePack['wait-email-sending'])
+            const result = await sendVerificationCode(
+                userCredential['user-email'], 
+                userCredential.username, 
+                userCredential['verification-code']
+            )
+            result ? toast.success(languagePack['email-sent']) : toast.error(languagePack['email-unsent'])
         }
     }
 
@@ -182,9 +199,9 @@ function EditPassword() {
     function loadPage() {
         switch(true) {
             case editPasswordChannel.status === CHANNEL_STATUS_CLOSED:
-                return <span>{languagePack['channel-closed']}</span>
+                return <span className='info-span'>{languagePack['channel-closed']}</span>
             case userCredential === null:
-                return <span>{languagePack['waiting-for-load']}</span>
+                return <span className='info-span'>{languagePack['waiting-for-load']}</span>
             case userCredential['email-validation'] === USER_EMAIL_VALIDATED:
             case userCredential.from === EDIT_PASS_ID:
                 return (<form onSubmit={submitPasswordEdit}>
@@ -219,12 +236,18 @@ function EditPassword() {
             case userCredential['email-validation'] === USER_EMAIL_VALIDATING:
                 return (
                     <form onSubmit={submitExtraFields} name='verification-code'>
-                        <span>{languagePack['email-sent']}</span>
+                        <span className='info-span'>{languagePack['confirm-send-email'](userCredential['user-email'])}</span>
+                        <button type='button' className='clickable' onClick={autoFillVerificationCode}>
+                            {languagePack['Auto Verification']}
+                        </button>
+                        <button type='button' className='clickable' onClick={sendVerificationByEmail}>
+                            {languagePack['Still Send Email']}
+                        </button>
                         <input type='text' name='verification-code' onInput={fieldsOnInput} 
                             value={inputFields['verification-code']}
                             placeholder={languagePack['ask-verification-code']} 
                         />
-                        <button className='clickable'>{languagePack['confirm-verification-code']}</button>
+                        <button type='submit' className='clickable'>{languagePack['confirm-verification-code']}</button>
                     </form>
                 )
             case userCredential.from === EDIT_PASS_EMAIL:
@@ -237,7 +260,7 @@ function EditPassword() {
                     </form>
                 )
             case editPasswordChannel.status === CHANNEL_STATUS_UNLOAD:
-            default: return <span>{languagePack['loading-channel']}</span>
+            default: return <span className='info-span'>{languagePack['loading-channel']}</span>
         }
     }
 
