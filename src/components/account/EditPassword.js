@@ -8,6 +8,7 @@ import PasswordStrength from './PasswordStrength';
 import { isEmail, passwordStrength } from '../../actions/validators';
 import { getByKeyPath, selectOneByColumn, update } from '../../indexedDB';
 import { generateVerificationCode } from '../../actions/generator';
+import { sendVerificationCode } from '../../actions/account_actions';
 
 function EditPassword() {
     const { languagePack, setLanguage } = useLanguage();
@@ -120,12 +121,18 @@ function EditPassword() {
                     }, result => {
                         if(!result) toast.error(languagePack['email-not-exist'])
                         // if this email existed
-                        else setUserCredential({
-                            ...userCredential,
-                            id: result.id,
-                            'email-validation': USER_EMAIL_VALIDATING,
-                            'verification-code': generateVerificationCode()
-                        })
+                        else {
+                            const verification_code = generateVerificationCode()
+                            setUserCredential({
+                                ...userCredential,
+                                id: result.id,
+                                'email-validation': USER_EMAIL_VALIDATING,
+                                'verification-code': verification_code
+                            })
+                            sendVerificationCode(
+                                result.email, result.username, verification_code
+                            )
+                        }
                     }
                 )
             } else {
@@ -212,7 +219,7 @@ function EditPassword() {
             case userCredential['email-validation'] === USER_EMAIL_VALIDATING:
                 return (
                     <form onSubmit={submitExtraFields} name='verification-code'>
-                        <span>{languagePack['email-sent']}{userCredential['verification-code']}</span>
+                        <span>{languagePack['email-sent']}</span>
                         <input type='text' name='verification-code' onInput={fieldsOnInput} 
                             value={inputFields['verification-code']}
                             placeholder={languagePack['ask-verification-code']} 
