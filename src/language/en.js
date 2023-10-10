@@ -27,7 +27,7 @@ const en = {
     'password-updated': 'Password successfully updated!',
     'email-not-exist': 'This email seems not registered yet.',
     'verification-code-wrong': 'This verification code seems not right!',
-    'verification-code-invalid': 'Verification code invalid, shout be 4 digit number.',
+    'verification-code-invalid': 'Verification code invalid, should be 4 digit number.',
     'ask-fill-all-fields': 'Please fill all fields!',
     'ask-different-password': 'Please input a new password different from the old one!',
     'old-password-not-match': 'Your old password does not match!',
@@ -39,7 +39,17 @@ const en = {
     'ask-user-email': 'Please input your email',
     'ask-verification-code': 'Please input your verification code',
     'verify-email-success': 'Congratulate! You verified your email.',
-    'email-sent': 'We\'ve sent an email contains your verification code, please enter it here.',
+    'confirm-send-email': email => {return (
+        `Please note, this website has no backend and all data are stored locally, `+
+        `I instead using EmailJS to send verification code, and this has free limitation, `+
+        `if you just want to test the function, you can click "Auto Verification" to fill the verification code. `+
+        `If you are sure that the email you entered (${email}) is yours, and you want to receive an email contains `+
+        `verification code, please click "Still Send Email". `+
+        `This might fail due to many reasons, but it works when I'm testing.`)
+    },
+    'wait-email-sending': 'Email sending, please wait until we send it...',
+    'email-sent': 'We\'ve sent an email contains your verification code, please check your inbox or junk mail for the code.',
+    'email-unsent': 'We\'ve tried send email but somewhat failed, please use "Auto Verification" instead.',
     'confirm-update-password': 'Update Now',
     'confirm-verification-code': 'Submit Verification Code',
     'confirm-email': 'Confirm Email',

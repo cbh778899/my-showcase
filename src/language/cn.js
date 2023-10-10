@@ -67,7 +67,18 @@ const cn = {
     'ask-user-email': '请输入您的邮箱',
     'ask-verification-code': '请输入您的验证码',
     'verify-email-success': '恭喜您成功验证了您的邮箱',
-    'email-sent': '我们给您的邮箱发了一封包含验证码的邮件, 请将验证码填写在下方',
+    'confirm-send-email': email => {return (
+        `请注意, 本网站没有后端, 并且所有资料都存储在本地。`+
+        `我使用了EmailJS来发送验证码, 但是它有免费额度, `+
+        `也就是说如果您只希望测试功能, 您可以使用“自动验证”来填写验证码。`+
+        `如果您确定这是您的邮箱（${email}）并且希望用邮箱收到验证码, 请点击“依旧发送邮件”。`+
+        `这种方式很有可能因为各种原因失败, 但我测试的时候是可行的。`)
+    },
+    'wait-email-sending': '正在发送邮件, 请稍等...',
+    'email-sent': '我们给您的邮箱发了一封包含验证码的邮件, 请检查您的收件箱或垃圾邮件',
+    'email-unsent': '我们尝试发送了邮件, 但是失败了, 请使用“自动验证”来验证邮箱',
+    'Auto Verification': '自动验证',
+    'Still Send Email': '依旧发送邮件',
     'confirm-update-password': '确认更改密码',
     'confirm-verification-code': '提交验证码',
     'confirm-email': '确认邮箱',
