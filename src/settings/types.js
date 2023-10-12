@@ -24,6 +24,9 @@ export const SESSION_EXPIRED = 'session-expired';
 export const PASSWORD_CHANGED = 'password-changed';
 export const CHANNEL_ONLINE = 'channel-online';
 
+// popup window
+export const POPUP_YES_NO = 'yes-no';
+
 // language
 export const LANGUAGE_EN = 'en';
 export const LANGUAGE_CN = 'cn';
