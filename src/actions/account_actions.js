@@ -1,4 +1,4 @@
-import { insert, selectOneByColumn, update } from "../indexedDB";
+import { deleteByKeyPath, insert, selectOneByColumn, update } from "../indexedDB";
 import { IDB_ACCOUNT } from "../settings/types";
 import { isEmail } from "./validators";
 import emailjs from '@emailjs/browser';
@@ -35,6 +35,12 @@ export function updateDetailsAction(id, updateQuery, callback) {
     update(IDB_ACCOUNT, {
         id, updateQuery
     }, result=>callback(result))
+}
+
+export function deleteUser(id, callback) {
+    deleteByKeyPath(IDB_ACCOUNT, id, result=>{
+        callback(result);
+    })
 }
 
 export async function sendVerificationCode(email, username, code) {
