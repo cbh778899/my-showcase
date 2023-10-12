@@ -20,6 +20,8 @@ const en = {
     'file-type-invalid': 'The file you selected is not an image file! Please try another one.',
     'edit-avatar-success': 'Successfully updated your avatar!',
     'upload-avatar-failed': 'Upload avatar failed, please try initialize IDB manually',
+    'confirm-delete-account': 'Are you sure you want to delete this user?',
+    'account-delete-warn': 'Account has been deleted!',
     'password-updated-id': 'Successfully updated your password!',
     'password-updated-email': 'Password reset success, please try login use your new password.',
     'password-changed-logout': 'Your password has been changed, please login again!',

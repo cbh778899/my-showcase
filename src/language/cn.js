@@ -45,6 +45,10 @@ const cn = {
     'Email': account_field_name['email'],
     'avatar': '头像',
     'Edit Avatar': '编辑头像',
+    'Delete Account': '删除账户',
+    'confirm-delete-account': '你确定要删除该账户吗?',
+    'Delete account success!': '删除账号成功!',
+    'account-delete-warn': '账户已被删除!',
     'Logout': '登出',
     'Loading...': '加载中...',
     'Edit Password': '修改密码',
@@ -95,6 +99,9 @@ const cn = {
     'open-idb-timeout': '打开IDB数据库耗时过长(大于500毫秒),请尝试手动初始化IDB数据库!',
     'clear-table-success': tb_name=>{return `清空IDB表${tb_name}成功!`},
     'clear-table-fail': tb_name=>{return `清空IDB表${tb_name}失败!`},
+    // popup
+    'Yes': '是',
+    'No': '否',
     // Declaimer & global
     'Lililele': '历历乐乐',
     'contact-me': <>如有需要，请联系<a href="mailto:cbh778899@outlook.com">cbh778899@outlook.com</a></>,
