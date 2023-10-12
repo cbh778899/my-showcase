@@ -153,3 +153,5 @@
 .account-details .function-text {
     margin-top: 20px;
 }
+
+.account-details .danger-function-text {color: red;}
