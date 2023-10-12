@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../../styles/account/account_details.css';
 import { getByKeyPath } from '../../indexedDB';
-import { ANSWER_CREDENTIAL, ANSWER_PAIR, CHANNEL_ONLINE, EDIT_PASSWORD_CHANNEL, EDIT_PASS_ID, IDB_ACCOUNT, PASSWORD_CHANGED, REQUEST_CREDENTIAL, REQUEST_PAIR, SESSION_EXPIRED } from '../../settings/types';
+import { ANSWER_CREDENTIAL, ANSWER_PAIR, CHANNEL_ONLINE, EDIT_PASSWORD_CHANNEL, EDIT_PASS_ID, IDB_ACCOUNT, PASSWORD_CHANGED, POPUP_YES_NO, REQUEST_CREDENTIAL, REQUEST_PAIR, SESSION_EXPIRED } from '../../settings/types';
 import { Person } from 'react-bootstrap-icons';
 import EditableField from './EditableField';
 import EditAvatar from './EditAvatar';
@@ -9,12 +9,15 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { generateID } from '../../actions/generator';
 import useLanguage from '../../language';
+import usePopup from '../../popup';
+import { deleteUser } from '../../actions/account_actions';
 
 function AccountDetails({id, logout, tabID}) {
 
     const { languagePack, currLanguage } = useLanguage();
     const [userDetails, updateUserDetails] = useState(null);
     const [editing, setEditing] = useState({username: null, email: null, avatar: false});
+    const { setPopupWindow }  = usePopup();
     
     useEffect(()=>{
         requireUpdate();
@@ -127,6 +130,18 @@ function AccountDetails({id, logout, tabID}) {
                 >
                     {languagePack['Edit Password']}
                 </Link>
+                <span className='function-text clickable danger-function-text' onClick={()=>{
+                    setPopupWindow({type: POPUP_YES_NO, actions: {
+                        Yes: ()=> {
+                            deleteUser(userDetails.id, result=>{
+                                if(result) {
+                                    logout(languagePack['account-delete-warn']);
+                                    toast.success(languagePack["Delete account success!"]);
+                                }
+                            })
+                        }
+                    }, displayContent: languagePack['confirm-delete-account']})
+                }}>{languagePack['Delete Account']}</span>
                 <div className='logout-container'>
                     <div className='logout clickable' onClick={logout}>{languagePack['Logout']}</div>
                 </div>
