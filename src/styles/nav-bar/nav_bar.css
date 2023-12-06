@@ -1,7 +1,7 @@
 .nav-bar {
     position: fixed;
     width: 100vw;
-    height: 50px;
+    height: var(--nav-bar-height);
     left: 0;
     top: 0;
     z-index: 10;
@@ -20,8 +20,6 @@
 
 @media screen and (max-width: 1023px) {
     .nav-bar {
-        width: 100vw;
-        height: 100vh;
         max-height: -webkit-fill-available;
         transition-duration: .5s;
         box-shadow: unset;

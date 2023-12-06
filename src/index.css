@@ -7,6 +7,11 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+* {
+    --nav-bar-height: 50px;
+    --main-viewport-height: calc(100vh - var(--nav-bar-height));
+}
+
 div,
 form {
     display: block;
@@ -14,9 +19,10 @@ form {
 }
 
 .main-viewport {
+
     position: fixed;
     width: 100vw;
-    height: calc(100vh - 50px);
+    height: var(--main-viewport-height);
     left: 0;
     bottom: 0;
     z-index: 9;
@@ -26,8 +32,12 @@ form {
 .clickable:hover {cursor: pointer;}
 
 @media screen and (max-width: 1023px) {
+    * {
+        --nav-bar-height: 100vh;
+        --main-viewport-height: 100vh;
+    }
+
     .main-viewport {
-        height: 100vh;
         max-height: -webkit-fill-available;
     }
 }
