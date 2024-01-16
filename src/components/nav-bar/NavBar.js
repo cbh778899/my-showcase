@@ -18,18 +18,18 @@ function NavBar({status, setStatus}) {
             <NavBarItem title={languagePack['Functional Pages']}>
                 <SubMenu style={SUB_MENU_BLOCK}>
                     <Link to='/account' className='sub-menu-item'>{languagePack['Account Page']}</Link>
-                    <SubMenuItem title={languagePack['Function 2']} />
-                    <Link to='/' className='sub-menu-item'>{languagePack['This is a link']}</Link>
-                    <SubMenuItem title={languagePack['Function 3']} />
-                    <SubMenuItem title={languagePack['Function 4']} />
-                    <SubMenuItem title={languagePack['Function 5']} />
-                    <SubMenuItem title={languagePack['Function 6']} />
                 </SubMenu>
             </NavBarItem>
             <NavBarItem title={languagePack['IndexedDB Settings']}>
                 <SubMenu style={SUB_MENU_DROPDOWN}>
                     <SubMenuItem title={languagePack['Initialize IndexedDB Manually']} onClick={()=>initDB(true)} />
                     <SubMenuItem title={languagePack['Delete Current IndexedDB']} onClick={deleteDB} />
+                </SubMenu>
+            </NavBarItem>
+            <NavBarItem title={languagePack['More']}>
+                <SubMenu style={SUB_MENU_DROPDOWN}>
+                    <Link target='blank' to='https://www.github.com/cbh778899' className='sub-menu-item'>{languagePack['GitHub']}</Link>
+                    <Link target='blank' to='https://www.linkedin.com/in/bohan-cheng-aa109a250/' className='sub-menu-item'>{languagePack['LinkedIn']}</Link>
                 </SubMenu>
             </NavBarItem>
             <NavBarItem title={languagePack['Language']}>
