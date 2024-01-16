@@ -98,7 +98,7 @@ function Login({setLoginID, tabID, switchDisplayPage}) {
             <button className='clickable' onClick={validateLogin}>
                 {languagePack['Login']}
             </button>
-            <Link to='edit-password' target='_blank'
+            <Link to='/edit-password' target='_blank'
                 className='function-text clickable'
                 onClick={forgotPassword}
             >
