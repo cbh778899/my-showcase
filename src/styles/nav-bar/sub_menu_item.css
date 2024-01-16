@@ -3,6 +3,7 @@
     text-decoration: none;
     color: black;
     box-sizing: border-box;
+    display: block;
 }
 
 .sub-menu-item:hover {
