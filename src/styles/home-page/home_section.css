@@ -1,21 +1,4 @@
-.main-viewport:has(.home) {
-    background-image: url('/src/media/background.jpeg');
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    scroll-snap-type: y mandatory;
-    scroll-behavior: smooth;
-}
-
-.main-viewport:has(.home) .declaimer {
-    color: white;
-    position: sticky;
-    bottom: 0;
-    padding: 10px;
-    backdrop-filter: blur(6px);
-}
-
-.home section {
+.home-section {
     width: 100%;
     height: calc(var(--main-viewport-height) - 50px);
     display: flex;
@@ -23,13 +6,13 @@
     scroll-snap-stop: always;
 }
 
-.home section .section-text-box {
+.home-section .section-text-box {
     display: block;
     color: white;
     width: fit-content;
     height: fit-content;
     min-width: 500px;
-    max-width: 55%;
+    max-width: 50%;
     min-height: 300px;
     padding: 20px;
     border-radius: 15px;
@@ -39,13 +22,13 @@
     margin: auto;
     box-sizing: border-box;
 }
-.home section .title {
+.home-section .title {
     font-size: 30px;
     font-weight: 500;
     text-shadow: 2px 2px 3px gray;
 }
 
-.home section .content {
+.home-section .content {
     font-size: 20px;
     font-weight: 400px;
     margin-top: 10px;

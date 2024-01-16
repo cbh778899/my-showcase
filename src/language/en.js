@@ -1,6 +1,35 @@
 import { IDB_NAME } from "../settings/types";
 
 const en = {
+    // Home Page
+    'home-page-content': [
+        {
+            title: 'Home Page',
+            content: `
+            Welcome to my homepage!</br>
+            There are plenty of interesting functions implemented only using
+            frontend techniques waiting to be explored.</br>
+            You can find my GitHub and LinkedIn in **Functional Pages**</br>
+            Scroll down to see more descriptions!`
+        },
+        {
+            title: 'IndexedDB',
+            content: `
+            This application doesn't got a backend, so I use Web API IndexedDB for data store,
+            that means all generated data is stored in your local machine.</br>
+            If you want to clear all data, just go to **IndexedDB Settings** and choose **Delete Current DB**</br>
+            and refresh the page, or just choose **Initialize IndexedDB Manually** to re-initialize the IndexedDB.`
+        },
+        {
+            title: 'Account Page',
+            content: `
+            Go to **Functional Pages** and go to **Account Page**, where you can find a page 
+            implemented with all basic account functions:</br>
+            Login, Register, Change Details, Upload Avatar...</br>
+            Each of those functions has different techniques, for example,
+            operating database, cut and upload image, cross-tag communication and more...`
+        }
+    ],
     // account
     'click-to-register': 'Haven\'t got an account yet? Click here to register!',
     'click-to-login': 'Already got an account? Click here to login!',

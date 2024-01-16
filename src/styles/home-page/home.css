@@ -1,0 +1,16 @@
+.main-viewport:has(.home) {
+    background-image: url('/src/media/background.jpeg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+}
+
+.main-viewport:has(.home) .declaimer {
+    color: white;
+    position: sticky;
+    bottom: 0;
+    padding: 10px;
+    backdrop-filter: blur(6px);
+}
