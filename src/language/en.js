@@ -94,6 +94,7 @@ const en = {
     'clear-table-success': tb_name=>{return `Clear IDB Schema ${tb_name} Success!`},
     'clear-table-fail': tb_name=>{return `Clear IDB Schema ${tb_name} Failed!`},
     // Declaimer & global
+    'homepage-title': 'Lililele\'s Homepage',
     'contact-me': <>Please contact me at <a href="mailto:cbh778899@outlook.com">cbh778899@outlook.com</a> if needed.</>,
 }
 

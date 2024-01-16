@@ -24,6 +24,8 @@ function App() {
     }, [])
 
     useEffect(()=>{
+        // set tag title
+        document.title = languagePack['homepage-title'];
         // update language pack for db notification
         updateLanguagePack(languagePack);
     }, [languagePack])

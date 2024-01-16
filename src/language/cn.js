@@ -131,6 +131,7 @@ const cn = {
     'Yes': '是',
     'No': '否',
     // Declaimer & global
+    'homepage-title': '历历乐乐的个人主页',
     'Lililele': '历历乐乐',
     'contact-me': <>如有需要，请联系<a href="mailto:cbh778899@outlook.com">cbh778899@outlook.com</a></>,
 }
