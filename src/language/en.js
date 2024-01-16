@@ -28,6 +28,11 @@ const en = {
             Login, Register, Change Details, Upload Avatar...</br>
             Each of those functions has different techniques, for example,
             operating database, cut and upload image, cross-tag communication and more...`
+        },
+        {
+            title: 'More Functions',
+            content: `
+            More functions are on their way!`
         }
     ],
     // account
