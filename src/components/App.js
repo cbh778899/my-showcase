@@ -37,8 +37,10 @@ function App() {
             <div className='main-viewport'>
             <Routes>
                 <Route path='/' element={<Home />} />
-                <Route path='/account' element={<Account />} />
-                <Route path='/edit-password' element={<EditPassword />} />
+                <Route path='/account'>
+                    <Route index element={<Account />} />
+                    <Route path='edit-password' element={<EditPassword />} />
+                </Route>
             </Routes>
             <Declaimer />
             </div>
