@@ -7,6 +7,7 @@ const cn = {
     'Home': '首页',
     'Functional Pages': '功能性界面',
     'Language': '语言',
+    'More': '更多',
     // Home Page
     'home-page-content': [
         {
@@ -14,7 +15,7 @@ const cn = {
             content: `
             欢迎来到我的主页!</br>
             在这个网页中，我仅用前端技术实现了一系列有趣的功能.</br>
-            在**功能性界面**中您可以找到我的GitHub和领英链接.</br>
+            在**更多**菜单中您可以找到我的GitHub和领英链接.</br>
             请向下滑动了解更多!`
         },
         {

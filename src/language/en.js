@@ -9,7 +9,7 @@ const en = {
             Welcome to my homepage!</br>
             There are plenty of interesting functions implemented only using
             frontend techniques waiting to be explored.</br>
-            You can find my GitHub and LinkedIn in **Functional Pages**</br>
+            You can find my GitHub and LinkedIn in **More** menu.</br>
             Scroll down to see more descriptions!`
         },
         {
