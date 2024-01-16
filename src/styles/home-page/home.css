@@ -1,5 +1,5 @@
 .main-viewport:has(.home) {
-    background-image: url('/src/media/background.jpeg');
+    background-image: url('/src/media/background.webp');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
