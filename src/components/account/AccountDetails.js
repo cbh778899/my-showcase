@@ -124,7 +124,7 @@ function AccountDetails({id, logout, tabID}) {
                     origValue: userDetails.email,
                     title: 'Email', requireUpdate, id, languagePack
                 }}/>
-                <Link to='edit-password' target='_blank'
+                <Link to='/?edit-password=1' target='_blank'
                     className='function-text clickable'
                     onClick={establishEditPasswordChannel}
                 >
