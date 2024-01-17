@@ -33,6 +33,9 @@ export const LANGUAGE_CN = 'cn';
 
 // db
 export const IDB_NAME = 'lililele-showcase-indexed-db';
+export const IDB_CMD_NEW = 'new';
+export const IDB_CMD_UPDATE = 'update';
+
 export const IDB_ACCOUNT = 'account';
 
 export const IDB_MODE_READWRITE = 'readwrite';

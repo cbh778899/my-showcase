@@ -1,30 +1,36 @@
-import { IDB_NAME } from "../settings/types";
+import { IDB_ACCOUNT, IDB_CMD_NEW, IDB_CMD_UPDATE, IDB_NAME } from "../settings/types";
 
 export const db_settings = {
     name: IDB_NAME,
-    version: 1,
-    latestVersion: 2,
-    objectStores: [
-        // for account functions
-        // login, register, profile
+    idbVersions: [
         {
-            name: 'account',
-            structureSettings: {keyPath: 'id', autoIncrement: true},
-            schemas: [
-                {name: 'username', settings: {unique: true}},
-                {name: 'email', settings: {unique: true}},
-                {name: 'password', settings: {unique: false}},
+            version: 1,
+            objectStores: [
+                {
+                    // for account functions
+                    // login, register, profile
+                    command: IDB_CMD_NEW,
+                    name: IDB_ACCOUNT,
+                    structureSettings: { keyPath: 'id', autoIncrement: true },
+                    schemas: [
+                        {name: 'username', settings: { unique: true } },
+                        {name: 'email', settings: { unique: true } },
+                        {name: 'password'},
+                    ]
+                }
+            ]
+        },
+        {
+            version: 2,
+            objectStores: [
+                {
+                    command: IDB_CMD_UPDATE,
+                    name: IDB_ACCOUNT,
+                    newSchemas: [
+                        { name: 'avatar' }
+                    ]
+                }
             ]
         }
     ]
 }
-
-export const db_upgrade = [
-    {
-        version: 2,
-        fromVersion: 1,
-        upgradeObjStores: [
-            { name: 'account', newSchemas: [{name: 'avatar', settings: {unique: false}}] }
-        ]
-    }
-]
