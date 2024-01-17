@@ -38,6 +38,10 @@ export const IDB_CMD_UPDATE = 'update';
 
 export const IDB_ACCOUNT = 'account';
 
+export const IDB_STOCK_ITEM = 'stockItem';
+export const IDB_STOCK_HISTORY = 'stockHistory';
+export const IDB_STOCK_OPERATOR = 'stockOperators';
+
 export const IDB_MODE_READWRITE = 'readwrite';
 export const IDB_MODE_READONLY = 'readonly';
 
