@@ -18,6 +18,7 @@ function NavBar({status, setStatus}) {
             <NavBarItem title={languagePack['Functional Pages']}>
                 <SubMenu style={SUB_MENU_BLOCK}>
                     <Link to='/account' className='sub-menu-item'>{languagePack['Account Page']}</Link>
+                    <Link to='/stock-manager' className='sub-menu-item'>{languagePack['Stock Manager']}</Link>
                 </SubMenu>
             </NavBarItem>
             <NavBarItem title={languagePack['IndexedDB Settings']}>

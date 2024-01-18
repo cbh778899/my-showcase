@@ -13,6 +13,7 @@ import toastify_settings from '../settings/toastify_settings';
 import EditPassword from './account/EditPassword';
 import { default as PopupContainer } from './popup/Container';
 import Land from './Land';
+import StockManager from './stock';
 
 function App() {
 
@@ -43,6 +44,7 @@ function App() {
                     <Route index element={<Account />} />
                     <Route path='edit-password' element={<EditPassword />} />
                 </Route>
+                <Route path='/stock-manager' element={<StockManager />} />
             </Routes>
             <Declaimer />
             </div>
