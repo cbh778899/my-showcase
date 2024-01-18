@@ -12,6 +12,7 @@ import Account from './account';
 import toastify_settings from '../settings/toastify_settings';
 import EditPassword from './account/EditPassword';
 import { default as PopupContainer } from './popup/Container';
+import Land from './Land';
 
 function App() {
 
@@ -36,7 +37,8 @@ function App() {
             <NavBar status={navBarStatus} setStatus={setNavBarStatus} />
             <div className='main-viewport'>
             <Routes>
-                <Route path='/' element={<Home />} />
+                <Route path='/' element={<Land />} />
+                <Route path='/home' element={<Home />} />
                 <Route path='/account'>
                     <Route index element={<Account />} />
                     <Route path='edit-password' element={<EditPassword />} />
