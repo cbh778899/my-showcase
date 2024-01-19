@@ -122,15 +122,15 @@ export async function selectAllByColumn(storeName, query, callback, store = null
                     const result = this.result;
                     if(result) {
                         let isMatch = true;
-                        for(const key in query) {
-                            if(result[key] !== query[key]) {
+                        const compareQuery = query.compareTo || {}
+                        for(const key in compareQuery) {
+                            if(result[key] !== compareQuery[key]) {
                                 isMatch = false;
                                 break;
                             }
                         }
                         if(isMatch){
-                            if(query.exclude)
-                                query.exclude.forEach(e=>delete result[e]);
+                            query.exclude && query.exclude.forEach(e=>delete result[e]);
                             queryResults.push(result)
                         }
                     }
