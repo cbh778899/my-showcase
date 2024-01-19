@@ -70,7 +70,7 @@ async function getObjStore(name, mode) {
 export async function insert(storeName, data, callback) {
     try {
         const req = (await getObjStore(storeName, IDB_MODE_READWRITE)).add(data);
-        req.onsuccess = () => callback(true);
+        req.onsuccess = () => callback(req.result);
         req.onerror = () => callback(false);
     } catch (error) {
         toast.error(error.message);
@@ -107,43 +107,38 @@ export async function selectOneByColumn(storeName, query, callback) {
     }
 }
 
-export async function selectAllByColumn(storeName, query, callback, store = null) {
+export async function getAll(storeName, callback, query = null, store = null) {
     try {
         store = store || await getObjStore(storeName, IDB_MODE_READONLY);
-        const req = store.openCursor()
-    
-        const queryResults = []
-    
-        req.onsuccess = function() {
-            const cursor = this.result;
-            if(cursor) {
-                const resultReq = store.get(cursor.key);
-                resultReq.onsuccess = function() {
-                    const result = this.result;
-                    if(result) {
-                        let isMatch = true;
-                        const compareQuery = query.compareTo || {}
-                        for(const key in compareQuery) {
-                            if(result[key] !== compareQuery[key]) {
-                                isMatch = false;
-                                break;
-                            }
-                        }
-                        if(isMatch){
-                            query.exclude && query.exclude.forEach(e=>delete result[e]);
-                            queryResults.push(result)
+        const req = store.getAll()
+        
+        req.onsuccess = () => {
+            let result = req.result;
+            if(query && query.compareTo) {
+                result = result.filter(entry => {
+                    let matched = true;
+                    for(const key in query.compareTo) {
+                        if(entry[key] !== query.compareTo[key]) {
+                            matched = false;
+                            break;
                         }
                     }
-                }
-                cursor.continue();
-            } else {
-                callback(queryResults)
+                    return matched;
+                })
             }
+            if(query && query.exclude && query.exclude.length) {
+                result = result.map(res => {
+                    query.exclude.forEach(e=>delete res[e]);
+                    return res;
+                })
+            }
+            
+            callback(result)
         }
-    
-        req.onerror = () => callback(false);
+
+        req.onerror = () => callback([])
     } catch (error) {
-        toast.error(error.message);
+        toast.error(error);
         callback(false);
     }
 }
@@ -213,14 +208,14 @@ export async function deleteByKeyPath(storeName, key, callback) {
 export async function deleteAllByColumn(storeName, query, callback) {
     try {
         const store = await getObjStore(storeName, IDB_MODE_READWRITE);
-        selectAllByColumn(storeName, query, results => {
+        getAll(storeName, results => {
             if(results) {
                 results.forEach(e=>{
                     store.delete(e.key);
                 })
                 callback(true);
             } else callback(false);
-        }, store)
+        }, query, store)
     } catch (error) {
         toast.error(error.message);
         callback(false);
