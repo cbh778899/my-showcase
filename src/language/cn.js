@@ -70,7 +70,6 @@ const cn = {
     'edit-avatar-success': '头像更新成功!',
     'upload-avatar-failed': '上传头像时出错, 请尝试手动初始化IDB数据库',
     'Next': '下一步',
-    'Cancel': '取消',
     'Finished': '完成',
     'Go Back': '返回上一步',
     'User ID': '用户ID',
@@ -132,13 +131,12 @@ const cn = {
     'open-idb-timeout': '打开IDB数据库耗时过长(大于500毫秒),请尝试手动初始化IDB数据库!',
     'clear-table-success': tb_name=>{return `清空IDB表${tb_name}成功!`},
     'clear-table-fail': tb_name=>{return `清空IDB表${tb_name}失败!`},
-    // popup
-    'Yes': '是',
-    'No': '否',
     // Declaimer & global
     'homepage-title': '历历乐乐的个人主页',
     'Lililele': '历历乐乐',
     'contact-me': <>如有需要，请联系<a href="mailto:cbh778899@outlook.com">cbh778899@outlook.com</a></>,
+    'Cancel': '取消',
+    'Confirm': '确定'
 }
 
 export default cn;
