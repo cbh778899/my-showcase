@@ -1,37 +1,40 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react"
 
-let registered_components = []
-let setPopupAttrs;
+// const useDialog = typeof HTMLDialogElement === 'function';
+const useDialog = false;
 
-function usePopup() {
-    const registerComponent = useState()[1]
+function usePopup(closeOnClick = false) {
 
-    useState(()=>{
-        registered_components.push(registerComponent)
-        return () => {
-            registered_components = registered_components.filter(c=>c!==registerComponent);
+    const [on, switchStatus] = useState('disabled');
+    const windowRef = useRef();
+
+    useEffect(() => {
+        if(useDialog && windowRef.current) {
+            switch(on) {
+                case 'enabled':
+                    windowRef.current.show(); break;
+                case 'modal':
+                    windowRef.current.showModal(); break;
+                case 'disabled':
+                default:
+                    windowRef.current.close(); break;
+            }
         }
-    }, [registerComponent])
+    }, [on])
 
-    function initContainer(setter) {
-        setPopupAttrs = setter;
+    function show() {
+        switchStatus('enabled')
     }
 
-    function setPopupWindow({type, actions, displayContent=''}) {
-
-        if(!setPopupAttrs) throw new Error('Container Not Initialized!');
-
-        let displayContentFunc = displayContent;
-        if(typeof displayContent === 'string') {
-            displayContentFunc = () => { return displayContent }
-        }
-
-        setPopupAttrs({
-            type, actions, displayContent: displayContentFunc
-        });
+    function showModal() {
+        switchStatus('modal')
     }
 
-    return {setPopupWindow, initContainer}
+    function close() {
+        switchStatus('disabled')
+    }
+
+    return { show, showModal, close, useDialog, on, closeOnClick, windowRef }
 }
 
 export default usePopup;

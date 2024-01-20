@@ -1,0 +1,36 @@
+div.popup-window {
+    position: fixed;
+	width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    display: flex;
+    pointer-events: none;
+    z-index: 100;
+    align-items: center;
+}
+
+div.popup-window * {
+    pointer-events: unset;
+    margin: auto;
+}
+
+dialog.popup-window {
+    width: fit-content;
+    height: fit-content;
+    padding: unset;
+    outline: none;
+    border: none;
+    background: unset;
+    max-width: unset;
+    max-height: unset;
+}
+
+.popup-window:is(.disabled) {
+    display: none;
+}
+
+.popup-window:is(.modal) {
+    background-color: rgba(0, 0, 0, 0.3);
+    pointer-events: unset;
+}
