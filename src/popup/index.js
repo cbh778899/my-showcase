@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 
-// const useDialog = typeof HTMLDialogElement === 'function';
-const useDialog = false;
+const useDialog = typeof HTMLDialogElement === 'function';
 
 function usePopup(closeOnClick = false) {
 
