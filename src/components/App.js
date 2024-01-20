@@ -11,9 +11,9 @@ import "react-toastify/dist/ReactToastify.css";
 import Account from './account';
 import toastify_settings from '../settings/toastify_settings';
 import EditPassword from './account/EditPassword';
-import { default as PopupContainer } from './popup/Container';
 import Land from './Land';
 import StockManager from './stock';
+import '../styles/popup/popup_style.css'
 
 function App() {
 
@@ -48,7 +48,6 @@ function App() {
             </Routes>
             <Declaimer />
             </div>
-            <PopupContainer />
             <ToastContainer {...toastify_settings} />
         </BrowserRouter>
     );
