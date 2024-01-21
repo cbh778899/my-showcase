@@ -24,9 +24,6 @@ export const SESSION_EXPIRED = 'session-expired';
 export const PASSWORD_CHANGED = 'password-changed';
 export const CHANNEL_ONLINE = 'channel-online';
 
-// popup window
-export const POPUP_YES_NO = 'yes-no';
-
 // language
 export const LANGUAGE_EN = 'en';
 export const LANGUAGE_CN = 'cn';
@@ -44,6 +41,3 @@ export const IDB_STOCK_OPERATOR = 'stockOperators';
 
 export const IDB_MODE_READWRITE = 'readwrite';
 export const IDB_MODE_READONLY = 'readonly';
-
-// special
-export const DIGITS_AND_LETTERS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
