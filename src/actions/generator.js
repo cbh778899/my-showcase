@@ -1,11 +1,17 @@
-import { DIGITS_AND_LETTERS } from "../settings/types";
+export function generateRandomStr(len = 10) {
+    let str = ''
+    do {
+        const randomStr = Math.random().toString(36).slice(2);
+        str += randomStr.slice(0, Math.min(len - str.length, randomStr.length))
+    } while(str.length < len)
+    
+    return str;
+}
 
 export function generateVerificationCode() {
     return [...Array(4)].map(()=>Math.floor(Math.random() * 10)).join``
 }
 
 export function generateID() {
-    return [...Array(10)].map(()=>{
-        return DIGITS_AND_LETTERS[Math.floor(Math.random() * DIGITS_AND_LETTERS.length)]
-    }).join``;
+    return generateRandomStr();
 }
