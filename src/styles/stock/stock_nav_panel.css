@@ -1,3 +1,19 @@
 .stock-nav-panel {
-	
+	position: absolute;
+    left: 0;
+    width: var(--nav-panel-width);
+    height: var(--main-viewport-height);
+    box-shadow: 5px 0px 15px gray;
+    padding-top: 10px;
+}
+
+.stock-nav-panel .menu-item {
+    width: 100%;
+    text-align: center;
+    padding: 15px 0px;
+    border-bottom: 1px solid gray;
+}
+
+.stock-nav-panel .manage-operator table {
+    margin: 10px;
 }

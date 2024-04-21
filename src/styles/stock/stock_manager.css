@@ -1,3 +1,33 @@
 .stock-manager {
-    
+    --nav-panel-width: 250px;
+
+    position: relative;
+    width: 100%;
+    height: var(--main-viewport-height);
+    box-shadow: 0px 5px 15px gray;
+    margin-bottom: 15px;
+}
+
+.stock-manager table {
+    border-collapse: collapse;
+    margin: auto;
+}
+
+.stock-manager table caption {
+    caption-side: bottom;
+    padding: 10px;
+}
+
+.stock-manager table td,
+.stock-manager table th {
+    border: 1px solid gray;
+    padding: 5px 10px;
+}
+
+.stock-manager table tr {
+    transition-duration: .3s;
+}
+
+.stock-manager table tr:not(.title):hover {
+    background-color: rgb(200, 200, 200);
 }

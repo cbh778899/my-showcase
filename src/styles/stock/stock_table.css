@@ -1,23 +1,9 @@
 .stock-table {
-	width: 100%;
+	width: calc(100% - var(--nav-panel-width));
     height: var(--main-viewport-height);
     padding: 20px;
-}
-
-.stock-table table {
-    border-collapse: collapse;
-    margin: auto;
-}
-
-.stock-table table caption {
-    caption-side: bottom;
-    padding: 10px;
-}
-
-.stock-table table td,
-.stock-table table th {
-    border: 1px solid gray;
-    padding: 5px 10px;
+    position: absolute;
+    right: 0;
 }
 
 .stock-table .select-page-container {
@@ -42,4 +28,8 @@
 }
 .stock-table .select-page-container .disabled:hover {
     cursor: unset;
+}
+
+.stock-table table .add-item-cell {
+    text-align: center;
 }
