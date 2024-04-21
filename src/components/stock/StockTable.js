@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import '../../styles/stock/stock_table.css';
+import usePopup from '../../popup';
+import PopupWindow from '../popup';
 
 function StockTable({stock, languagePack}) {
 
@@ -7,6 +9,8 @@ function StockTable({stock, languagePack}) {
     const [totalPages, setTotalPages] = useState(0)
     const [currentPage, setCurrentPage] = useState(0);
     const [displayItems, setDisplayItems] = useState([]);
+
+    const addItemController = usePopup(true);
 
     const lastPageRef = useRef();
     const nextPageRef = useRef();
@@ -96,7 +100,7 @@ function StockTable({stock, languagePack}) {
                     </div>
                 </caption>
                 <thead>
-                    <tr>
+                    <tr className='title'>
                         <th scope='col'>{languagePack['Item ID']}</th>
                         <th scope='col'>{languagePack['Item Name']}</th>
                         <th scope='col'>{languagePack['Item Stock']}</th>
@@ -114,8 +118,17 @@ function StockTable({stock, languagePack}) {
                             </tr>
                         )
                     }) }
+                    <tr>
+                        <td colSpan={5} 
+                            className='add-item-cell clickable'
+                            onClick={addItemController.showModal}
+                        >{ languagePack['Add Item'] }</td>
+                    </tr>
                 </tbody>
             </table>
+            <PopupWindow controller={addItemController} >
+                add item
+            </PopupWindow>
         </div>
     );
 }
