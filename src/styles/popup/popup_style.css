@@ -2,10 +2,11 @@
     --btn-width: 150px;
     --btn-height: 40px;
     --btn-margin: 10px;
+    --content-min-width: calc((var(--btn-width) * 2) + (var(--btn-margin) * 4));
 
     width: fit-content;
     height: fit-content;
-    min-width: calc((var(--btn-width) * 2) + (var(--btn-margin) * 4));
+    min-width: var(--content-min-width);
     transition-duration: .3s;
     position: relative;
     margin: auto;
@@ -28,6 +29,7 @@
     border-radius: 10px;
     display: inline-block;
     line-height: var(--btn-height);
+    border: unset;
 }
 
 .styled-popup-content .display-content {
@@ -44,4 +46,34 @@
 }
 .styled-popup-content .red-btn {
     background-color: red;
+}
+
+.styled-popup-content input:not(input[type="submit"]) {
+    display: block;
+    width: calc(var(--content-min-width) - 20px);
+    margin: 0px 10px;
+    height: 30px;
+    border-radius: 5px;
+    border: 1px solid black;
+    padding: 0px 5px;
+    box-sizing: border-box;
+}
+
+.styled-popup-content input:not(input[type="submit"]):focus {
+    outline: none;
+}
+
+.styled-popup-content .input-block {
+    width: 100%;
+    margin: 5px 0px;
+    padding: 0px 10px;
+}
+
+.styled-popup-content .input-block .title {
+    margin-bottom: 5px;
+}
+
+.styled-popup-content .input-block input:not(input[type="submit"]) {
+    margin: unset;
+    width: 100%;
 }
