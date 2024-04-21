@@ -24,6 +24,10 @@ export const SESSION_EXPIRED = 'session-expired';
 export const PASSWORD_CHANGED = 'password-changed';
 export const CHANNEL_ONLINE = 'channel-online';
 
+// stock
+export const OPERATOR_SYSTEM = { id: '*', name: 'System', removable: false };
+export const STOCK_ADMIN_DEFAULT_PASSWORD = 'admin';
+
 // language
 export const LANGUAGE_EN = 'en';
 export const LANGUAGE_CN = 'cn';
