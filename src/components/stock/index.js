@@ -16,7 +16,7 @@ function StockManager() {
 
     return (
         <div className='stock-manager'>
-            <StockNavPanel />
+            <StockNavPanel languagePack={languagePack} />
             <StockTable stock={stock} languagePack={languagePack} />
         </div>
     );
