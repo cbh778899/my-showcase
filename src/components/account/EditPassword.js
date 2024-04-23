@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import '../../styles/account/account_global.css';
 import '../../styles/account/edit_password.css';
-import { ANSWER_CREDENTIAL, ANSWER_PAIR, CHANNEL_STATUS_ACTIVE, CHANNEL_STATUS_CLOSED, CHANNEL_STATUS_UNLOAD, EDIT_PASSWORD_CHANNEL, EDIT_PASS_EMAIL, EDIT_PASS_ID, IDB_ACCOUNT, PASSWORD_CHANGED, REQUEST_CREDENTIAL, REQUEST_PAIR, SESSION_EXPIRED, USER_EMAIL_VALIDATED, USER_EMAIL_VALIDATING } from '../../settings/types';
+import { 
+    ANSWER_CREDENTIAL, ANSWER_PAIR, CHANNEL_STATUS_ACTIVE, 
+    CHANNEL_STATUS_CLOSED, CHANNEL_STATUS_UNLOAD, EDIT_PASSWORD_CHANNEL, 
+    EDIT_PASS_EMAIL, EDIT_PASS_ID, IDB_ACCOUNT, PASSWORD_CHANGED, 
+    REQUEST_CREDENTIAL, REQUEST_PAIR, SESSION_EXPIRED, 
+    USER_EMAIL_VALIDATED, USER_EMAIL_VALIDATING 
+} from '../../settings/types';
 import { toast } from 'react-toastify';
 import useLanguage from  '../../language';
 import PasswordVisibilityBtn from './PasswordVisibilityBtn';
