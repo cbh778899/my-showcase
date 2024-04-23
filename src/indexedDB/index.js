@@ -92,8 +92,8 @@ export function getOne(storeName, get_query, exclude = null) {
                     const cursor = evt.target.result;
                     if(cursor) {
                         const result = cursor.value;
-                        for(const { key, v } of get_query_key_pairs) {
-                            if(v !== result[key]) {
+                        for(const {key, value} of get_query_key_pairs) {
+                            if(value !== result[key]) {
                                 // if not match, go to next record
                                 cursor.continue();
                                 return;
@@ -184,11 +184,12 @@ export function getByID(storeName, id, validate = null, exclude = null, store = 
     })
 }
 
-export function update(storeName, record_with_id, update_query) {
-    return new Promise(resolve => {
+export function update(storeName, updated_record_with_id) {
+    return new Promise(async resolve => {
         try {
             const store = getObjStore(storeName, IDB_MODE_READWRITE);
-            const req = store.put({...record_with_id, ...update_query});
+            const orig_record = await getByID(storeName, updated_record_with_id[store.keyPath], null, null, store);
+            const req = store.put({...orig_record, ...updated_record_with_id});
             req.onsuccess = () => resolve(true);
             req.onerror = () => resolve(null);
         } catch(error) {
