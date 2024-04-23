@@ -1,32 +1,30 @@
 import { getAll, insert } from "../indexedDB";
 import { IDB_STOCK_ITEM } from "../settings/types";
 
-export function getCurrentStock(callback) {
-    getAll(IDB_STOCK_ITEM, callback)
+export async function getCurrentStock() {
+    return await getAll(IDB_STOCK_ITEM)
 }
 
-export function addItem(itemName, itemPrice, itemStock, operatorID, callback, price = null) {
-    insert(IDB_STOCK_ITEM, {
-        itemName, itemPrice, itemStock
-    }, result => {
-        if(result) {
-            addStockHistory(
-                result,
-                Date.now(),
-                itemStock,
-                price === null ? -itemStock*itemPrice : price,
-                operatorID
-            );
-            callback(true);
-        } else callback(false)
-    })
+export async function addItem(itemName, itemPrice, itemStock, operatorID, price = null) {
+    const stock_id = insert(IDB_STOCK_ITEM, { itemName, itemPrice, itemStock })
+    if(stock_id) {
+        addStockHistory(
+            stock_id,
+            Date.now(),
+            itemStock,
+            price === null ? -itemStock*itemPrice : price,
+            operatorID
+        );
+        return true;
+    }
+    return false;
 }
 
-export function editStock(itemID, stockChanged, operatorID, callback, totalPrice = null) {
+export function editStock(itemID, stockChanged, operatorID, totalPrice = null) {
 
 }
 
-export function rmItem(itemID, callback) {
+export function rmItem(itemID) {
 
 }
 

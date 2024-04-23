@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../../styles/account/account_details.css';
-import { getByKeyPath } from '../../indexedDB';
+import { getByID } from '../../indexedDB';
 import { ANSWER_CREDENTIAL, ANSWER_PAIR, CHANNEL_ONLINE, EDIT_PASSWORD_CHANNEL, EDIT_PASS_ID, IDB_ACCOUNT, PASSWORD_CHANGED, REQUEST_CREDENTIAL, REQUEST_PAIR, SESSION_EXPIRED } from '../../settings/types';
 import { Person } from 'react-bootstrap-icons';
 import EditableField from './EditableField';
@@ -31,12 +31,12 @@ function AccountDetails({id, logout, tabID}) {
 
     function requireUpdate() {
         userDetails && userDetails.avatar && URL.revokeObjectURL(userDetails.avatar);
-        getByKeyPath(IDB_ACCOUNT, id, result=>{
+        getByID(IDB_ACCOUNT, id, null, ['password']).then(result=>{
             if(result && result.avatar) {
                 result.avatar = URL.createObjectURL(result.avatar);
                 updateUserDetails(result);
             } else updateUserDetails(result);
-        }, {exclude: ['password']});
+        });
     }
 
     function establishEditPasswordChannel() {
@@ -147,7 +147,7 @@ function AccountDetails({id, logout, tabID}) {
                 <div className='styled-popup-content'>
                     <div className='display-content'>{ languagePack['confirm-delete-account'] }</div>
                     <div className='popup-btn clickable blue-btn' onClick={()=>{
-                        deleteUser(userDetails.id, result=>{
+                        deleteUser(userDetails.id).then(result=>{
                             if(result) {
                                 logout(languagePack['account-delete-warn']);
                                 toast.success(languagePack["Delete account success!"]);

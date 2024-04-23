@@ -7,7 +7,7 @@ import useLanguage from  '../../language';
 import PasswordVisibilityBtn from './PasswordVisibilityBtn';
 import PasswordStrength from './PasswordStrength';
 import { isEmail, passwordStrength } from '../../actions/validators';
-import { getByKeyPath, selectOneByColumn, update } from '../../indexedDB';
+import { getByID, getOne, update } from '../../indexedDB';
 import { generateVerificationCode } from '../../actions/generator';
 import { sendVerificationCode } from '../../actions/account_actions';
 
@@ -107,33 +107,25 @@ function EditPassword() {
     // eslint-disable-next-line
     }, [inputFields['new-password']])
 
-    function submitExtraFields(evt) {
+    async function submitExtraFields(evt) {
         evt.preventDefault();
         const fieldName = evt.target.name;
 
         if(fieldName === 'email') {
             if(isEmail(inputFields['user-email'])) {
-                selectOneByColumn(
-                    IDB_ACCOUNT, 
-                    {
-                        indexName: 'email', 
-                        indexValue: inputFields['user-email'],
-                        exclude: ['password']
-                    }, result => {
-                        if(!result) toast.error(languagePack['email-not-exist'])
-                        // if this email existed
-                        else {
-                            const verification_code = generateVerificationCode()
-                            setUserCredential({
-                                ...userCredential,
-                                id: result.id, 'user-email': result.email,
-                                username: result.username,
-                                'email-validation': USER_EMAIL_VALIDATING,
-                                'verification-code': verification_code
-                            })
-                        }
-                    }
-                )
+                const account_details = await getOne(IDB_ACCOUNT, { email: inputFields['user-email'] }, ['password']);
+                if(account_details) {
+                    const { id, email, username } = account_details;
+                    const verification_code = generateVerificationCode()
+                    setUserCredential({
+                        ...userCredential,
+                        id, username, 'user-email': email,
+                        'email-validation': USER_EMAIL_VALIDATING,
+                        'verification-code': verification_code
+                    })
+                } else {
+                    toast.error(languagePack['email-not-exist'])
+                }
             } else {
                 toast.warning(languagePack['email-pattern-invalid']);
             }
@@ -180,17 +172,19 @@ function EditPassword() {
         } else if(inputFields['new-password'] !== inputFields['confirm-new-password']) {
             toast.error(languagePack['password-not-match'])
         } else {
-            getByKeyPath(IDB_ACCOUNT, userCredential.id, result=>{
+            getByID(
+                IDB_ACCOUNT, userCredential.id,
+                userCredential['email-validation'] !== USER_EMAIL_VALIDATED ? 
+                    { password: inputFields['old-password'] } : null,
+                ['password']
+            ).then(result=>{
                 if(result) {
-                    update(IDB_ACCOUNT, {
-                        id: userCredential.id,
-                        updateQuery: {password: inputFields['new-password']}
-                    }, res=>{res && sendPasswordResult()})
+                    update(
+                        IDB_ACCOUNT, 
+                        { id: userCredential.id },
+                        { password: inputFields['new-password'] }
+                    ).then(success => { success && sendPasswordResult() })
                 } else toast.error(languagePack['old-password-not-match'])
-            }, {
-                exclude: ['password'],
-                compareTo: userCredential['email-validation'] === USER_EMAIL_VALIDATED ?
-                    null : {password: inputFields['old-password']}
             })
         }
     }
