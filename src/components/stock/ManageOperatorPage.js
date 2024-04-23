@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import PopupWindow from '../popup'
 import { Trash } from 'react-bootstrap-icons';
-import { OPERATOR_SYSTEM, STOCK_ADMIN_DEFAULT_PASSWORD } from '../../settings/types';
+import { OPERATOR_SYSTEM } from '../../settings/types';
 import usePopup from '../../popup';
 import { toast } from 'react-toastify';
-import { getOperators, addOperator as addOpAction } from '../../actions/stock_actions';
+import { getOperators, addOperator as addOpAction, removeOperator as rmOpAction } from '../../actions/stock_actions';
 
 function ManageOperatorPage({ controller, languagePack }) {
 
     const [operators, setOperators] = useState([OPERATOR_SYSTEM])
-    const [managerValidated, setMgrValidated] = useState(false);
-
     const [rmSelected, setRmSelected] = useState({});
     
-    const askPasswordController = usePopup(true);
     const askDetailsController = usePopup(true);
     const askRmConfirmController = usePopup(true);
 
@@ -25,7 +22,16 @@ function ManageOperatorPage({ controller, languagePack }) {
     }, [])
 
     function removeOperator() {
-        const operatorID = rmSelected.id
+        rmOpAction(rmSelected.id).then(res=>{
+            if(res) {
+                toast.success(languagePack['rm-operator-success']);
+                setOperators(operators.filter(e=>e.id !== rmSelected.id))
+                setRmSelected({})
+                askRmConfirmController.close();
+            } else {
+                toast.error(languagePack['rm-operator-failed'])
+            }
+        })
     }
 
     async function addOperator(evt) {
@@ -39,22 +45,7 @@ function ManageOperatorPage({ controller, languagePack }) {
                 { id, name: operator_name, removable: true }
             ])
             askDetailsController.close();
-        }
-        
-        // store operator to db
-    }
-
-    function submitAdminPassword(evt) {
-        evt.preventDefault();
-        const password = evt.target['admin-password'].value;
-        const validatePassword = localStorage.getItem('stock-admin-password') || STOCK_ADMIN_DEFAULT_PASSWORD;
-        if(password === validatePassword) {
-            setMgrValidated(true);
-            askPasswordController.close();
-            askDetailsController.showModal();
-            toast.success(languagePack['admin-password-validated']);
-        } else {
-            toast.error(languagePack['admin-password-incorrect']);
+            evt.target['operator-name'].value = '';
         }
     }
 
@@ -63,13 +54,7 @@ function ManageOperatorPage({ controller, languagePack }) {
             <div className='styled-popup-content manage-operator'>
                 <table>
                     <caption>
-                        <span onClick={() => {
-                            if(!managerValidated) {
-                                askPasswordController.showModal();
-                            } else {
-                                askDetailsController.showModal();
-                            }
-                        }} className='clickable'>
+                        <span onClick={askDetailsController.showModal} className='clickable'>
                             { languagePack['click-to-add-operator'] }
                         </span>
                     </caption>
@@ -81,28 +66,25 @@ function ManageOperatorPage({ controller, languagePack }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {
-                            operators.map((operator, i) => {
-                                return (
-                                    <tr key={`operator-row-${i}`}>
-                                        <td>{ operator.id }</td>
-                                        <td>{ operator.name }</td>
-                                        <td>
-                                            { operator.removable ? 
-                                                <Trash 
-                                                    className='remove-icon' 
-                                                    onClick={()=> {
-                                                        setRmSelected(operator);
-                                                        askRmConfirmController.showModal();
-                                                    }} 
-                                                /> : 
-                                                languagePack['Not Removable'] 
-                                            }
-                                        </td>
-                                    </tr>
-                                )
-                            })
-                        }
+                        {operators.map((operator, i) => {
+                            return (
+                            <tr key={`operator-row-${i}`}>
+                                <td>{ operator.id }</td>
+                                <td>{ operator.name }</td>
+                                <td>
+                                    { operator.removable ? 
+                                        <Trash 
+                                            className='remove-icon' 
+                                            onClick={()=> {
+                                                setRmSelected(operator);
+                                                askRmConfirmController.showModal();
+                                            }} 
+                                        /> : 
+                                        languagePack['Not Removable'] 
+                                    }
+                                </td>
+                            </tr>)
+                        })}
                     </tbody>
                 </table>
                 <div 
@@ -110,18 +92,6 @@ function ManageOperatorPage({ controller, languagePack }) {
                     onClick={controller.close}
                 >{ languagePack['Finished'] }</div>
             </div>
-            <PopupWindow controller={askPasswordController}>
-                <form className='styled-popup-content' onSubmit={submitAdminPassword}>
-                    <div className='display-content'>
-                        { languagePack['ask-admin-password'] }
-                    </div>
-                    <input name='admin-password' type='text' />
-                    <input type='submit' className='popup-btn blue-btn clickable' value={languagePack['Submit']} />
-                    <div className='popup-btn clickable' onClick={askPasswordController.close}>
-                        { languagePack['Cancel'] }
-                    </div>
-                </form>
-            </PopupWindow>
             <PopupWindow controller={askDetailsController}>
                 <form className='styled-popup-content' onSubmit={addOperator}>
                     <div className='input-block'>
