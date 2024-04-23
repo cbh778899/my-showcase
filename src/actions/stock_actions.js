@@ -1,8 +1,15 @@
 import { getAll, insert } from "../indexedDB";
-import { IDB_STOCK_ITEM } from "../settings/types";
+import { IDB_STOCK_ITEM, IDB_STOCK_OPERATOR, OPERATOR_STATUS_NORMAL } from "../settings/types";
 
 export async function getCurrentStock() {
     return await getAll(IDB_STOCK_ITEM)
+}
+
+export async function getOperators() {
+    const operators = await getAll(IDB_STOCK_OPERATOR);
+    return operators.map(operator => {
+        return { id: operator.id, name: operator.operatorName, removable: true }
+    })
 }
 
 export async function addItem(itemName, itemPrice, itemStock, operatorID, price = null) {
@@ -26,6 +33,15 @@ export function editStock(itemID, stockChanged, operatorID, totalPrice = null) {
 
 export function rmItem(itemID) {
 
+}
+
+export async function addOperator(operator_name) {
+    return await insert(IDB_STOCK_OPERATOR, 
+        { 
+            operatorName: operator_name, 
+            operatorStatus: OPERATOR_STATUS_NORMAL 
+        }
+    );
 }
 
 function addStockHistory(itemID, time, stockChange, price, operatorID) {

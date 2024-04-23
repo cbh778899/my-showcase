@@ -4,6 +4,7 @@ import { Trash } from 'react-bootstrap-icons';
 import { OPERATOR_SYSTEM, STOCK_ADMIN_DEFAULT_PASSWORD } from '../../settings/types';
 import usePopup from '../../popup';
 import { toast } from 'react-toastify';
+import { getOperators, addOperator as addOpAction } from '../../actions/stock_actions';
 
 function ManageOperatorPage({ controller, languagePack }) {
 
@@ -17,15 +18,28 @@ function ManageOperatorPage({ controller, languagePack }) {
     const askRmConfirmController = usePopup(true);
 
     useEffect(() => {
-        // ask db for operators
+        controller.addAutoRun('open', async ()=>{
+            setOperators([OPERATOR_SYSTEM, ...(await getOperators())])
+        })
+    // eslint-disable-next-line
     }, [])
 
     function removeOperator() {
         const operatorID = rmSelected.id
     }
 
-    function addOperator(evt) {
-        const operator_name = evt.target['operator-name'];
+    async function addOperator(evt) {
+        evt.preventDefault();
+
+        const operator_name = evt.target['operator-name'].value;
+        const id = await addOpAction(operator_name)
+        if(id) {
+            setOperators([
+                ...operators, 
+                { id, name: operator_name, removable: true }
+            ])
+            askDetailsController.close();
+        }
         
         // store operator to db
     }
