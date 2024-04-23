@@ -23,7 +23,7 @@ function Login({setLoginID, tabID, switchDisplayPage}) {
         } else if(!password) {
             toast.warn(`${languagePack['ask-input-password']}!`);
         } else {
-            loginAction(account, password, id=> {
+            loginAction(account, password).then(id=> {
                 if(id === null) {
                     toast.error(languagePack['login-failed']);
                 } else {

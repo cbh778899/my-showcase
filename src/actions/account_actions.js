@@ -1,46 +1,25 @@
-import { deleteByKeyPath, insert, selectOneByColumn, update } from "../indexedDB";
+import { deleteByID, insert, getOne, update } from "../indexedDB";
 import { IDB_ACCOUNT } from "../settings/types";
 import { isEmail } from "./validators";
 import emailjs from '@emailjs/browser';
 
-export function loginAction(account, password, callback) {
-    selectOneByColumn(IDB_ACCOUNT, {
-        indexName: isEmail(account) ? 'email' : 'username',
-        indexValue: account,
-        compareTo: { password }
-    }, result => {
-        if(result) callback(result.id);
-        else callback(null)
-    })
+export async function loginAction(account, password) {
+    const validated = await getOne(IDB_ACCOUNT, { [isEmail(account) ? 'email' : 'username']: account, password })
+    return (validated ? validated.id : null)
 }
 
-export function registerAction(userDetails, callback) {
+export async function registerAction(userDetails) {
     const { username, email, password } = userDetails;
-    insert(IDB_ACCOUNT, {
-        username, email, password
-    }, success => {
-        if(success){
-            selectOneByColumn(IDB_ACCOUNT, {
-                indexName: 'username',
-                indexValue: username
-            }, result => {
-                if(result) callback(result.id)
-                else callback(null)
-            })
-        } else callback(null)
-    })
+    const user_id = await insert(IDB_ACCOUNT, { username, email, password })
+    return user_id
 }
 
-export function updateDetailsAction(id, updateQuery, callback) {
-    update(IDB_ACCOUNT, {
-        id, updateQuery
-    }, result=>callback(result))
+export async function updateDetailsAction(update_query) {
+    return await update(IDB_ACCOUNT, update_query);
 }
 
-export function deleteUser(id, callback) {
-    deleteByKeyPath(IDB_ACCOUNT, id, result=>{
-        callback(result);
-    })
+export async function deleteUser(id) {
+    return await deleteByID(IDB_ACCOUNT, id);
 }
 
 export async function sendVerificationCode(email, username, code) {

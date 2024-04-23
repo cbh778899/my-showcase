@@ -56,7 +56,7 @@ function Register({setLoginID, switchDisplayPage}) {
             return;
         }
 
-        registerAction(fields, id=>{
+        registerAction(fields).then(id=>{
             if(id !== null) {
                 toast.success(languagePack['Register Success!']);
                 setLoginID(id);
