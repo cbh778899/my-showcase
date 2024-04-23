@@ -13,7 +13,7 @@ function EditableField({fieldName, fieldValue, setFieldValue, origValue, require
         if(fieldValue !== origValue && fieldValue) {
             const updateQuery = {}
             updateQuery[fieldName] = fieldValue;
-            updateDetailsAction({id, ...updateQuery}).then(result=>{
+            updateDetailsAction({ id, ...updateQuery }).then(result=>{
                 if(result) {
                     toast.success(languagePack['update-success'](fieldName))
                     requireUpdate();

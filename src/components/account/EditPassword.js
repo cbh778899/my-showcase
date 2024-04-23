@@ -187,8 +187,10 @@ function EditPassword() {
                 if(result) {
                     update(
                         IDB_ACCOUNT, 
-                        { id: userCredential.id },
-                        { password: inputFields['new-password'] }
+                        { 
+                            id: userCredential.id ,
+                            password: inputFields['new-password'] 
+                        }
                     ).then(success => { success && sendPasswordResult() })
                 } else toast.error(languagePack['old-password-not-match'])
             })
