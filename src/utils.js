@@ -101,3 +101,13 @@ export function passwordStrength(password) {
     })
     return strength;
 }
+
+export async function retry(end_retry, lasting_ms, max_retry) {
+    if(end_retry()) return true;
+    
+    while(max_retry --) {
+        await new Promise(s=>setTimeout(s, lasting_ms))
+        if(end_retry()) return true;
+    }
+    return false;
+}
