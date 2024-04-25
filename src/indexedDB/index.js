@@ -1,6 +1,7 @@
 import { db_settings } from "./settings";
 import { IDB_CMD_NEW, IDB_CMD_UPDATE, IDB_MODE_READONLY, IDB_MODE_READWRITE, IDB_NAME } from "../settings/types";
 import { toast } from "react-toastify";
+import { retry } from "../utils";
 
 let db = null;
 let languagePack = {};
@@ -53,9 +54,13 @@ export function initDB(manual = false) {
     })
 }
 
-function getObjStore(name, mode) {
+async function getObjStore(name, mode) {
     try {
-        return db.transaction(name, mode).objectStore(name);
+        if(await retry(()=>!!db, 100, 5)) {
+            return db.transaction(name, mode).objectStore(name);
+        } else {
+            toast.error(languagePack['open-idb-timeout'])
+        }
     } catch(error) {
         toast.error(error);
     }
@@ -64,9 +69,9 @@ function getObjStore(name, mode) {
 // CRUD
 
 export function insert(storeName, data) {
-    return new Promise(resolve => {
+    return new Promise(async resolve => {
         try {
-            const req = getObjStore(storeName, IDB_MODE_READWRITE).add(data);
+            const req = (await getObjStore(storeName, IDB_MODE_READWRITE)).add(data);
             req.onsuccess = () => resolve(req.result);
             req.onerror = () => resolve(null);
         } catch (error) {
@@ -79,7 +84,7 @@ export function insert(storeName, data) {
 export function getOne(storeName, get_query, exclude = null) {
     return new Promise(async resolve => {
         try {
-            const store = getObjStore(storeName, IDB_MODE_READONLY);
+            const store = await getObjStore(storeName, IDB_MODE_READONLY);
             if(store.keyPath in get_query) {
                 resolve(await getByID(storeName, get_query[store.keyPath], get_query, exclude, store))
             } else {
@@ -121,9 +126,9 @@ export function getOne(storeName, get_query, exclude = null) {
 }
 
 export function getAll(storeName, validate = null, exclude = null, store = null) {
-    return new Promise(resolve => {
+    return new Promise(async resolve => {
         try {
-            store = store || getObjStore(storeName, IDB_MODE_READONLY);
+            store = store || await getObjStore(storeName, IDB_MODE_READONLY);
             const req = store.getAll();
             
             req.onsuccess = () => {
@@ -158,9 +163,9 @@ export function getAll(storeName, validate = null, exclude = null, store = null)
 }
 
 export function getByID(storeName, id, validate = null, exclude = null, store = null) {
-    return new Promise(resolve => {
+    return new Promise(async resolve => {
         try {
-            store = store || getObjStore(storeName, IDB_MODE_READONLY);
+            store = store || await getObjStore(storeName, IDB_MODE_READONLY);
             const req = store.get(id);
         
             req.onsuccess = function() {
@@ -187,7 +192,7 @@ export function getByID(storeName, id, validate = null, exclude = null, store = 
 export function update(storeName, updated_record_with_id) {
     return new Promise(async resolve => {
         try {
-            const store = getObjStore(storeName, IDB_MODE_READWRITE);
+            const store = await getObjStore(storeName, IDB_MODE_READWRITE);
             const orig_record = await getByID(storeName, updated_record_with_id[store.keyPath], null, null, store);
             const req = store.put({...orig_record, ...updated_record_with_id});
             req.onsuccess = () => resolve(true);
@@ -200,9 +205,9 @@ export function update(storeName, updated_record_with_id) {
 }
 
 export function deleteByID(storeName, id) {
-    return new Promise(resolve => {
+    return new Promise(async resolve => {
         try {
-            const store = getObjStore(storeName, IDB_MODE_READWRITE);
+            const store = await getObjStore(storeName, IDB_MODE_READWRITE);
             const req = store.delete(id);
             req.onsuccess = () => resolve(true);
             req.onerror = () => resolve(null);
@@ -218,7 +223,7 @@ export function deleteAllByColumn(storeName, delete_query = null) {
         try {
             if(!delete_query) resolve(await clearAll(storeName));
             else {
-                const store = getObjStore(storeName, IDB_MODE_READWRITE);
+                const store = await getObjStore(storeName, IDB_MODE_READWRITE);
                 const key = store.keyPath;
                 const results = await getAll(storeName, delete_query, null, store);
                 
@@ -244,9 +249,9 @@ export function deleteAllByColumn(storeName, delete_query = null) {
 }
 
 export function clearAll(storeName) {
-    return new Promise(resolve => {
+    return new Promise(async resolve => {
         try {
-            const req = getObjStore(storeName, IDB_MODE_READWRITE).clear();
+            const req = (await getObjStore(storeName, IDB_MODE_READWRITE)).clear();
             req.onsuccess = () => {
                 toast.info(languagePack['clear-table-success'](storeName));
                 resolve(true);
