@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../../styles/account/account_global.css';
 import { toast } from 'react-toastify';
-import { isEmail, passwordStrength } from '../../actions/validators';
+import { isEmail, passwordStrength } from '../../utils';
 import { ACCOUNT_LOGIN_PAGE } from '../../settings/types';
 import PasswordVisibilityBtn from './PasswordVisibilityBtn';
 import PasswordStrength from './PasswordStrength';

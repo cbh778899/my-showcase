@@ -5,8 +5,8 @@ import { loginAction } from '../../actions/account_actions';
 import { ACCOUNT_REGISTER_PAGE, ANSWER_CREDENTIAL, ANSWER_PAIR, CHANNEL_ONLINE, EDIT_PASSWORD_CHANNEL, EDIT_PASS_EMAIL, PASSWORD_CHANGED, REQUEST_CREDENTIAL, REQUEST_PAIR, SESSION_EXPIRED } from '../../settings/types';
 import { toast } from 'react-toastify';
 import PasswordVisibilityBtn from './PasswordVisibilityBtn';
-import { isEmail } from '../../actions/validators';
-import { generateID } from '../../actions/generator';
+import { isEmail } from '../../utils';
+import { generateID } from '../../utils';
 import useLanguage from '../../language';
 
 function Login({setLoginID, tabID, switchDisplayPage}) {

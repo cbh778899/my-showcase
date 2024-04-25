@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getSearchParams } from '../actions/getter';
+import { getSearchParams } from '../utils';
 
 function Land() {
 

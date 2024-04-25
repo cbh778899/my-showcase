@@ -1,6 +1,6 @@
 import { deleteByID, insert, getOne, update } from "../indexedDB";
 import { IDB_ACCOUNT } from "../settings/types";
-import { isEmail } from "./validators";
+import { isEmail } from "../utils";
 import emailjs from '@emailjs/browser';
 
 export async function loginAction(account, password) {

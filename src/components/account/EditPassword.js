@@ -12,9 +12,9 @@ import { toast } from 'react-toastify';
 import useLanguage from  '../../language';
 import PasswordVisibilityBtn from './PasswordVisibilityBtn';
 import PasswordStrength from './PasswordStrength';
-import { isEmail, passwordStrength } from '../../actions/validators';
+import { isEmail, passwordStrength } from '../../utils';
 import { getByID, getOne, update } from '../../indexedDB';
-import { generateVerificationCode } from '../../actions/generator';
+import { generateVerificationCode } from '../../utils';
 import { sendVerificationCode } from '../../actions/account_actions';
 
 function EditPassword() {

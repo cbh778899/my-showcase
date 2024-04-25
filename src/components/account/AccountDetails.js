@@ -7,7 +7,7 @@ import EditableField from './EditableField';
 import EditAvatar from './EditAvatar';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { generateID } from '../../actions/generator';
+import { generateID } from '../../utils';
 import useLanguage from '../../language';
 import { deleteUser } from '../../actions/account_actions';
 import PopupWindow from '../popup';

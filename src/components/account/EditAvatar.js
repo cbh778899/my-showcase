@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import '../../styles/account/edit_avatar.css';
 import { ArrowLeftCircleFill, ArrowRightCircleFill, CheckCircleFill, XCircleFill } from 'react-bootstrap-icons';
-import { calculateDefaultImageScale, validateMovement, validateScale } from '../../actions/calculator';
+import { calculateDefaultImageScale, validateMovement, validateScale } from '../../utils';
 import { toast } from 'react-toastify';
 import { updateDetailsAction } from '../../actions/account_actions';
 

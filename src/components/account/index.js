@@ -5,7 +5,7 @@ import Register from './Register';
 import AccountDetails from './AccountDetails';
 import useLanguage from '../../language';
 import { toast } from 'react-toastify';
-import { generateID } from '../../actions/generator';
+import { generateID } from '../../utils';
 
 function Account() {
     const [loginID, setLoginID] = useState(null);
