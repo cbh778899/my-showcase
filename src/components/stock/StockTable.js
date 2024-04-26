@@ -1,16 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 import '../../styles/stock/stock_table.css';
 import usePopup from '../../popup';
+import AddItemPage from './AddItemPage';
 import PopupWindow from '../popup';
 
-function StockTable({stock, languagePack}) {
+function StockTable({stock, operators, reqUpdateStock, languagePack}) {
 
-    const [itemsEachPage, setItemsEachPage] = useState(20)
+    const [itemsEachPage, setItemsEachPage] = useState(15)
     const [totalPages, setTotalPages] = useState(0)
     const [currentPage, setCurrentPage] = useState(0);
     const [displayItems, setDisplayItems] = useState([]);
 
     const addItemController = usePopup(true);
+    const changeItemsEachPageController = usePopup();
 
     const lastPageRef = useRef();
     const nextPageRef = useRef();
@@ -38,6 +40,29 @@ function StockTable({stock, languagePack}) {
         setCurrentPage(page);
     }
 
+    function checkDisplayAvailability(target) {
+        const items_each_page = +target.value;
+        if(isNaN(items_each_page)) {
+            target.classList.add('content-invalid')
+            return false;
+        } else {
+            target.classList.remove('content-invalid')
+            return true;
+        }
+    }
+
+    function submitChangeItemsEachPage(evt) {
+        evt.preventDefault();
+
+        const input = evt.target['items-each-page'];
+        const value = input.value;
+        if(!checkDisplayAvailability(input)) return;
+        else {
+            setItemsEachPage(+value);
+            changeItemsEachPageController.close();
+        }
+    }
+
     useEffect(() => {
         if(sliceStock().map(e=>e.id).join('') !== displayItems.map(e=>e.id).join('')) {
             currentPage ? updateCurrentPage(0) : updateDisplayItems();
@@ -52,7 +77,8 @@ function StockTable({stock, languagePack}) {
 
     useEffect(() => {
         updateCurrentPage(0);
-    // eslint-disable-next-line
+        updateDisplayItems();
+        // eslint-disable-next-line
     }, [itemsEachPage])
 
     useEffect(() => {
@@ -67,13 +93,10 @@ function StockTable({stock, languagePack}) {
                     <div>
                     {
                         displayItems.length ? 
-                        `${
-                            languagePack['Displaying Stock']
-                        } ${
-                            currentPage*itemsEachPage+1
-                        }-${
-                            Math.min((currentPage+1)*itemsEachPage, stock.length)
-                        }` : 
+                        <>
+                        <span>{`${languagePack['Displaying Stock']} ${currentPage*itemsEachPage+1}-${Math.min((currentPage+1)*itemsEachPage, stock.length)}`}</span>
+                        <span onClick={changeItemsEachPageController.showModal}>{ languagePack['change-stock-each-page'] }</span>
+                        </>:
                         languagePack['no-stock']
                     }
                     </div>
@@ -103,8 +126,8 @@ function StockTable({stock, languagePack}) {
                     <tr className='title'>
                         <th scope='col'>{languagePack['Item ID']}</th>
                         <th scope='col'>{languagePack['Item Name']}</th>
+                        <th scope='col'>{languagePack['Unit Price']}</th>
                         <th scope='col'>{languagePack['Item Stock']}</th>
-                        <th scope='col'>{languagePack['Item Price']}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -113,8 +136,8 @@ function StockTable({stock, languagePack}) {
                             <tr key={`stock-item-${id}`}>
                                 <td>{ id }</td>
                                 <td>{ itemName }</td>
-                                <td>{ itemStock }</td>
                                 <td>{ itemPrice }</td>
+                                <td>{ itemStock }</td>
                             </tr>
                         )
                     }) }
@@ -126,8 +149,27 @@ function StockTable({stock, languagePack}) {
                     </tr>
                 </tbody>
             </table>
-            <PopupWindow controller={addItemController} >
-                add item
+            <AddItemPage 
+                controller={addItemController} operators={operators} 
+                languagePack={languagePack} reqUpdateStock={reqUpdateStock}
+            />
+            <PopupWindow controller={changeItemsEachPageController}>
+                <form className='styled-popup-content' onSubmit={submitChangeItemsEachPage}>
+                    <div className='input-block'>
+                        <div className='title'>{ languagePack['ask-items-each-page'] }</div>
+                        <input 
+                            defaultValue={itemsEachPage}
+                            className='input-type' type='text' 
+                            name='items-each-page' onInput={evt=>checkDisplayAvailability(evt.target)}
+                        />
+                    </div>
+                    <button className='popup-btn blue-btn clickable' type='submit'>
+                        { languagePack['Submit'] }
+                    </button>
+                    <div className='popup-btn clickable' onClick={changeItemsEachPageController.close}>
+                        { languagePack['Cancel'] }
+                    </div>
+                </form>
             </PopupWindow>
         </div>
     );

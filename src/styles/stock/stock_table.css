@@ -4,6 +4,7 @@
     padding: 20px;
     position: absolute;
     right: 0;
+    overflow-y: auto;
 }
 
 .stock-table .select-page-container {
