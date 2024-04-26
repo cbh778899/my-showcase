@@ -6,7 +6,7 @@ import ManageOperatorPage from './ManageOperatorPage';
 import { STOCK_ADMIN_DEFAULT_PASSWORD } from '../../settings/types';
 import { toast } from 'react-toastify';
 
-function StockNavPanel({languagePack}) {
+function StockNavPanel({languagePack, operators, reqUpdateOperators}) {
 
     const manageOperatorController = usePopup(true);
     const saleController = usePopup(true);
@@ -42,7 +42,11 @@ function StockNavPanel({languagePack}) {
                 onClick={saleController.showModal}
             >{ languagePack['Sale'] }</div>
 
-            <ManageOperatorPage controller={manageOperatorController} languagePack={languagePack} />
+            <ManageOperatorPage 
+                controller={manageOperatorController} 
+                reqUpdateOperators={reqUpdateOperators} 
+                languagePack={languagePack} operators={operators}
+            />
             <PopupWindow controller={saleController}>
                 sale controller
             </PopupWindow>
@@ -52,7 +56,7 @@ function StockNavPanel({languagePack}) {
                     <div className='display-content'>
                         { languagePack['ask-admin-password'] }
                     </div>
-                    <input name='admin-password' type='text' />
+                    <input name='admin-password' type='text' className='input-type' />
                     <input type='submit' className='popup-btn blue-btn clickable' value={languagePack['Submit']} />
                     <div className='popup-btn clickable' onClick={askPasswordController.close}>
                         { languagePack['Cancel'] }

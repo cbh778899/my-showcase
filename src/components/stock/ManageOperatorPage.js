@@ -1,33 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PopupWindow from '../popup'
 import { Trash } from 'react-bootstrap-icons';
-import { OPERATOR_SYSTEM } from '../../settings/types';
 import usePopup from '../../popup';
 import { toast } from 'react-toastify';
-import { getOperators, addOperator as addOpAction, removeOperator as rmOpAction } from '../../actions/stock_actions';
+import { addOperator as addOpAction, removeOperator as rmOpAction } from '../../actions/stock_actions';
 
-function ManageOperatorPage({ controller, languagePack }) {
+function ManageOperatorPage({ controller, languagePack, operators, reqUpdateOperators }) {
 
-    const [operators, setOperators] = useState([OPERATOR_SYSTEM])
     const [rmSelected, setRmSelected] = useState({});
     
     const askDetailsController = usePopup(true);
     const askRmConfirmController = usePopup(true);
 
-    useEffect(() => {
-        controller.addAutoRun('open', async ()=>{
-            setOperators([OPERATOR_SYSTEM, ...(await getOperators())])
-        })
-    // eslint-disable-next-line
-    }, [])
-
     function removeOperator() {
         rmOpAction(rmSelected.id).then(res=>{
             if(res) {
                 toast.success(languagePack['rm-operator-success']);
-                setOperators(operators.filter(e=>e.id !== rmSelected.id))
                 setRmSelected({})
                 askRmConfirmController.close();
+                reqUpdateOperators();
             } else {
                 toast.error(languagePack['rm-operator-failed'])
             }
@@ -38,12 +29,9 @@ function ManageOperatorPage({ controller, languagePack }) {
         evt.preventDefault();
 
         const operator_name = evt.target['operator-name'].value;
-        const id = await addOpAction(operator_name)
-        if(id) {
-            setOperators([
-                ...operators, 
-                { id, name: operator_name, removable: true }
-            ])
+        const success = !!await addOpAction(operator_name)
+        if(success) {
+            reqUpdateOperators();
             askDetailsController.close();
             evt.target['operator-name'].value = '';
         }
@@ -96,7 +84,7 @@ function ManageOperatorPage({ controller, languagePack }) {
                 <form className='styled-popup-content' onSubmit={addOperator}>
                     <div className='input-block'>
                         <div className='title'>{ languagePack['Operator Name'] }</div>
-                        <input type='text' name='operator-name'/>
+                        <input className='input-type' type='text' name='operator-name'/>
                     </div>
                     <button className='popup-btn blue-btn clickable'>
                         { languagePack['Submit'] }
