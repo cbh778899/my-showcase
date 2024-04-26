@@ -111,3 +111,28 @@ export async function retry(end_retry, lasting_ms, max_retry) {
     }
     return false;
 }
+
+const AsyncFunc = (async ()=>{}).constructor
+
+export async function multiCondResult(conditions = []) {
+
+    async function runner(func) {
+        if(func instanceof AsyncFunc) {
+            return await func();
+        } else {
+            return func();
+        }
+    }
+
+    for(const cond of conditions) {
+        const { condition, isTrue, isFalse } = cond;
+
+        if(typeof condition === 'function' ? await runner(condition) : condition) {
+            isTrue && isTrue();
+        } else {
+            isFalse && isFalse();
+            return false;
+        }
+    }
+    return true;
+}
