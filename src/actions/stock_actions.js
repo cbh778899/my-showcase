@@ -1,14 +1,14 @@
 import { deleteByID, getAll, insert } from "../indexedDB";
-import { IDB_STOCK_ITEM, IDB_STOCK_OPERATOR, OPERATOR_STATUS_NORMAL } from "../settings/types";
+import { IDB_STOCK_HISTORY, IDB_STOCK_ITEM, IDB_STOCK_OPERATOR, OPERATOR_STATUS_NORMAL } from "../settings/types";
 
 export async function getCurrentStock() {
     return await getAll(IDB_STOCK_ITEM)
 }
 
 export async function addItem(itemName, itemPrice, itemStock, operatorID, price = null) {
-    const stock_id = insert(IDB_STOCK_ITEM, { itemName, itemPrice, itemStock })
+    const stock_id = await insert(IDB_STOCK_ITEM, { itemName, itemPrice, itemStock })
     if(stock_id) {
-        addStockHistory(
+        await addStockHistory(
             stock_id,
             Date.now(),
             itemStock,
@@ -28,8 +28,10 @@ export function rmItem(itemID) {
 
 }
 
-function addStockHistory(itemID, time, stockChange, price, operatorID) {
-
+async function addStockHistory(itemID, time, stockChange, price, operatorID) {
+    await insert(IDB_STOCK_HISTORY, {
+        itemID, time, stockChange, price, operatorID
+    });
 }
 
 export async function getOperators() {
