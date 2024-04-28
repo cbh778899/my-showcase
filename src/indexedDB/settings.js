@@ -68,6 +68,18 @@ export const db_settings = {
                     ]
                 }
             ]
+        },
+        {
+            version: 4,
+            objectStores: [
+                {
+                    command: IDB_CMD_UPDATE,
+                    name: IDB_STOCK_OPERATOR,
+                    newSchemas: [
+                        { name: 'operatorPassword' }
+                    ]
+                }
+            ]
         }
     ]
 }
