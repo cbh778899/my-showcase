@@ -1,5 +1,6 @@
 import { deleteByID, getAll, insert } from "../indexedDB";
-import { IDB_STOCK_HISTORY, IDB_STOCK_ITEM, IDB_STOCK_OPERATOR, OPERATOR_STATUS_NORMAL } from "../settings/types";
+import { IDB_STOCK_HISTORY, IDB_STOCK_ITEM, IDB_STOCK_OPERATOR, OPERATOR_STATUS_INIT_PASSWORD, OPERATOR_STATUS_NORMAL } from "../settings/types";
+import { generateRandomStr } from "../utils";
 
 export async function getCurrentStock() {
     return await getAll(IDB_STOCK_ITEM)
@@ -41,13 +42,14 @@ export async function getOperators() {
     })
 }
 
-export async function addOperator(operator_name) {
-    return await insert(IDB_STOCK_OPERATOR, 
-        { 
-            operatorName: operator_name, 
-            operatorStatus: OPERATOR_STATUS_NORMAL 
-        }
-    );
+export async function addOperator(operatorName, password = null) {
+    const operatorStatus = password ? OPERATOR_STATUS_NORMAL : OPERATOR_STATUS_INIT_PASSWORD;
+    const operatorPassword = password || generateRandomStr(8);
+    if(await insert(IDB_STOCK_OPERATOR, 
+        { operatorName, operatorStatus, operatorPassword }
+    )) {
+        return operatorPassword;
+    } else return null;
 }
 
 export async function removeOperator(operator_id) {

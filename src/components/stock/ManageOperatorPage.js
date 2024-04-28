@@ -8,9 +8,11 @@ import { addOperator as addOpAction, removeOperator as rmOpAction } from '../../
 function ManageOperatorPage({ controller, languagePack, operators, reqUpdateOperators }) {
 
     const [rmSelected, setRmSelected] = useState({});
+    const [generatedPassword, setGeneratedPassword] = useState('')
     
     const askDetailsController = usePopup(true);
     const askRmConfirmController = usePopup(true);
+    const autoGeneratePasswordController = usePopup();
 
     function removeOperator() {
         rmOpAction(rmSelected.id).then(res=>{
@@ -29,11 +31,27 @@ function ManageOperatorPage({ controller, languagePack, operators, reqUpdateOper
         evt.preventDefault();
 
         const operator_name = evt.target['operator-name'].value;
-        const success = !!await addOpAction(operator_name)
-        if(success) {
+        const operator_password = evt.target['operator-password'].value || null;
+
+        const password = await addOpAction(operator_name, operator_password)
+        if(password) {
             reqUpdateOperators();
+            if(!operator_password) {
+                setGeneratedPassword(password);
+                autoGeneratePasswordController.showModal();
+            }
             askDetailsController.close();
             evt.target['operator-name'].value = '';
+            evt.target['operator-password'].value = '';
+        }
+    }
+
+    async function copyPassword() {
+        try {
+            await navigator.clipboard.writeText(generatedPassword);
+            toast.success(languagePack['copy-password-success'])
+        } catch(error) {
+            toast.error(error)
         }
     }
 
@@ -86,6 +104,10 @@ function ManageOperatorPage({ controller, languagePack, operators, reqUpdateOper
                         <div className='title'>{ languagePack['Operator Name'] }</div>
                         <input className='input-type' type='text' name='operator-name'/>
                     </div>
+                    <div className='input-block'>
+                        <div className='title'>{ languagePack['Operator Password'] }</div>
+                        <input className='input-type' type='text' name='operator-password' placeholder={languagePack['Auto generated']} />
+                    </div>
                     <button className='popup-btn blue-btn clickable'>
                         { languagePack['Submit'] }
                     </button>
@@ -111,6 +133,17 @@ function ManageOperatorPage({ controller, languagePack, operators, reqUpdateOper
                         <></>
                     }
                     <div className='popup-btn clickable' onClick={askRmConfirmController.close}>
+                        { languagePack['Cancel'] }
+                    </div>
+                </div>
+            </PopupWindow>
+            <PopupWindow controller={autoGeneratePasswordController}>
+                <div className='styled-popup-content'>
+                    <div className='display-content'>{ languagePack['auto-gen-password-is'] } <strong>{ generatedPassword }</strong></div>
+                    <div className='popup-btn blue-btn clickable' onClick={copyPassword}>
+                        { languagePack['copy-password'] }
+                    </div>
+                    <div className='popup-btn clickable' onClick={autoGeneratePasswordController.close}>
                         { languagePack['Cancel'] }
                     </div>
                 </div>
