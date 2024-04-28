@@ -27,8 +27,9 @@ export const CHANNEL_ONLINE = 'channel-online';
 // stock
 export const OPERATOR_SYSTEM = { id: '*', name: 'System', removable: false };
 export const STOCK_ADMIN_DEFAULT_PASSWORD = 'admin';
-export const OPERATOR_STATUS_NORMAL = 1;
 export const OPERATOR_STATUS_BANNED = 0;
+export const OPERATOR_STATUS_NORMAL = 1;
+export const OPERATOR_STATUS_INIT_PASSWORD = 2;
 
 // language
 export const LANGUAGE_EN = 'en';
