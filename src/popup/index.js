@@ -7,8 +7,8 @@ function usePopup(closeOnClick = false, autoRun = {onOpen: [], onClose: []}) {
     const { onOpen, onClose } = autoRun;
 
     const [on, switchStatus] = useState('disabled');
-    const [onPopupOpen, setOnPopupOpen] = useState(onOpen)
-    const [onPopupClose, setOnPopupClose] = useState(onClose)
+    const [onPopupOpen, setOnPopupOpen] = useState(onOpen || [])
+    const [onPopupClose, setOnPopupClose] = useState(onClose || [])
     const windowRef = useRef();
 
     useEffect(() => {
@@ -41,16 +41,36 @@ function usePopup(closeOnClick = false, autoRun = {onOpen: [], onClose: []}) {
     }
 
     function addAutoRun(timing, func) {
-        if(timing === 'open') setOnPopupOpen([...onPopupOpen, func])
-        else if(timing === 'close') setOnPopupClose([...onPopupClose, func]);
+        let new_idx;
+        if(timing === 'open') {
+            new_idx = onPopupOpen.length;
+            setOnPopupOpen([...onPopupOpen, func])
+        } else if(timing === 'close') {
+            new_idx = onPopupClose.length
+            setOnPopupClose([...onPopupClose, func]);
+        }
+
+        return new_idx;
+    }
+
+    function removeAutoRun(timing, idx) {
+        if(timing === 'open') {
+            const cp = onPopupOpen;
+            cp[idx] = null;
+            setOnPopupOpen(cp);
+        } else if(timing === 'close') {
+            const cp = onPopupClose;
+            cp[idx] = null;
+            setOnPopupClose(cp);
+        }
     }
 
     function runAutoRun(timing) {
-        if(timing === 'open') onPopupOpen.forEach(func=>func());
-        if(timing === 'close') onPopupClose.forEach(func=>func());
+        if(timing === 'open') onPopupOpen.forEach(func=>func && func());
+        if(timing === 'close') onPopupClose.forEach(func=>func && func());
     }
 
-    return { show, showModal, close, addAutoRun, useDialog, on, closeOnClick, windowRef }
+    return { show, showModal, close, addAutoRun, removeAutoRun, useDialog, on, closeOnClick, windowRef }
 }
 
 export default usePopup;
