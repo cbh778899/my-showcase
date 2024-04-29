@@ -102,6 +102,24 @@ export function passwordStrength(password) {
     return strength;
 }
 
+/**
+ * Function to switch status of className in element classList by given boolean
+ * @param {HTMLElement} element The element to switch className
+ * @param {string} className The className to be switched
+ * @param {boolean} status true to add and false to remove given class
+ * @param {boolean} reverse If set to true, add when status is false and remove when true
+ * @returns {boolean} Given status
+ */
+export function setClass(element, className, status, reverse = false) {
+    if(reverse ? status : !status) {
+        element.classList.add(className);
+    } else {
+        element.classList.remove(className)
+    }
+
+    return status;
+}
+
 export async function retry(end_retry, lasting_ms, max_retry) {
     if(end_retry()) return true;
     
