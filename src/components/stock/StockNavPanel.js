@@ -3,45 +3,57 @@ import PopupWindow from '../popup'
 import usePopup from '../../popup'
 import '../../styles/stock/stock_nav_panel.css';
 import ManageOperatorPage from './ManageOperatorPage';
-import { STOCK_ADMIN_DEFAULT_PASSWORD } from '../../settings/types';
-import { toast } from 'react-toastify';
+import {  OPERATOR_SYSTEM } from '../../settings/types';
+import OperatorLogin from './OperatorLogin';
 
 function StockNavPanel({languagePack, operators, reqUpdateOperators}) {
 
+    const operatorLoginController = usePopup(true);
     const manageOperatorController = usePopup(true);
     const saleController = usePopup(true);
-    const askPasswordController = usePopup(true);
 
-    const [adminValidated, setAdminValidated] = useState(false)
+    const [loggedInOperator, setLoggedInOp] = useState(null)
 
-    function submitAdminPassword(evt) {
-        evt.preventDefault();
-        const password = evt.target['admin-password'].value;
-        const validatePassword = localStorage.getItem('stock-admin-password') || STOCK_ADMIN_DEFAULT_PASSWORD;
-        if(password === validatePassword) {
-            setAdminValidated(true);
-            askPasswordController.close();
-            manageOperatorController.showModal()
-            toast.success(languagePack['admin-password-validated']);
-        } else {
-            toast.error(languagePack['admin-password-incorrect']);
-        }
+    function logoutOp() {
+        setLoggedInOp(null);
     }
 
     return (
         <div className='stock-nav-panel'>
-            <div 
-                className='menu-item clickable' 
-                onClick={ adminValidated ? 
-                    manageOperatorController.showModal :
-                    askPasswordController.showModal
-                }
-            >{ languagePack['Manage Operators'] }</div>
-            <div 
-                className='menu-item clickable' 
-                onClick={saleController.showModal}
-            >{ languagePack['Sale'] }</div>
-
+            {
+                !loggedInOperator ?
+                <div 
+                    className='menu-item clickable' 
+                    onClick={ operatorLoginController.showModal }
+                >{ languagePack['Operator Login'] }</div> : <></>
+            }
+            {
+                loggedInOperator && loggedInOperator.id === OPERATOR_SYSTEM.id ?
+                <div 
+                    className='menu-item clickable' 
+                    onClick={ manageOperatorController.showModal}
+                >{ languagePack['Manage Operators'] }</div> : <></>
+            }
+            {
+                loggedInOperator && loggedInOperator.id !== OPERATOR_SYSTEM.id ?
+                <div 
+                    className='menu-item clickable' 
+                    onClick={saleController.showModal}
+                >{ languagePack['Sale'] }</div> : <></>
+            }
+            {
+                loggedInOperator ?
+                <div 
+                    className='menu-item clickable' 
+                    onClick={logoutOp}
+                >{ languagePack['Logout Current Operator'] }</div> : <></>
+            }
+            <OperatorLogin 
+                controller={operatorLoginController}
+                loggedInOp={loggedInOperator}
+                setLoggedInOp={setLoggedInOp}
+                languagePack={languagePack}
+            />
             <ManageOperatorPage 
                 controller={manageOperatorController} 
                 reqUpdateOperators={reqUpdateOperators} 
@@ -49,19 +61,6 @@ function StockNavPanel({languagePack, operators, reqUpdateOperators}) {
             />
             <PopupWindow controller={saleController}>
                 sale controller
-            </PopupWindow>
-
-            <PopupWindow controller={askPasswordController}>
-                <form className='styled-popup-content' onSubmit={submitAdminPassword}>
-                    <div className='display-content'>
-                        { languagePack['ask-admin-password'] }
-                    </div>
-                    <input name='admin-password' type='text' className='input-type' />
-                    <input type='submit' className='popup-btn blue-btn clickable' value={languagePack['Submit']} />
-                    <div className='popup-btn clickable' onClick={askPasswordController.close}>
-                        { languagePack['Cancel'] }
-                    </div>
-                </form>
             </PopupWindow>
         </div>
     );
