@@ -30,6 +30,7 @@ function StockManager() {
             <StockNavPanel 
                 languagePack={languagePack} operators={operators} 
                 reqUpdateOperators={reqUpdateOperators} 
+                reqUpdateStock={reqUpdateStock}
             />
             <StockTable 
                 languagePack={languagePack} 

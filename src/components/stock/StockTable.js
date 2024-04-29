@@ -1,17 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import '../../styles/stock/stock_table.css';
 import usePopup from '../../popup';
-import AddItemPage from './AddItemPage';
 import PopupWindow from '../popup';
 
-function StockTable({stock, operators, reqUpdateStock, languagePack}) {
+function StockTable({stock, languagePack}) {
 
     const [itemsEachPage, setItemsEachPage] = useState(15)
     const [totalPages, setTotalPages] = useState(0)
     const [currentPage, setCurrentPage] = useState(0);
     const [displayItems, setDisplayItems] = useState([]);
 
-    const addItemController = usePopup(true);
     const changeItemsEachPageController = usePopup();
 
     const lastPageRef = useRef();
@@ -141,18 +139,8 @@ function StockTable({stock, operators, reqUpdateStock, languagePack}) {
                             </tr>
                         )
                     }) }
-                    <tr>
-                        <td colSpan={5} 
-                            className='add-item-cell clickable'
-                            onClick={addItemController.showModal}
-                        >{ languagePack['Add Item'] }</td>
-                    </tr>
                 </tbody>
             </table>
-            <AddItemPage 
-                controller={addItemController} operators={operators} 
-                languagePack={languagePack} reqUpdateStock={reqUpdateStock}
-            />
             <PopupWindow controller={changeItemsEachPageController}>
                 <form className='styled-popup-content' onSubmit={submitChangeItemsEachPage}>
                     <div className='input-block'>
