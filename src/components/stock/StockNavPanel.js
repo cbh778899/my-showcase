@@ -28,7 +28,12 @@ function StockNavPanel({languagePack, operators, reqUpdateOperators, reqUpdateSt
                 <div 
                     className='menu-item clickable' 
                     onClick={ operatorLoginController.showModal }
-                >{ languagePack['Operator Login'] }</div> : <></>
+                >{ languagePack['Operator Login'] }</div> : 
+                // when logged in and on the top
+                <div className='welcome'>{ languagePack['welcome'] }, { 
+                    loggedInOperator.id === OPERATOR_SYSTEM.id ?
+                    languagePack['System Operator'] : loggedInOperator.name
+                }</div>
             }
             {
                 // when is system operator
