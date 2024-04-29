@@ -1,22 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PopupWindow from '../popup';
 import { addItem } from '../../actions/stock_actions';
 import { toast } from 'react-toastify';
 import { multiCondResult } from '../../utils';
+import { OPERATOR_SYSTEM } from '../../settings/types';
 
-function AddItemPage({controller, operators, reqUpdateStock, languagePack}) {
-
-    const [defaultOperator, setDefaultOperator] = useState(
-        localStorage.getItem('selected-operator-id') || '*'
-    )
+function AddItemPage({controller, operator, reqUpdateStock, languagePack}) {
 
     async function submitNewItem(evt) {
         evt.preventDefault();
+        
+        if(!operator || operator.id === OPERATOR_SYSTEM.id) {
+            toast.error(languagePack['operator-not-valid'])
+            return;
+        }
 
         const item_name = evt.target['item-name'].value;
         const unit_price = +evt.target['unit-price'].value;
         const item_stock = +evt.target['item-stock'].value;
-        const operator_id = evt.target['selected-operator'].value;
         
         if(!await multiCondResult([
             { condition: !!item_name, isFalse: () => { toast.error(languagePack['item-name-invalid']) } },
@@ -24,19 +25,12 @@ function AddItemPage({controller, operators, reqUpdateStock, languagePack}) {
             { condition: !isNaN(item_stock), isFalse: () => { toast.error(languagePack['item-stock-invalid']) } },
         ])) return;
 
-        if(await addItem(item_name, unit_price, item_stock, operator_id)) {
+        if(await addItem(item_name, unit_price, item_stock, operator.id)) {
             reqUpdateStock();
             toast.success(languagePack['add-item-success'])
         } else {
             toast.error(languagePack['add-item-failed']);
         }
-    }
-
-    function selectOperator(evt) {
-        const selected_op_id = evt.target.value;
-        
-        localStorage.setItem('selected-operator-id', selected_op_id);
-        setDefaultOperator(selected_op_id);
     }
 
     return (
@@ -53,16 +47,6 @@ function AddItemPage({controller, operators, reqUpdateStock, languagePack}) {
                 <div className='input-block'>
                     <div className='title'>{ languagePack['Item Stock'] }</div>
                     <input className='input-type' type='text' name='item-stock'/>
-                </div>
-                <div className='input-block'>
-                    <div className='title'>{ languagePack['Operator'] }</div>
-                    <select className='input-type' name='selected-operator' value={defaultOperator} onChange={selectOperator}>
-                        {
-                            operators.map(op => {
-                                return <option key={`operator-id-${op.id}`} value={`${op.id}`}>{ op.name }</option>
-                            })
-                        }
-                    </select>
                 </div>
                 <button className='popup-btn blue-btn clickable' type='submit'>
                     { languagePack['Submit'] }
