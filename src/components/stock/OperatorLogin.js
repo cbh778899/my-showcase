@@ -4,6 +4,7 @@ import { OPERATOR_STATUS_INIT_PASSWORD, OPERATOR_STATUS_NORMAL, OPERATOR_SYSTEM,
 import { toast } from 'react-toastify';
 import { updateOperatorInfo, validateOperator } from '../../actions/stock_actions';
 import usePopup from '../../popup';
+import { setClass } from '../../utils';
 
 function OperatorLogin({ controller, loggedInOp, setLoggedInOp, languagePack }) {
 
@@ -18,7 +19,7 @@ function OperatorLogin({ controller, loggedInOp, setLoggedInOp, languagePack }) 
         const password = evt.target.password.value;
         if(loginType) {
             if(password === localStorage.getItem('stock-admin-password') || STOCK_ADMIN_DEFAULT_PASSWORD) {
-                toast.success(languagePack['admin-password-validated']);
+                toast.success(languagePack['Login Success!']);
                 setLoggedInOp(OPERATOR_SYSTEM)
             } else {
                 toast.error(languagePack['admin-password-incorrect']);
@@ -29,6 +30,7 @@ function OperatorLogin({ controller, loggedInOp, setLoggedInOp, languagePack }) 
             if(operator) {
                 setLoggedInOp(operator);
                 evt.target['op-name'].value = '';
+                toast.success(languagePack['Login Success!']);
                 if(operator.status === OPERATOR_STATUS_INIT_PASSWORD) {
                     askChangePasswordController.showModal();
                 }
@@ -61,16 +63,10 @@ function OperatorLogin({ controller, loggedInOp, setLoggedInOp, languagePack }) 
     }
 
     function validatePassword(target) {
-        const password = target.value;
-
-        const validated = /[a-zA-Z0-9,._!@#$%^&*()[\]\\/?+\-~`<>{}]{8,16}/.test(password)
-        if(validated) {
-            target.classList.remove('content-invalid')
-        } else {
-            target.classList.add('content-invalid')
-        }
-
-        return validated;
+        return setClass(
+            target, 'content-invalid', 
+            !/[a-zA-Z0-9,._!@#$%^&*()[\]\\/?+\-~`<>{}]{8,16}/.test(target.value)
+        )
     }
 
     return (

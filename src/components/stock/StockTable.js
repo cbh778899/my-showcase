@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import '../../styles/stock/stock_table.css';
 import usePopup from '../../popup';
 import PopupWindow from '../popup';
+import { setClass } from '../../utils';
 
 function StockTable({stock, languagePack}) {
 
@@ -39,14 +40,7 @@ function StockTable({stock, languagePack}) {
     }
 
     function checkDisplayAvailability(target) {
-        const items_each_page = +target.value;
-        if(isNaN(items_each_page)) {
-            target.classList.add('content-invalid')
-            return false;
-        } else {
-            target.classList.remove('content-invalid')
-            return true;
-        }
+        return setClass(target, 'content-invalid', !isNaN(+target.value), true);
     }
 
     function submitChangeItemsEachPage(evt) {
