@@ -11,7 +11,7 @@ function StockNavPanel({languagePack, operators, reqUpdateOperators, reqUpdateSt
 
     const operatorLoginController = usePopup(true);
     const manageOperatorController = usePopup(true);
-    const addItemController = usePopup(true);
+    const addItemController = usePopup();
     const saleController = usePopup(true);
 
     const [loggedInOperator, setLoggedInOp] = useState(null)

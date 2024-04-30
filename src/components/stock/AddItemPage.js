@@ -66,7 +66,13 @@ function AddItemPage({controller, operator, reqUpdateStock, languagePack}) {
                 <button className='popup-btn blue-btn clickable' type='submit'>
                     { languagePack['Submit'] }
                 </button>
-                <div className='popup-btn clickable' onClick={controller.close}>
+                <div className='popup-btn clickable' onClick={evt => {
+                    const parent = evt.target.parentNode;
+                    parent['item-name'].value = '';
+                    parent['unit-price'].value = '';
+                    parent['item-stock'].value = '';
+                    controller.close();
+                }}>
                     { languagePack['Cancel'] }
                 </div>
             </form>
