@@ -111,7 +111,7 @@ export function passwordStrength(password) {
  * @returns {boolean} Given status
  */
 export function setClass(element, className, status, reverse = false) {
-    if(reverse ? status : !status) {
+    if(reverse ? !status : status) {
         element.classList.add(className);
     } else {
         element.classList.remove(className)
