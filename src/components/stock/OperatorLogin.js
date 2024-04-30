@@ -65,7 +65,8 @@ function OperatorLogin({ controller, loggedInOp, setLoggedInOp, languagePack }) 
     function validatePassword(target) {
         return setClass(
             target, 'content-invalid', 
-            !/[a-zA-Z0-9,._!@#$%^&*()[\]\\/?+\-~`<>{}]{8,16}/.test(target.value)
+            /^[a-zA-Z0-9,._!@#$%^&*()[\]\\/?+\-~`<>{}]{8,32}$/.test(target.value),
+            true
         )
     }
 
@@ -97,7 +98,11 @@ function OperatorLogin({ controller, loggedInOp, setLoggedInOp, languagePack }) 
             <form className='styled-popup-content' onSubmit={submitChangePassword}>
                 <div className='input-block'>
                     <div className='title'>{ languagePack['ask-op-new-password'] }</div>
-                    <input type='text' className='input-type' name='new-password' onInput={evt=>validatePassword(evt.target)} />
+                    <input 
+                        type='text' className='input-type' 
+                        placeholder={languagePack['operator-password-rules']}
+                        name='new-password' onInput={evt=>validatePassword(evt.target)} 
+                    />
                 </div>
                 <button className='popup-btn blue-btn clickable'>
                     { languagePack['Submit'] }
