@@ -121,7 +121,7 @@ function ManageOperatorPage({ controller, languagePack, operators, reqUpdateOper
                     <div className='display-content'>
                         {
                             rmSelected.id ? 
-                            languagePack['confirm-remove-operator'] :
+                            languagePack['confirm-remove-operator'](rmSelected.name) :
                             languagePack['ask-select-operator-to-remove']
                         }
                     </div>
