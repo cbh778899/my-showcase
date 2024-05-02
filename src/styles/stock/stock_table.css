@@ -31,6 +31,9 @@
     cursor: unset;
 }
 
-.stock-table table .add-item-cell {
-    text-align: center;
+.stock-table .change-show-per-page { 
+    display: block;
+    color: blue;
+    font-size: 13px;
+    user-select: none;
 }

@@ -4,6 +4,7 @@ import { Trash } from 'react-bootstrap-icons';
 import usePopup from '../../popup';
 import { toast } from 'react-toastify';
 import { addOperator as addOpAction, removeOperator as rmOpAction } from '../../actions/stock_actions';
+import { OPERATOR_SYSTEM } from '../../settings/types';
 
 function ManageOperatorPage({ controller, languagePack, operators, reqUpdateOperators }) {
 
@@ -59,16 +60,11 @@ function ManageOperatorPage({ controller, languagePack, operators, reqUpdateOper
         <PopupWindow controller={controller}>
             <div className='styled-popup-content manage-operator'>
                 <table>
-                    <caption>
-                        <span onClick={askDetailsController.showModal} className='clickable'>
-                            { languagePack['click-to-add-operator'] }
-                        </span>
-                    </caption>
                     <thead>
                         <tr className='title'>
-                            <th>Operator ID</th>
-                            <th>Operator Name</th>
-                            <th>Remove Operator</th>
+                            <th>{languagePack['Operator ID']}</th>
+                            <th>{languagePack['Operator Name']}</th>
+                            <th>{languagePack['Remove Operator']}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -76,7 +72,7 @@ function ManageOperatorPage({ controller, languagePack, operators, reqUpdateOper
                             return (
                             <tr key={`operator-row-${i}`}>
                                 <td>{ operator.id }</td>
-                                <td>{ operator.name }</td>
+                                <td>{ operator.id === OPERATOR_SYSTEM.id ? languagePack['System Operator'] : operator.name }</td>
                                 <td>
                                     { operator.removable ? 
                                         <Trash 
@@ -91,6 +87,10 @@ function ManageOperatorPage({ controller, languagePack, operators, reqUpdateOper
                                 </td>
                             </tr>)
                         })}
+                        <tr><td colSpan={3} 
+                            onClick={askDetailsController.showModal} 
+                            className='clickable centered-content'
+                        >{ languagePack['click-to-add-operator'] }</td></tr>
                     </tbody>
                 </table>
                 <div 

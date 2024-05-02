@@ -87,7 +87,7 @@ function StockTable({stock, languagePack}) {
                         displayItems.length ? 
                         <>
                         <span>{`${languagePack['Displaying Stock']} ${currentPage*itemsEachPage+1}-${Math.min((currentPage+1)*itemsEachPage, stock.length)}`}</span>
-                        <span onClick={changeItemsEachPageController.showModal}>{ languagePack['change-stock-each-page'] }</span>
+                        <span onClick={changeItemsEachPageController.showModal} className='change-show-per-page clickable'>{ languagePack['change-stock-each-page'] }</span>
                         </>:
                         languagePack['no-stock']
                     }

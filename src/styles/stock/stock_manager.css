@@ -11,6 +11,7 @@
 .stock-manager table {
     border-collapse: collapse;
     margin: auto;
+    min-width: 400px;
 }
 
 .stock-manager table caption {
@@ -30,4 +31,8 @@
 
 .stock-manager table tr:not(.title):hover {
     background-color: rgb(200, 200, 200);
+}
+
+.stock-manager table .centered-content {
+    text-align: center;
 }

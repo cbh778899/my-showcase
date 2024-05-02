@@ -30,6 +30,7 @@
     display: inline-block;
     line-height: var(--btn-height);
     border: unset;
+    user-select: none;
 }
 
 .styled-popup-content .display-content {

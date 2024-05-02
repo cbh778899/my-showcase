@@ -12,8 +12,26 @@
     text-align: center;
     padding: 15px 0px;
     border-bottom: 1px solid gray;
+    transition-duration: .2s;
+}
+.stock-nav-panel .menu-item:hover {
+    background-color: rgb(200, 200, 200);
 }
 
 .stock-nav-panel .manage-operator table {
     margin: 10px;
+}
+
+.stock-nav-panel .welcome {
+    font-size: 10px;
+    width: 100%;
+    border-bottom: 1px dashed gray;
+    padding: 5px;
+    text-align: center;
+}
+
+.switch-login-type {
+    color: blue;
+    user-select: none;
+    font-size: 14px;
 }

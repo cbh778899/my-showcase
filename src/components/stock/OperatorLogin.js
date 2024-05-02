@@ -74,7 +74,6 @@ function OperatorLogin({ controller, loggedInOp, setLoggedInOp, languagePack }) 
         <>
         <PopupWindow controller={controller}>
             <form className='styled-popup-content' onSubmit={submitLogin}>
-                <div onClick={()=>setLoginType(!loginType)}>{ languagePack['switch-login-type'] }</div>
                 { !loginType ?  
                     <div className='input-block'>
                         <div className='title'>{ languagePack['Operator Name'] }</div>
@@ -83,8 +82,11 @@ function OperatorLogin({ controller, loggedInOp, setLoggedInOp, languagePack }) 
                     <></>
                 }
                 <div className='input-block'>
-                    <div className='title'>{ languagePack['Operator Password'] }</div>
+                    <div className='title'>{ languagePack[loginType ? 'Admin Password' : 'Operator Password'] }</div>
                     <input type='text' className='input-type' name='password'/>
+                </div>
+                <div onClick={()=>setLoginType(!loginType)} className='display-content switch-login-type clickable'>
+                    { languagePack['switch-login-type'] }
                 </div>
                 <button className='popup-btn blue-btn clickable'>
                     { languagePack['Submit'] }
