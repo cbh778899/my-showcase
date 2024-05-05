@@ -115,6 +115,9 @@ const en = {
     'no-stock': 'There is currently no stock in the system',
     'ask-items-each-page': 'Please input items you want to display on each page',
     'change-stock-each-page': 'Click to edit items shows on each page',
+    'ask-target-page': 'Please select which page you want redirect to',
+    'ask-target-page-input': 'Or you can input the page number here',
+    'page-info': (itemsEachPage, totalPages)=>`Displaying ${itemsEachPage} items per page, ${totalPages} pages in total, click here to set.`,
     // notification: db
     'init-idb-success': 'Manually Initialize IDB Success!',
     'del-idb-success': `Delete DB ${IDB_NAME} success!`,

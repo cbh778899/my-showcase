@@ -169,6 +169,9 @@ const cn = {
     'ask-items-each-page': '请输入每页需要展示的物品数量',
     'change-stock-each-page': '点击更改每页展示的数量',
     'Welcome': '欢迎',
+    'ask-target-page': '请选择您需要转到的页码',
+    'ask-target-page-input': '或者直接在这里输入页码',
+    'page-info': (itemsEachPage, totalPages)=>`当前每页展示${itemsEachPage}件物品, 共${totalPages}页, 点击这里设置.`,
     // notification: db
     'init-idb-success': '手动初始化IDB数据库成功!',
     'del-idb-success': `删除IDB数据库${IDB_NAME}成功!`,
