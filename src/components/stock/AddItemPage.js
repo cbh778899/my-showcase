@@ -1,5 +1,6 @@
 import React from 'react';
 import PopupWindow from '../popup';
+import PopupButtonSet from '../popup/PopupButtonSet';
 import { addItem } from '../../actions/stock_actions';
 import { toast } from 'react-toastify';
 import { multiCondResult, setClass } from '../../utils';
@@ -63,18 +64,16 @@ function AddItemPage({controller, operator, reqUpdateStock, languagePack}) {
                     <div className='title'>{ languagePack['Item Stock'] }</div>
                     <input className='input-type' type='text' name='item-stock' onInput={evt=>validateInput(evt.target)}/>
                 </div>
-                <button className='popup-btn blue-btn clickable' type='submit'>
-                    { languagePack['Submit'] }
-                </button>
-                <div className='popup-btn clickable' onClick={evt => {
-                    const parent = evt.target.parentNode;
-                    parent['item-name'].value = '';
-                    parent['unit-price'].value = '';
-                    parent['item-stock'].value = '';
-                    controller.close();
-                }}>
-                    { languagePack['Cancel'] }
-                </div>
+                <PopupButtonSet 
+                    languagePack={languagePack} controller={controller} 
+                    onCancel={evt => {
+                        const parent = evt.target.parentNode;
+                        parent['item-name'].value = '';
+                        parent['unit-price'].value = '';
+                        parent['item-stock'].value = '';
+                        controller.close();
+                    }} 
+                />
             </form>
         </PopupWindow>
     );

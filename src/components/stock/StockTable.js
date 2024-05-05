@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import '../../styles/stock/stock_table.css';
 import usePopup from '../../popup';
 import PopupWindow from '../popup';
+import PopupButtonSet from '../popup/PopupButtonSet'
 import { setClass } from '../../utils';
 
 function StockTable({stock, languagePack}) {
@@ -156,12 +157,7 @@ function StockTable({stock, languagePack}) {
                             name='items-each-page' onInput={evt=>checkDisplayAvailability(evt.target)}
                         />
                     </div>
-                    <button className='popup-btn blue-btn clickable' type='submit'>
-                        { languagePack['Submit'] }
-                    </button>
-                    <div className='popup-btn clickable' onClick={changeItemsEachPageController.close}>
-                        { languagePack['Cancel'] }
-                    </div>
+                    <PopupButtonSet languagePack={languagePack} controller={changeItemsEachPageController} />
                 </form>
             </PopupWindow>
             <PopupWindow controller={selectPageController}>
@@ -190,12 +186,7 @@ function StockTable({stock, languagePack}) {
                     <div className='display-content clickable change-show-per-page' onClick={changeItemsEachPageController.showModal}>
                         { languagePack['page-info'](itemsEachPage, totalPages) }
                     </div>
-                    <button className='popup-btn blue-btn clickable' type='submit'>
-                        { languagePack['Submit'] }
-                    </button>
-                    <div className='popup-btn clickable' onClick={selectPageController.close}>
-                        { languagePack['Cancel'] }
-                    </div>
+                    <PopupButtonSet languagePack={languagePack} controller={selectPageController} />
                 </form>
             </PopupWindow>
         </div>

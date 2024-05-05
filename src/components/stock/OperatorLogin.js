@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PopupWindow from '../popup'
+import PopupButtonSet from '../popup/PopupButtonSet'
 import { OPERATOR_STATUS_INIT_PASSWORD, OPERATOR_STATUS_NORMAL, OPERATOR_SYSTEM, STOCK_ADMIN_DEFAULT_PASSWORD } from '../../settings/types';
 import { toast } from 'react-toastify';
 import { updateOperatorInfo, validateOperator } from '../../actions/stock_actions';
@@ -88,12 +89,7 @@ function OperatorLogin({ controller, loggedInOp, setLoggedInOp, languagePack }) 
                 <div onClick={()=>setLoginType(!loginType)} className='display-content switch-login-type clickable'>
                     { languagePack['switch-login-type'] }
                 </div>
-                <button className='popup-btn blue-btn clickable'>
-                    { languagePack['Submit'] }
-                </button>
-                <div className='popup-btn clickable' onClick={controller.close}>
-                    { languagePack['Cancel'] }
-                </div>
+                <PopupButtonSet languagePack={languagePack} controller={controller} />
             </form>
         </PopupWindow>
         <PopupWindow controller={askChangePasswordController}>
@@ -106,9 +102,7 @@ function OperatorLogin({ controller, loggedInOp, setLoggedInOp, languagePack }) 
                         name='new-password' onInput={evt=>validatePassword(evt.target)} 
                     />
                 </div>
-                <button className='popup-btn blue-btn clickable'>
-                    { languagePack['Submit'] }
-                </button>
+                <PopupButtonSet languagePack={languagePack} only='submit' />
             </form>
         </PopupWindow>
         </>

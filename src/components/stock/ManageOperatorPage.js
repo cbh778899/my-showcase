@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PopupWindow from '../popup'
+import PopupButtonSet from '../popup/PopupButtonSet'
 import { Trash } from 'react-bootstrap-icons';
 import usePopup from '../../popup';
 import { toast } from 'react-toastify';
@@ -76,7 +77,7 @@ function ManageOperatorPage({ controller, languagePack, operators, reqUpdateOper
                                 <td>
                                     { operator.removable ? 
                                         <Trash 
-                                            className='remove-icon' 
+                                            className='remove-icon clickable' 
                                             onClick={()=> {
                                                 setRmSelected(operator);
                                                 askRmConfirmController.showModal();
@@ -108,12 +109,7 @@ function ManageOperatorPage({ controller, languagePack, operators, reqUpdateOper
                         <div className='title'>{ languagePack['Operator Password'] }</div>
                         <input className='input-type' type='text' name='operator-password' placeholder={languagePack['Auto generated']} />
                     </div>
-                    <button className='popup-btn blue-btn clickable'>
-                        { languagePack['Submit'] }
-                    </button>
-                    <div className='popup-btn clickable' onClick={askDetailsController.close}>
-                        { languagePack['Cancel'] }
-                    </div>
+                    <PopupButtonSet languagePack={languagePack} controller={askDetailsController} />
                 </form>
             </PopupWindow>
             <PopupWindow controller={askRmConfirmController}>
@@ -125,27 +121,20 @@ function ManageOperatorPage({ controller, languagePack, operators, reqUpdateOper
                             languagePack['ask-select-operator-to-remove']
                         }
                     </div>
-                    {
-                        rmSelected.id ? 
-                        <div className='popup-btn blue-btn clickable' onClick={removeOperator}>
-                            { languagePack['Confirm'] }
-                        </div> :
-                        <></>
-                    }
-                    <div className='popup-btn clickable' onClick={askRmConfirmController.close}>
-                        { languagePack['Cancel'] }
-                    </div>
+                    <PopupButtonSet 
+                        controller={askRmConfirmController} languagePack={languagePack}
+                        submitText={languagePack['Confirm']} onSubmit={removeOperator}
+                        only={rmSelected.id ? null : 'cancel'}
+                    />
                 </div>
             </PopupWindow>
             <PopupWindow controller={autoGeneratePasswordController}>
                 <div className='styled-popup-content'>
                     <div className='display-content'>{ languagePack['auto-gen-password-is'] } <strong>{ generatedPassword }</strong></div>
-                    <div className='popup-btn blue-btn clickable' onClick={copyPassword}>
-                        { languagePack['copy-password'] }
-                    </div>
-                    <div className='popup-btn clickable' onClick={autoGeneratePasswordController.close}>
-                        { languagePack['Cancel'] }
-                    </div>
+                    <PopupButtonSet 
+                        languagePack={languagePack} controller={autoGeneratePasswordController}
+                        onSubmit={copyPassword} submitText={languagePack['copy-password']}
+                    />
                 </div>
             </PopupWindow>
         </PopupWindow>
