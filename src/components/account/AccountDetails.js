@@ -146,7 +146,7 @@ function AccountDetails({id, logout, tabID}) {
             <PopupWindow controller={popupController}>
                 <div className='styled-popup-content'>
                     <div className='display-content'>{ languagePack['confirm-delete-account'] }</div>
-                    <div className='popup-btn clickable blue-btn' onClick={()=>{
+                    <div className='popup-btn clickable red-btn' onClick={()=>{
                         deleteUser(userDetails.id).then(result=>{
                             if(result) {
                                 logout(languagePack['account-delete-warn']);
@@ -154,7 +154,7 @@ function AccountDetails({id, logout, tabID}) {
                             }
                         })
                     }}>{ languagePack['Confirm'] }</div>
-                    <div className='popup-btn clickable red-btn' onClick={popupController.close}>{languagePack['Cancel']}</div>
+                    <div className='popup-btn clickable' onClick={popupController.close}>{languagePack['Cancel']}</div>
                 </div>
             </PopupWindow>
         </div>
