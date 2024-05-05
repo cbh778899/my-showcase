@@ -12,6 +12,7 @@ function StockTable({stock, languagePack}) {
     const [displayItems, setDisplayItems] = useState([]);
 
     const changeItemsEachPageController = usePopup();
+    const selectPageController = usePopup();
 
     const lastPageRef = useRef();
     const nextPageRef = useRef();
@@ -52,6 +53,15 @@ function StockTable({stock, languagePack}) {
         else {
             setItemsEachPage(+value);
             changeItemsEachPageController.close();
+        }
+    }
+
+    function submitRedirectPage(evt) {
+        const target = evt.target || evt
+        const page_num = +target.value;
+        if(setClass(target, 'content-invalid', !isNaN(page_num) && page_num >= 1 && page_num <= totalPages, true)) {
+            updateCurrentPage(page_num - 1);
+            selectPageController.close();
         }
     }
 
@@ -103,6 +113,7 @@ function StockTable({stock, languagePack}) {
                         <div className='page-number'>
                             <span 
                                 className='switch-page-btn clickable'
+                                onClick={selectPageController.showModal}
                             >{ Math.min(currentPage + 1, totalPages) }</span>
                             <span> / { totalPages }</span>  </div>
                         <div 
@@ -149,6 +160,40 @@ function StockTable({stock, languagePack}) {
                         { languagePack['Submit'] }
                     </button>
                     <div className='popup-btn clickable' onClick={changeItemsEachPageController.close}>
+                        { languagePack['Cancel'] }
+                    </div>
+                </form>
+            </PopupWindow>
+            <PopupWindow controller={selectPageController}>
+                <form className='styled-popup-content' onSubmit={evt=>{
+                    evt.preventDefault(); submitRedirectPage(evt.target['select-page-manual-input']);
+                }}>
+                    <div className='input-block'>
+                        <div className='title'>{ languagePack['ask-target-page'] }</div>
+                        <select 
+                            name='select-page' className='input-type'
+                            onChange={submitRedirectPage}
+                            value={currentPage + 1}
+                        >
+                            {
+                                [...Array(totalPages)].map((_, idx)=>{
+                                    const page = idx + 1;
+                                    return <option value={page} key={`to-page-${page}`}>{ page }</option>
+                                })
+                            }
+                        </select>
+                    </div>
+                    <div className='input-block'>
+                        <div className='title'>{ languagePack['ask-target-page-input'] }</div>
+                        <input type='text' className='input-type' name='select-page-manual-input' />
+                    </div>
+                    <div className='display-content clickable change-show-per-page' onClick={changeItemsEachPageController.showModal}>
+                        { languagePack['page-info'](itemsEachPage, totalPages) }
+                    </div>
+                    <button className='popup-btn blue-btn clickable' type='submit'>
+                        { languagePack['Submit'] }
+                    </button>
+                    <div className='popup-btn clickable' onClick={selectPageController.close}>
                         { languagePack['Cancel'] }
                     </div>
                 </form>
